@@ -1,3 +1,6 @@
+import { homedir } from 'node:os';
+import { join } from 'node:path';
+
 import { loadConfig } from '../../src/config.js';
 import { createLogger, redact } from '../../src/logger.js';
 
@@ -31,6 +34,16 @@ describe('loadConfig', () => {
 
         expect(config.timeZone).toBe('Asia/Calcutta');
         expect(config.timeZoneExplicit).toBe(true);
+    });
+
+    it('expands a leading ~ in the session path, since no shell does it for an env file', () => {
+        const path = (value: string): string =>
+            loadConfig({ ...MINIMAL, SMART_CITY_SESSION_PATH: value }).sessionPath;
+
+        expect(path('~/.smart-city-mcp/session.json')).toBe(
+            join(homedir(), '.smart-city-mcp', 'session.json'),
+        );
+        expect(path('/tmp/session.json')).toBe('/tmp/session.json');
     });
 });
 

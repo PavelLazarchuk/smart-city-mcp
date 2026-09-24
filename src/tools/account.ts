@@ -1,4 +1,4 @@
-import { type McpServer, type RegisteredTool } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { type McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 
 import { type OtpRequested, type TokenPair, type UserResource, phoneSchema } from '../api/contracts.js';
@@ -6,7 +6,7 @@ import { ApiError } from '../api/errors.js';
 import { type ElicitationSchema } from '../mapping/form.js';
 import { redactUser } from '../mapping/redact.js';
 import { confirmWrite, elicit, supportsElicitation, type ToolContext } from './context.js';
-import { runTool } from './registry.js';
+import { runPersonalTool, runTool } from './registry.js';
 
 const accountView = z.looseObject({
     id: z.string(),
@@ -25,11 +25,7 @@ const CODE_SCHEMA: ElicitationSchema = {
     required: ['code'],
 };
 
-export interface AccountTools {
-    personal: RegisteredTool[];
-}
-
-export function registerAccountTools(server: McpServer, ctx: ToolContext): AccountTools {
+export function registerAccountTools(server: McpServer, ctx: ToolContext): void {
     let pendingPhone: string | null = null;
 
     server.registerTool(
@@ -39,6 +35,7 @@ export function registerAccountTools(server: McpServer, ctx: ToolContext): Accou
             description: [
                 'Sends a one-time code by SMS to the phone number of the client account.',
                 'The code itself is asked for by auth_confirm, not by this tool.',
+                'Call it when a personal tool (bookings, waitlist, account) answers UNAUTHENTICATED.',
             ].join(' '),
             annotations: { openWorldHint: true },
             inputSchema: { phone: phoneSchema.describe('E.164 digits, no plus sign') },
@@ -121,7 +118,7 @@ export function registerAccountTools(server: McpServer, ctx: ToolContext): Accou
         }),
     );
 
-    const whoami = server.registerTool(
+    server.registerTool(
         'whoami',
         {
             title: 'Who am I',
@@ -130,7 +127,7 @@ export function registerAccountTools(server: McpServer, ctx: ToolContext): Accou
             inputSchema: {},
             outputSchema: { account: accountView },
         },
-        runTool('whoami', ctx, async () => {
+        runPersonalTool('whoami', ctx, async () => {
             const { data } = await ctx.client.request<UserResource>({ path: '/auth/me', auth: true });
 
             return {
@@ -140,7 +137,7 @@ export function registerAccountTools(server: McpServer, ctx: ToolContext): Accou
         }),
     );
 
-    const logout = server.registerTool(
+    server.registerTool(
         'logout',
         {
             title: 'Sign out',
@@ -149,84 +146,73 @@ export function registerAccountTools(server: McpServer, ctx: ToolContext): Accou
             inputSchema: {},
             outputSchema: { signed_out: z.boolean() },
         },
-        runTool('logout', ctx, async () => {
+        runPersonalTool('logout', ctx, async () => {
             await ctx.session.signOut();
 
             return { summary: 'Signed out.', data: { signed_out: true } };
         }),
     );
 
-    const personal = [whoami, logout];
-
     if (ctx.config.write) {
-        personal.push(
-            server.registerTool(
-                'set_contact_email',
-                {
-                    title: 'Set the contact e-mail or name',
-                    description: [
-                        'Changes the e-mail and name on the signed-in account, and nothing else.',
-                        'The e-mail is what switches reminders from SMS to mail.',
-                        'The account id comes from the session, never from an argument.',
-                    ].join(' '),
-                    annotations: { idempotentHint: true, openWorldHint: true },
-                    inputSchema: {
-                        email: z.email().max(254).nullable().optional().describe('null clears it'),
-                        name: z.string().trim().min(1).max(120).optional(),
-                        confirm: z
-                            .boolean()
-                            .optional()
-                            .describe('Only needed on clients without elicitation'),
-                    },
-                    outputSchema: { account: accountView },
+        server.registerTool(
+            'set_contact_email',
+            {
+                title: 'Set the contact e-mail or name',
+                description: [
+                    'Changes the e-mail and name on the signed-in account, and nothing else.',
+                    'The e-mail is what switches reminders from SMS to mail.',
+                    'The account id comes from the session, never from an argument.',
+                ].join(' '),
+                annotations: { idempotentHint: true, openWorldHint: true },
+                inputSchema: {
+                    email: z.email().max(254).nullable().optional().describe('null clears it'),
+                    name: z.string().trim().min(1).max(120).optional(),
+                    confirm: z.boolean().optional().describe('Only needed on clients without elicitation'),
                 },
-                runTool(
-                    'set_contact_email',
-                    ctx,
-                    async (args: { email?: string | null; name?: string; confirm?: boolean }) => {
-                        const user = ctx.session.user;
+                outputSchema: { account: accountView },
+            },
+            runPersonalTool(
+                'set_contact_email',
+                ctx,
+                async (args: { email?: string | null; name?: string; confirm?: boolean }) => {
+                    const user = ctx.session.user;
 
-                        if (!user)
-                            throw new ApiError({
-                                status: 401,
-                                code: 'UNAUTHENTICATED',
-                                message: 'No session.',
-                            });
-
-                        const body: Record<string, string | null> = {};
-
-                        if (args.email !== undefined) body['email'] = args.email;
-
-                        if (args.name !== undefined) body['name'] = args.name;
-
-                        if (Object.keys(body).length === 0)
-                            throw new ApiError({
-                                status: 400,
-                                code: 'VALIDATION_ERROR',
-                                message: 'Pass an e-mail, a name, or both.',
-                            });
-
-                        await confirmWrite(ctx, summaryOf(body), args.confirm);
-                        const { data } = await ctx.client.request<UserResource>({
-                            method: 'PATCH',
-                            path: `/users/${user.id}`,
-                            body,
-                            auth: true,
+                    if (!user)
+                        throw new ApiError({
+                            status: 401,
+                            code: 'UNAUTHENTICATED',
+                            message: 'No session.',
                         });
 
-                        return {
-                            summary: 'Account updated.',
-                            data: { account: redactUser(data, { pii: ctx.config.pii }) },
-                        };
-                    },
-                ),
+                    const body: Record<string, string | null> = {};
+
+                    if (args.email !== undefined) body['email'] = args.email;
+
+                    if (args.name !== undefined) body['name'] = args.name;
+
+                    if (Object.keys(body).length === 0)
+                        throw new ApiError({
+                            status: 400,
+                            code: 'VALIDATION_ERROR',
+                            message: 'Pass an e-mail, a name, or both.',
+                        });
+
+                    await confirmWrite(ctx, summaryOf(body), args.confirm);
+                    const { data } = await ctx.client.request<UserResource>({
+                        method: 'PATCH',
+                        path: `/users/${user.id}`,
+                        body,
+                        auth: true,
+                    });
+
+                    return {
+                        summary: 'Account updated.',
+                        data: { account: redactUser(data, { pii: ctx.config.pii }) },
+                    };
+                },
             ),
         );
     }
-
-    for (const tool of personal) tool.disable();
-
-    return { personal };
 }
 
 async function askForCode(ctx: ToolContext): Promise<{ code?: string; name?: string }> {

@@ -60,9 +60,11 @@ startup: an invalid value stops the process with a message on stderr rather than
 `get_service`, `find_slots`, `list_organizations`, `get_organization`, `list_news`,
 `get_info_sections`.
 
-**Personal tools**, registered but disabled until a session exists, which is what emits
-`notifications/tools/list_changed`: `whoami`, `logout`, `list_my_bookings`, `get_booking`,
-`list_my_waitlist`.
+**Personal tools**, listed from the start and refused with `UNAUTHENTICATED` (next step: `auth_start`)
+until a session exists: `whoami`, `logout`, `list_my_bookings`, `get_booking`, `list_my_waitlist`.
+They are not hidden and revealed by `notifications/tools/list_changed`, because some clients (Claude
+Desktop) never re-read the tool list, and a tool that appears on sign-in would not reach the model
+until the app restarts.
 
 **Writing tools**, only when `SMART_CITY_MCP_WRITE=true`: `create_booking`, `confirm_booking`,
 `cancel_booking`, `reschedule_booking`, `join_waitlist`, `leave_waitlist`, `set_contact_email`.
@@ -121,8 +123,10 @@ code has neither a row nor an explicit "cannot happen here".
 come back as keys only, and the name on a booking not at all. `SMART_CITY_MCP_PII=true` opens it up.
 
 **Text from the database.** Labels, descriptions, news bodies and info sections are written by
-organizations. They stay inside `structuredContent` under their own keys, and every tool that
-returns them says in its description that they are data to relay, not instructions to follow.
+organizations. Every tool that returns them says in its description that they are data to relay,
+not instructions to follow. Each result carries a second text block with the same data as JSON,
+because some clients (Claude Desktop) hand the model only the text blocks; that copy drops the
+long prose (`description`, `text_value`), which stays in `structuredContent` alone.
 
 ## The API contract
 

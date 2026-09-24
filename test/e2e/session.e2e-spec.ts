@@ -79,20 +79,19 @@ describe('session handling', () => {
             expect(errorOf(result).code).toBe('UNAUTHENTICATED');
             expect(errorOf(result).next_steps.join(' ')).toContain('auth_start');
             await expect(readFile(harness.sessionPath, 'utf8')).rejects.toMatchObject({ code: 'ENOENT' });
-            expect(await harness.toolNames()).not.toContain('whoami');
         } finally {
             await harness.close();
         }
     });
 
-    it('hides the personal tools again after signing out', async () => {
+    it('refuses the personal tools again after signing out', async () => {
         const harness = await startHarness({ apiUrl: stub.url, session: {} });
 
         try {
-            expect(await harness.toolNames()).toContain('list_my_bookings');
+            expect((await harness.call('list_my_bookings', {})).isError).toBeFalsy();
             await harness.call('logout', {});
 
-            expect(await harness.toolNames()).not.toContain('list_my_bookings');
+            expect(errorOf(await harness.call('list_my_bookings', {})).code).toBe('UNAUTHENTICATED');
             await expect(readFile(harness.sessionPath, 'utf8')).rejects.toMatchObject({ code: 'ENOENT' });
         } finally {
             await harness.close();

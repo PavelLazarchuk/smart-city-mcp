@@ -1,6 +1,6 @@
 import { type CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 
-import { isApiError } from '../api/errors.js';
+import { ApiError, isApiError } from '../api/errors.js';
 import { type ToolError, toToolError } from '../mapping/errors.js';
 import { type ToolContext } from './context.js';
 
@@ -20,12 +20,42 @@ export function runTool<A>(
     ctx: ToolContext,
     handler: ToolHandler<A>,
 ): (args: A) => Promise<CallToolResult> {
+    return guarded(name, ctx, handler, false);
+}
+
+export function runPersonalTool<A>(
+    name: string,
+    ctx: ToolContext,
+    handler: ToolHandler<A>,
+): (args: A) => Promise<CallToolResult> {
+    return guarded(name, ctx, handler, true);
+}
+
+function guarded<A>(
+    name: string,
+    ctx: ToolContext,
+    handler: ToolHandler<A>,
+    needsSession: boolean,
+): (args: A) => Promise<CallToolResult> {
     return async (args: A): Promise<CallToolResult> => {
         try {
+            if (needsSession && !ctx.session.authenticated)
+                throw new ApiError({
+                    status: 401,
+                    code: 'UNAUTHENTICATED',
+                    message: 'No session. Sign in with auth_start first.',
+                });
+
             ctx.budget.spend(name);
             const payload = await handler(args, ctx);
 
-            return { content: [{ type: 'text', text: payload.summary }], structuredContent: payload.data };
+            return {
+                content: [
+                    { type: 'text', text: payload.summary },
+                    { type: 'text', text: JSON.stringify(withoutProse(payload.data)) },
+                ],
+                structuredContent: payload.data,
+            };
         } catch (error) {
             const failure = toToolError(error);
             ctx.logger.warn('tool failed', {
@@ -41,6 +71,20 @@ export function runTool<A>(
             };
         }
     };
+}
+
+const PROSE_KEYS = new Set(['description', 'text_value']);
+
+function withoutProse(value: unknown): unknown {
+    if (Array.isArray(value)) return value.map(withoutProse);
+
+    if (value === null || typeof value !== 'object') return value;
+
+    return Object.fromEntries(
+        Object.entries(value)
+            .filter(([key]) => !PROSE_KEYS.has(key))
+            .map(([key, entry]) => [key, withoutProse(entry)]),
+    );
 }
 
 function renderError(failure: ToolError): string {

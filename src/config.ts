@@ -44,6 +44,12 @@ export function defaultSessionPath(): string {
     return join(homedir(), '.smart-city-mcp', 'session.json');
 }
 
+function expandHome(path: string | undefined): string | undefined {
+    if (path === '~') return homedir();
+
+    return path?.startsWith('~/') ? join(homedir(), path.slice(2)) : path;
+}
+
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): McpConfig {
     const parsed = envSchema.safeParse(env);
 
@@ -63,7 +69,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): McpConfig {
         timeZoneExplicit: value.SMART_CITY_TZ !== undefined,
         write: value.SMART_CITY_MCP_WRITE,
         pii: value.SMART_CITY_MCP_PII,
-        sessionPath: value.SMART_CITY_SESSION_PATH ?? defaultSessionPath(),
+        sessionPath: expandHome(value.SMART_CITY_SESSION_PATH) ?? defaultSessionPath(),
         toolBudget: value.SMART_CITY_MCP_TOOL_BUDGET,
         logLevel: value.LOG_LEVEL,
     };

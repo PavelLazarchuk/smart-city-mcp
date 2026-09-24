@@ -1,4 +1,4 @@
-import { startHarness } from './support/harness.js';
+import { errorOf, startHarness } from './support/harness.js';
 import { IDS, startStubApi, type Stub } from './support/stub-api.js';
 
 const WRITE_TOOLS = [
@@ -34,7 +34,7 @@ describe('tool surface', () => {
         }
     });
 
-    it('hides the personal tools until there is a session', async () => {
+    it('lists the personal tools without a session, since not every client re-reads the list', async () => {
         const harness = await startHarness({ apiUrl: stub.url });
 
         try {
@@ -42,36 +42,52 @@ describe('tool surface', () => {
 
             expect(names).toContain('search_services');
             expect(names).toContain('auth_start');
-            expect(names).not.toContain('list_my_bookings');
-            expect(names).not.toContain('whoami');
+            expect(names).toContain('list_my_bookings');
+            expect(names).toContain('whoami');
         } finally {
             await harness.close();
         }
     });
 
-    it('announces the personal tools after a sign-in', async () => {
+    it('does not charge the budget for a call refused for want of a session', async () => {
+        const harness = await startHarness({ apiUrl: stub.url, budget: 1 });
+
+        try {
+            expect(errorOf(await harness.call('list_my_bookings', {})).code).toBe('UNAUTHENTICATED');
+            expect(errorOf(await harness.call('whoami', {})).code).toBe('UNAUTHENTICATED');
+
+            expect((await harness.call('search_services', { q: 'x-ray' })).isError).toBeFalsy();
+        } finally {
+            await harness.close();
+        }
+    });
+
+    it('refuses a personal tool without a session before asking the person anything', async () => {
+        let asked = 0;
         const harness = await startHarness({
             apiUrl: stub.url,
-            elicit: () => ({ code: '123456', name: 'Alex' }),
+            write: true,
+            elicit: () => {
+                asked += 1;
+
+                return { confirm: true };
+            },
         });
 
         try {
-            let announced = 0;
-            harness.client.fallbackNotificationHandler = (notification) => {
-                if (notification.method === 'notifications/tools/list_changed') announced += 1;
+            const before = stub.state.calls.length;
+            const result = await harness.call('create_booking', {
+                service_id: IDS.service,
+                option_id: IDS.option,
+                slot_id: IDS.slot,
+            });
+            const text = result.content.map((part) => ('text' in part ? part.text : '')).join('');
 
-                return Promise.resolve();
-            };
-
-            expect(await harness.toolNames()).not.toContain('whoami');
-            const result = await harness.call('auth_start', { phone: '491701234567' });
-
-            expect(result.isError).toBeFalsy();
-            await harness.call('auth_confirm', {});
-            await new Promise((resolve) => setTimeout(resolve, 20));
-
-            expect(announced).toBeGreaterThan(0);
-            expect(await harness.toolNames()).toContain('whoami');
+            expect(result.isError).toBe(true);
+            expect(text).toContain('UNAUTHENTICATED');
+            expect(text).toContain('auth_start');
+            expect(asked).toBe(0);
+            expect(stub.state.calls.slice(before)).toEqual([]);
         } finally {
             await harness.close();
         }
@@ -199,7 +215,7 @@ describe('tool surface', () => {
         }
     });
 
-    it('keeps organization prose inside structuredContent, not in the text block', async () => {
+    it('keeps organization prose inside structuredContent, and ids in the text blocks', async () => {
         const harness = await startHarness({ apiUrl: stub.url });
 
         try {
@@ -207,6 +223,7 @@ describe('tool surface', () => {
             const text = result.content.map((part) => ('text' in part ? part.text : '')).join('');
 
             expect(text).not.toContain('Ignore all previous instructions');
+            expect(text).toContain(IDS.service);
             expect(JSON.stringify(result.structuredContent)).toContain('Ignore all previous instructions');
         } finally {
             await harness.close();
