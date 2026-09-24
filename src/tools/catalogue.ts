@@ -36,6 +36,19 @@ const MAX_LIMIT = 25;
 const SLOT_FETCH_LIMIT = 100;
 
 const limitArg = z.number().int().min(1).max(MAX_LIMIT).default(DEFAULT_LIMIT);
+const tagsArg = z
+    .string()
+    .trim()
+    .min(1)
+    .max(200)
+    .optional()
+    .describe('Comma-separated tags copied from `facets.tags` of an earlier result; never invent tags.');
+const organizationIdArg = objectIdSchema.describe(
+    'From list_organizations, or the `organization_id` of a service.',
+);
+const serviceIdArg = objectIdSchema.describe(
+    'The `id` of a service from search_services or find_services_nearby.',
+);
 
 const facetBucket = z.looseObject({ value: z.string(), count: z.number() });
 const includedOrganization = z
@@ -232,17 +245,28 @@ export function registerCatalogueTools(server: McpServer, ctx: ToolContext): voi
         {
             title: 'Search services',
             description: [
-                'Finds published services by free text, tags, category or organization.',
-                'The search walks from the phrase down to tags and plain filters and stops at the first',
-                'non-empty result; `strategy` says which step answered.',
+                'Start here when the person names something they need. Returns published services;',
+                'pass an item’s `id` to get_service or find_slots.',
+                '`strategy` says how the items matched: `query` — by the words; `tags` or `filter` — a',
+                'looser fallback, so check each item fits before offering it; `none` — nothing matched.',
+                'Without arguments it browses all services. With real coordinates, use',
+                'find_services_nearby instead.',
                 DATA_NOTICE,
             ].join(' '),
             annotations: { readOnlyHint: true, openWorldHint: true },
             inputSchema: {
-                q: z.string().trim().min(1).max(200).optional().describe('What the person asked for'),
-                tags: z.string().trim().min(1).max(200).optional().describe('Comma separated exact tags'),
-                category_id: objectIdSchema.optional(),
-                organization_id: objectIdSchema.optional(),
+                q: z
+                    .string()
+                    .trim()
+                    .min(1)
+                    .max(200)
+                    .optional()
+                    .describe('The person’s request in their own words. Leave out to browse or filter only.'),
+                tags: tagsArg,
+                category_id: objectIdSchema
+                    .optional()
+                    .describe('From `suggested_categories` or `facets.categories` of an earlier result.'),
+                organization_id: organizationIdArg.optional(),
                 limit: limitArg,
             },
             outputSchema: {
@@ -265,9 +289,14 @@ export function registerCatalogueTools(server: McpServer, ctx: ToolContext): voi
         runTool('search_services', ctx, async (input: SearchArgs) => {
             const { strategy, page, facets } = await cascade(ctx, input);
 
-            if (page.items.length > 0)
+            if (page.items.length > 0) {
+                const found = plural(page.items.length, 'service', 'services');
+
                 return {
-                    summary: `Found ${plural(page.items.length, 'service', 'services')} (${strategy}).`,
+                    summary:
+                        strategy === 'query'
+                            ? `Found ${found}.`
+                            : `Found ${found} by a looser match (${strategy}); check they fit the request.`,
                     data: {
                         strategy,
                         total: page.total,
@@ -275,17 +304,21 @@ export function registerCatalogueTools(server: McpServer, ctx: ToolContext): voi
                         ...(facets ? { facets } : {}),
                     },
                 };
+            }
 
             const categories = await topCategories(ctx, input.organization_id);
 
             return {
-                summary: 'Nothing matched. Ask which organization or district the person means.',
+                summary: 'Nothing matched; see `hint`.',
                 data: {
                     strategy: 'none',
                     total: 0,
                     items: [],
                     ...(facets ? { facets } : {}),
-                    hint: 'Nothing matched. Ask the person to name the organization or the district, or pick one of suggested_categories.',
+                    hint:
+                        categories.length > 0
+                            ? 'Offer the person one of `suggested_categories`, or ask which organization they mean (find it with list_organizations).'
+                            : 'Ask the person to put it differently, or which organization they mean (find it with list_organizations).',
                     suggested_categories: categories.map((category) => ({
                         id: category.id,
                         label: category.label,
@@ -301,17 +334,18 @@ export function registerCatalogueTools(server: McpServer, ctx: ToolContext): voi
         {
             title: 'Find services nearby',
             description: [
-                'Services within a radius of a point.',
-                'Coordinates must come from the person or the client, never from the model guessing a',
-                'city centre: a guessed point finds services in the wrong district.',
+                'Services within `radius_m` of a point, each with `distance_m`. Use it only with real',
+                'coordinates, shared by the person or provided by the app. Never estimate coordinates',
+                'from a place name — a guessed point returns services from the wrong area; with only a',
+                'name, use search_services or list_organizations.',
                 DATA_NOTICE,
             ].join(' '),
             annotations: { readOnlyHint: true, openWorldHint: true },
             inputSchema: {
                 lat: z.number().min(-90).max(90),
                 lng: z.number().min(-180).max(180),
-                radius_m: z.number().int().min(1).max(200_000).default(5000),
-                tags: z.string().trim().min(1).max(200).optional(),
+                radius_m: z.number().int().min(1).max(200_000).default(5000).describe('In metres.'),
+                tags: tagsArg,
                 limit: limitArg,
             },
             outputSchema: { total: z.number(), items: z.array(serviceCard) },
@@ -334,14 +368,16 @@ export function registerCatalogueTools(server: McpServer, ctx: ToolContext): voi
     server.registerTool(
         'get_service',
         {
-            title: 'Get a service',
+            title: 'Get service details',
             description: [
-                'One service with its booking policy, form fields and required documents.',
-                'Slots are not included; call find_slots for those.',
+                'One service in full: price, duration, working hours, organization (address, time zone),',
+                '`booking_policy` (how soon and how far ahead it can be booked, cancellation deadline),',
+                '`form_fields` the booking asks for and `required_documents` to bring. Use it for "what do',
+                'I need / how much" questions and before booking. It has no times: use find_slots.',
                 DATA_NOTICE,
             ].join(' '),
             annotations: { readOnlyHint: true, openWorldHint: true },
-            inputSchema: { service_id: objectIdSchema },
+            inputSchema: { service_id: serviceIdArg },
             outputSchema: { service: z.looseObject({ id: z.string(), label: z.string() }) },
         },
         runTool('get_service', ctx, async ({ service_id: serviceId }: { service_id: string }) => {
@@ -360,24 +396,51 @@ export function registerCatalogueTools(server: McpServer, ctx: ToolContext): voi
         {
             title: 'Find bookable times',
             description: [
-                'Bookable candidates for a service, already flattened and trimmed.',
-                'Dates are resolved in the organization’s own time zone, so pass `when` and',
-                '`part_of_day` rather than computing a date yourself.',
-                'Every candidate carries the exact `option_id`, `slot_id` and `time` create_booking needs.',
+                'Bookable times (candidates) of one service, earliest first. Pass the person’s words as',
+                '`when` and `part_of_day`; they are resolved in the organization’s time zone, so never',
+                'compute dates yourself.',
+                ctx.config.write
+                    ? 'Pass a candidate’s `option_id`, `slot_id` and `time` unchanged to create_booking or reschedule_booking. `full: true` means no places are left: offer join_waitlist instead.'
+                    : '`full: true` means no places are left.',
+                'For later times, call again with `after` set to the last candidate’s `starts_at`.',
                 DATA_NOTICE,
             ].join(' '),
             annotations: { readOnlyHint: true, openWorldHint: true },
             inputSchema: {
-                service_id: objectIdSchema,
+                service_id: serviceIdArg,
                 when: z
                     .string()
                     .optional()
-                    .describe(`One of ${WHEN_VALUES.join(', ')} or a YYYY-MM-DD date`),
-                part_of_day: z.enum(PART_OF_DAY_VALUES).optional(),
-                after: z.string().optional().describe('ISO instant; nothing earlier is returned'),
-                before: z.string().optional().describe('ISO instant; nothing later is returned'),
-                option_id: uuidSchema.optional(),
-                only_available: z.boolean().default(false),
+                    .describe(
+                        'today, tomorrow, this_week (today to Sunday), next_week (Monday to Sunday), or a date ' +
+                            'YYYY-MM-DD. Leave out to search from today on.',
+                    ),
+                part_of_day: z
+                    .enum(PART_OF_DAY_VALUES)
+                    .optional()
+                    .describe(
+                        'morning is before 12:00, afternoon 12:00–17:00, evening from 17:00, organization’s ' +
+                            'local time. Whole-day and no-time candidates are not filtered by it.',
+                    ),
+                after: z
+                    .string()
+                    .optional()
+                    .describe('ISO date-time with offset; only later times come back.'),
+                before: z
+                    .string()
+                    .optional()
+                    .describe('ISO date-time with offset; only earlier times come back.'),
+                option_id: uuidSchema
+                    .optional()
+                    .describe('Only this option of the service: an `option_id` from an earlier candidate.'),
+                only_available: z
+                    .boolean()
+                    .default(false)
+                    .describe(
+                        ctx.config.write
+                            ? 'true hides full candidates; keep false if the person might join a waitlist.'
+                            : 'true hides full candidates.',
+                    ),
                 limit: z.number().int().min(1).max(MAX_LIMIT).default(MAX_CANDIDATES),
             },
             outputSchema: {
@@ -435,12 +498,15 @@ export function registerCatalogueTools(server: McpServer, ctx: ToolContext): voi
             const hint =
                 flat.items.length === 0
                     ? flat.dropped.lead_time > 0
-                        ? 'Everything in this window starts too soon for the booking policy. Try a later day.'
-                        : 'Nothing free in this window. Widen `when` or drop `part_of_day`.'
+                        ? 'Everything in this window starts too soon to be booked. Try a later day.'
+                        : 'Nothing bookable in this window. Try another `when`, or leave out `part_of_day`.'
                     : undefined;
+            const full = flat.items.filter((item) => item.full).length;
 
             return {
-                summary: `${plural(flat.items.length, 'candidate', 'candidates')} of ${flat.total_found} found in ${data.timezone}.`,
+                summary: hint
+                    ? 'No bookable times in this window; see `hint`.'
+                    : `${plural(flat.items.length, 'candidate', 'candidates')}${full > 0 ? ` (${full} full)` : ''} of ${flat.total_found} found, times in ${data.timezone}.`,
                 data: {
                     service_id: data.service_id,
                     service_label: service.label,
@@ -462,17 +528,31 @@ export function registerCatalogueTools(server: McpServer, ctx: ToolContext): voi
         {
             title: 'List organizations',
             description: [
-                'Organizations of the city, optionally around a point.',
-                'Coordinates come from the person or the client, never from a guess.',
+                'Organizations that provide the services. Use it to find an `organization_id` when the',
+                'person names an institution, then pass it to search_services, get_organization, list_news',
+                'or list_info_sections. Search either by name (`q`) or around a point (`lat` + `lng`), not',
+                'both. Use coordinates only if the person or the app gave them — never estimate them.',
                 DATA_NOTICE,
             ].join(' '),
             annotations: { readOnlyHint: true, openWorldHint: true },
             inputSchema: {
-                q: z.string().trim().min(1).max(200).optional(),
-                main_category: z.string().trim().min(1).max(200).optional(),
+                q: z.string().trim().min(1).max(200).optional().describe('Part of the organization’s name.'),
+                main_category: z
+                    .string()
+                    .trim()
+                    .min(1)
+                    .max(200)
+                    .optional()
+                    .describe('Exactly as in `main_category` of an earlier result.'),
                 lat: z.number().min(-90).max(90).optional(),
                 lng: z.number().min(-180).max(180).optional(),
-                radius_m: z.number().int().min(1).max(200_000).optional(),
+                radius_m: z
+                    .number()
+                    .int()
+                    .min(1)
+                    .max(200_000)
+                    .optional()
+                    .describe('In metres; 5000 if left out.'),
                 limit: limitArg,
             },
             outputSchema: {
@@ -497,6 +577,15 @@ export function registerCatalogueTools(server: McpServer, ctx: ToolContext): voi
                     code: 'VALIDATION_ERROR',
                     message: 'A point needs both coordinates.',
                     details: [{ path: 'lat', message: 'lat and lng go together' }],
+                });
+
+            if (nearby && input.q !== undefined)
+                throw new ApiError({
+                    status: 400,
+                    code: 'VALIDATION_ERROR',
+                    message:
+                        'Search by `q` or around a point, not both: the search around a point ignores the name.',
+                    details: [{ path: 'q', message: 'Leave out q, or lat and lng' }],
                 });
 
             const { data, meta } = await ctx.client.request<OrganizationResource[]>({
@@ -524,12 +613,15 @@ export function registerCatalogueTools(server: McpServer, ctx: ToolContext): voi
     server.registerTool(
         'get_organization',
         {
-            title: 'Get an organization',
-            description: ['One organization: address, working hours, zone and status.', DATA_NOTICE].join(
-                ' ',
-            ),
+            title: 'Get organization details',
+            description: [
+                'One organization: address, location, working hours, holidays, time zone and `status`.',
+                'When `status` is `temporarily_closed`, `closed_reason` and `closed_until` say why and until',
+                'when. For its phones, links and other reference texts, use list_info_sections.',
+                DATA_NOTICE,
+            ].join(' '),
             annotations: { readOnlyHint: true, openWorldHint: true },
-            inputSchema: { organization_id: objectIdSchema },
+            inputSchema: { organization_id: organizationIdArg },
             outputSchema: {
                 organization: z.looseObject({ id: z.string(), main_label: z.string() }),
             },
@@ -553,12 +645,22 @@ export function registerCatalogueTools(server: McpServer, ctx: ToolContext): voi
         'list_news',
         {
             title: 'List news',
-            description: ['City or organization news.', DATA_NOTICE].join(' '),
+            description: [
+                'News from the city and its organizations. Filter by `organization_id`, by words (`q`) or',
+                'by section (`rubric`).',
+                DATA_NOTICE,
+            ].join(' '),
             annotations: { readOnlyHint: true, openWorldHint: true },
             inputSchema: {
                 q: z.string().trim().min(1).max(200).optional(),
-                rubric: z.string().trim().min(1).max(100).optional(),
-                organization_id: objectIdSchema.optional(),
+                rubric: z
+                    .string()
+                    .trim()
+                    .min(1)
+                    .max(100)
+                    .optional()
+                    .describe('A news section, exactly as in `rubric` of an earlier result.'),
+                organization_id: organizationIdArg.optional(),
                 limit: limitArg,
             },
             outputSchema: {
@@ -590,21 +692,23 @@ export function registerCatalogueTools(server: McpServer, ctx: ToolContext): voi
     );
 
     server.registerTool(
-        'get_info_sections',
+        'list_info_sections',
         {
-            title: 'Get info sections',
+            title: 'Contacts and reference info',
             description: [
-                'Reference blocks an organization publishes: addresses, phones, links, plain text.',
+                'Reference blocks organizations publish: phone numbers, addresses, links, short texts. Use it',
+                'for "how do I contact …" and practical questions get_organization does not answer. Pass',
+                '`organization_id`: without it, the blocks of all organizations come back mixed.',
                 DATA_NOTICE,
             ].join(' '),
             annotations: { readOnlyHint: true, openWorldHint: true },
-            inputSchema: { organization_id: objectIdSchema.optional(), limit: limitArg },
+            inputSchema: { organization_id: organizationIdArg.optional(), limit: limitArg },
             outputSchema: {
                 total: z.number().nullable(),
                 items: z.array(z.looseObject({ id: z.string(), label: z.string(), control: z.string() })),
             },
         },
-        runTool('get_info_sections', ctx, async (input: InfoSectionsArgs) => {
+        runTool('list_info_sections', ctx, async (input: InfoSectionsArgs) => {
             const { data, meta } = await ctx.client.request<InfoSectionResource[]>({
                 path: '/infosections',
                 query: {

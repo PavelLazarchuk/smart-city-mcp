@@ -10,6 +10,7 @@ export class ApiError extends Error {
     readonly details: ApiErrorDetail[];
     readonly requestId: string | undefined;
     readonly retryAfterSeconds: number | undefined;
+    readonly fromApi: boolean;
 
     constructor(init: {
         status: number;
@@ -18,6 +19,7 @@ export class ApiError extends Error {
         details?: ApiErrorDetail[];
         requestId?: string;
         retryAfterSeconds?: number;
+        fromApi?: boolean;
     }) {
         super(init.message);
         this.name = 'ApiError';
@@ -26,6 +28,7 @@ export class ApiError extends Error {
         this.details = init.details ?? [];
         this.requestId = init.requestId;
         this.retryAfterSeconds = init.retryAfterSeconds;
+        this.fromApi = init.fromApi ?? false;
     }
 }
 
@@ -59,6 +62,7 @@ export function apiErrorFrom(status: number, body: unknown, retryAfterSeconds?: 
         details: Array.isArray(error.details) ? (error.details as ApiErrorDetail[]) : [],
         requestId: typeof error.request_id === 'string' ? error.request_id : undefined,
         retryAfterSeconds,
+        fromApi: true,
     });
 }
 

@@ -117,3 +117,26 @@ export function withinPartOfDay(iso: string, part: PartOfDay): boolean {
 export function isDateOnly(value: string): boolean {
     return DATE_ONLY.test(value);
 }
+
+export function isPast(iso: string, now: Date = new Date()): boolean {
+    return Date.parse(iso) <= now.getTime();
+}
+
+const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+export function humanDate(date: string): string {
+    const [year = 0, month = 1, day = 1] = date.split('-').map(Number);
+
+    return `${WEEKDAYS[weekdayOfDateOnly(date)] ?? ''} ${day} ${MONTHS[month - 1] ?? ''} ${year}`;
+}
+
+export function humanInstant(iso: string, timeZone: string): string {
+    return formatInTimeZone(new Date(iso), timeZone, 'EEE d MMM yyyy, HH:mm');
+}
+
+export function describeWhen(date: string | null, time: string | null): string {
+    if (!date) return 'no fixed time (the organization schedules it)';
+
+    return time ? `${humanDate(date)}, ${time}` : `${humanDate(date)} (whole day)`;
+}

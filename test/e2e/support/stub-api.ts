@@ -32,6 +32,7 @@ export interface StubState {
     expiredAccessTokens: Set<string>;
     refreshOutcome: 'rotate' | 'reused';
     otpCode: string;
+    userName: string;
     bookings: Record<string, unknown>[];
     idempotent: Map<string, { status: number; body: unknown }>;
     slotTaken: boolean;
@@ -172,7 +173,7 @@ function tokenPair(state: StubState): unknown {
         user: {
             id: USER_ID,
             role: 'common-user',
-            name: 'Alex',
+            name: state.userName,
             phone: '491701234567',
             email: 'alex@example.invalid',
             organization_ids: [],
@@ -220,6 +221,7 @@ export async function startStubApi(): Promise<Stub> {
         expiredAccessTokens: new Set(),
         refreshOutcome: 'rotate',
         otpCode: '123456',
+        userName: 'Alex',
         bookings: [],
         idempotent: new Map(),
         slotTaken: false,

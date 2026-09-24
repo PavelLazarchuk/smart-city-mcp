@@ -71,7 +71,7 @@ export function problemOf(field: FormField, value: unknown): string | null {
         case 'select':
             return typeof value === 'string' && (field.options ?? []).includes(value)
                 ? null
-                : 'Must be one of the options';
+                : `Must be one of: ${(field.options ?? []).join(', ')}`;
         default:
             return 'Unsupported field type';
     }
@@ -90,7 +90,14 @@ export function formSchema(fields: FormField[]): z.ZodType<Record<string, unknow
 }
 
 type PrimitiveSchema =
-    | { type: 'string'; title: string; description?: string; maxLength?: number; format?: string }
+    | {
+          type: 'string';
+          title: string;
+          description?: string;
+          minLength?: number;
+          maxLength?: number;
+          format?: string;
+      }
     | { type: 'string'; title: string; description?: string; enum: string[] }
     | { type: 'number'; title: string; description?: string }
     | { type: 'boolean'; title: string; description?: string };

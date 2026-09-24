@@ -127,6 +127,32 @@ describe('ApiClient', () => {
         }
     });
 
+    it('passes a wait time on for a 429 only, though every answer carries RateLimit-Reset', async () => {
+        const stub = await serve((url, respond) =>
+            url.pathname.endsWith('/busy')
+                ? respond(
+                      429,
+                      { error: { code: 'RATE_LIMITED' } },
+                      { 'retry-after': '7', 'ratelimit-reset': '60' },
+                  )
+                : respond(422, { error: { code: 'OTP_INVALID' } }, { 'ratelimit-reset': '60' }),
+        );
+
+        try {
+            const client = clientFor(stub);
+
+            await expect(
+                client.request({ method: 'POST', path: '/auth/otp/verify', body: {} }),
+            ).rejects.toMatchObject({ code: 'OTP_INVALID', retryAfterSeconds: undefined });
+            await expect(client.request({ method: 'POST', path: '/busy', body: {} })).rejects.toMatchObject({
+                code: 'RATE_LIMITED',
+                retryAfterSeconds: 7,
+            });
+        } finally {
+            await stub.close();
+        }
+    });
+
     it('does not repeat a POST that failed', async () => {
         const stub = await serve((url, respond) => respond(500, { error: { code: 'INTERNAL_ERROR' } }));
 

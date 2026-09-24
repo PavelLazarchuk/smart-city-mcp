@@ -1,4 +1,5 @@
 import { type McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { z } from 'zod';
 
 import { type ApiClient } from '../api/client.js';
 import { ApiError } from '../api/errors.js';
@@ -12,15 +13,15 @@ export class ToolBudget {
 
     constructor(private readonly max: number) {}
 
-    spend(tool: string): void {
+    spend(): void {
         this.spent += 1;
 
         if (this.spent <= this.max) return;
 
         throw new ApiError({
             status: 429,
-            code: 'RATE_LIMITED',
-            message: `This session's budget of ${this.max} tool calls is used up (last: ${tool}).`,
+            code: 'TOOL_BUDGET_EXHAUSTED',
+            message: `This session’s limit of ${this.max} tool calls is used up.`,
         });
     }
 }
@@ -65,6 +66,14 @@ const CONFIRM_SCHEMA: ElicitationSchema = {
     required: ['confirm'],
 };
 
+export const confirmArg = z
+    .boolean()
+    .optional()
+    .describe(
+        'Leave out on the first call. Set true only after this tool answered CONFIRMATION_REQUIRED ' +
+            'and the person clearly agreed to its summary.',
+    );
+
 export async function confirmWrite(ctx: ToolContext, summary: string, confirmed?: boolean): Promise<void> {
     if (supportsElicitation(ctx)) {
         const outcome = await elicit(ctx, summary, CONFIRM_SCHEMA);
@@ -73,7 +82,7 @@ export async function confirmWrite(ctx: ToolContext, summary: string, confirmed?
             throw new ApiError({
                 status: 400,
                 code: 'NOT_CONFIRMED',
-                message: 'The person did not confirm.',
+                message: 'The person did not confirm, so nothing was sent.',
             });
 
         return;
@@ -84,6 +93,6 @@ export async function confirmWrite(ctx: ToolContext, summary: string, confirmed?
     throw new ApiError({
         status: 400,
         code: 'CONFIRMATION_REQUIRED',
-        message: `Show this to the person and call again with confirm: true.\n\n${summary}`,
+        message: `Nothing was sent yet. The person has to approve this:\n\n${summary}\n`,
     });
 }

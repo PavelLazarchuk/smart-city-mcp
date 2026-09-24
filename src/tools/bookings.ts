@@ -5,6 +5,7 @@ import { z } from 'zod';
 import {
     type BookingCreated,
     type BookingResource,
+    type FormField,
     type ServiceResource,
     type ServiceSlots,
     type SlotCandidate,
@@ -17,7 +18,7 @@ import {
 } from '../api/contracts.js';
 import { type ApiResult } from '../api/client.js';
 import { SERVICE_BOOKING_FIELDS, fieldsParam } from '../api/fields.js';
-import { ApiError, isApiError } from '../api/errors.js';
+import { ApiError, type ApiErrorDetail, isApiError } from '../api/errors.js';
 import {
     type ElicitationSchema,
     documentsToConfirm,
@@ -26,8 +27,8 @@ import {
     validateAnswers,
 } from '../mapping/form.js';
 import { redactBooking, redactWaitlistEntry } from '../mapping/redact.js';
-import { dateOnlyIn, isoAtIn, shiftDateOnly } from '../mapping/time.js';
-import { confirmWrite, elicit, supportsElicitation, type ToolContext } from './context.js';
+import { dateOnlyIn, describeWhen, humanInstant, isPast, isoAtIn, shiftDateOnly } from '../mapping/time.js';
+import { confirmArg, confirmWrite, elicit, supportsElicitation, type ToolContext } from './context.js';
 import { DATA_NOTICE, plural, runPersonalTool } from './registry.js';
 
 export const MY_BOOKINGS_URI = 'smartcity://me/bookings';
@@ -68,17 +69,26 @@ const waitlistView = z.looseObject({
     created_at: z.string(),
 });
 
-const confirmArg = z.boolean().optional().describe('Only needed on clients without elicitation');
+const bookingIdArg = uuidSchema.describe('The `id` of a booking from list_my_bookings.');
+const candidateArg = uuidSchema.describe('From the chosen find_slots candidate.');
+const candidateTimeArg = timeOfDaySchema
+    .optional()
+    .describe('The chosen candidate’s `time` (HH:mm); required when its `child_type` is `date_time`.');
 
 export function registerBookingTools(server: McpServer, ctx: ToolContext): void {
+    const write = ctx.config.write;
+
     server.registerTool(
         'list_my_bookings',
         {
             title: 'My bookings',
             description: [
-                'Bookings of the signed-in account, with the instant each one starts and the',
-                'instant after which it can no longer be cancelled.',
-                'Names, phone numbers and form answers are left out; only the field keys come back.',
+                'The person’s bookings, each with `starts_at` and `cancel_deadline_at` (the last moment it',
+                'can be cancelled); active ones by default. An item’s `id` is the',
+                write
+                    ? '`booking_id` for get_booking, confirm_booking, reschedule_booking and cancel_booking.'
+                    : '`booking_id` for get_booking.',
+                'Form answers may be hidden: `form_field_keys` lists which fields were filled.',
                 DATA_NOTICE,
             ].join(' '),
             annotations: { readOnlyHint: true, openWorldHint: true },
@@ -86,9 +96,9 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                 status: z
                     .enum([...BOOKING_STATUSES, 'active', 'all'])
                     .default('active')
-                    .describe('"active" is pending plus confirmed'),
-                date_from: z.iso.date().optional(),
-                date_to: z.iso.date().optional(),
+                    .describe('"active" is pending plus confirmed.'),
+                date_from: z.iso.date().optional().describe('YYYY-MM-DD, by the booking’s date.'),
+                date_to: z.iso.date().optional().describe('YYYY-MM-DD, by the booking’s date.'),
                 limit: z.number().int().min(1).max(25).default(10),
             },
             outputSchema: { total: z.number().nullable(), items: z.array(bookingView) },
@@ -110,7 +120,7 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                 const items = (data ?? []).map((booking) => redactBooking(booking, { pii: ctx.config.pii }));
 
                 return {
-                    summary: `You have ${plural(items.length, 'booking', 'bookings')}.`,
+                    summary: `${plural(items.length, 'booking', 'bookings')}.`,
                     data: { total: meta?.['total'] ?? items.length, items },
                 };
             },
@@ -121,9 +131,19 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
         'get_booking',
         {
             title: 'Get one booking',
-            description: `One booking of the signed-in account. ${DATA_NOTICE}`,
+            description: [
+                'One of the person’s bookings with its current `status` (pending, confirmed, completed,',
+                'no_show, cancelled), start and cancellation deadline.',
+                DATA_NOTICE,
+            ].join(' '),
             annotations: { readOnlyHint: true, openWorldHint: true },
-            inputSchema: { booking_id: uuidSchema },
+            inputSchema: {
+                booking_id: uuidSchema.describe(
+                    write
+                        ? 'The `id` from list_my_bookings, or `booking.booking_id` from create_booking.'
+                        : 'The `id` from list_my_bookings.',
+                ),
+            },
             outputSchema: { booking: bookingView },
         },
         runPersonalTool('get_booking', ctx, async (args: { booking_id: string }) => {
@@ -143,7 +163,16 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
         'list_my_waitlist',
         {
             title: 'My waitlist entries',
-            description: `Slots the signed-in account is queueing for. ${DATA_NOTICE}`,
+            description: [
+                'Full slots the person is queueing for. When a place frees up, the first in line gets an SMS',
+                'or e-mail (`status: notified`); nothing is booked automatically.',
+                write
+                    ? 'Book it with create_booking if the person still wants it. An item’s `id` is the `waitlist_id` for leave_waitlist.'
+                    : '',
+                DATA_NOTICE,
+            ]
+                .filter(Boolean)
+                .join(' '),
             annotations: { readOnlyHint: true, openWorldHint: true },
             inputSchema: { limit: z.number().int().min(1).max(25).default(10) },
             outputSchema: { total: z.number().nullable(), items: z.array(waitlistView) },
@@ -157,37 +186,54 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
             const items = (data ?? []).map((entry) => redactWaitlistEntry(entry, { pii: ctx.config.pii }));
 
             return {
-                summary: `You are queueing for ${plural(items.length, 'slot', 'slots')}.`,
+                summary: `Queueing for ${plural(items.length, 'slot', 'slots')}.`,
                 data: { total: meta?.['total'] ?? items.length, items },
             };
         }),
     );
 
-    if (!ctx.config.write) return;
+    if (!write) return;
 
     server.registerTool(
         'create_booking',
         {
-            title: 'Book a slot',
+            title: 'Book a time',
             description: [
-                'Books one candidate returned by find_slots. Pass its `option_id`, `slot_id` and,',
-                'for a `date_time` candidate, its `time` exactly as they came back.',
-                'Required form fields are asked of the person, not invented; required documents are',
-                'read out and only sent once the person confirms them.',
-                'The whole booking is confirmed by the person before anything is sent.',
+                'Books the candidate the person chose from find_slots: pass `service_id` and the candidate’s',
+                '`option_id`, `slot_id` and `time` exactly as returned. For a `full: true` candidate use',
+                'join_waitlist instead. Never fill `fields` or `documents` yourself; pass only what the',
+                'person said. Anything missing is asked of the person, or comes back as',
+                'BOOKING_FIELDS_INVALID / BOOKING_DOCUMENTS_REQUIRED for you to ask them. The person',
+                'approves a summary before anything is sent. Repeating the same booking is safe: it returns',
+                '`already_existed: true` and creates no duplicate.',
             ].join(' '),
             annotations: { idempotentHint: true, openWorldHint: true },
             inputSchema: {
-                service_id: objectIdSchema,
-                option_id: uuidSchema,
-                slot_id: uuidSchema,
-                time: timeOfDaySchema.optional().describe('Required for a date_time candidate'),
-                info: z.string().trim().max(1000).optional(),
+                service_id: objectIdSchema.describe('The `service_id` you passed to find_slots.'),
+                option_id: candidateArg,
+                slot_id: candidateArg,
+                time: candidateTimeArg,
+                info: z
+                    .string()
+                    .trim()
+                    .max(1000)
+                    .optional()
+                    .describe(
+                        'A comment for the organization, in the person’s own words; only if they gave one.',
+                    ),
                 fields: z
                     .record(fieldKeySchema, z.unknown())
                     .optional()
-                    .describe('Answers already known; anything missing is asked of the person'),
-                documents: z.array(fieldKeySchema).max(30).optional(),
+                    .describe(
+                        'Form answers keyed by `form_fields[].key` of get_service; only what the person said.',
+                    ),
+                documents: z
+                    .array(fieldKeySchema)
+                    .max(30)
+                    .optional()
+                    .describe(
+                        'Keys of `required_documents` of get_service that the person confirmed they will bring.',
+                    ),
                 confirm: confirmArg,
             },
             outputSchema: {
@@ -195,7 +241,7 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                 already_existed: z.boolean(),
                 starts_at: z.string().nullable(),
                 cancel_deadline_at: z.string().nullable(),
-                needs_organization_confirmation: z.boolean(),
+                needs_confirmation: z.boolean(),
             },
         },
         runPersonalTool(
@@ -220,7 +266,7 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
 
                 await confirmWrite(
                     ctx,
-                    bookingSummary(service, candidate, fields, documents, deadline),
+                    bookingSummary(service, candidate, fields, documents, deadline, timeZone),
                     args.confirm,
                 );
 
@@ -237,17 +283,24 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                 const pending = result.data.status === 'pending';
 
                 return {
-                    summary: result.replayed
-                        ? 'This booking already existed; nothing new was created.'
-                        : pending
-                          ? 'Request sent. The organization still has to confirm it.'
-                          : 'Booked.',
+                    summary: [
+                        result.replayed
+                            ? 'This booking already existed; nothing new was created.'
+                            : pending
+                              ? 'Booked as `pending`: this service asks for each booking to be confirmed. Tell the person; they can confirm it now or later with confirm_booking, or the organization may confirm it.'
+                              : 'Booked.',
+                        deadline !== null && isPast(deadline)
+                            ? 'It cannot be cancelled: the cancellation deadline has already passed.'
+                            : '',
+                    ]
+                        .filter(Boolean)
+                        .join(' '),
                     data: {
                         booking: result.data,
                         already_existed: result.replayed,
                         starts_at: candidate.starts_at,
                         cancel_deadline_at: deadline,
-                        needs_organization_confirmation: pending,
+                        needs_confirmation: pending,
                     },
                 };
             },
@@ -257,18 +310,25 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
     server.registerTool(
         'confirm_booking',
         {
-            title: 'Confirm my booking',
-            description:
-                'Moves a booking the person owns from pending to confirmed, where the service asks for it.',
+            title: 'Confirm a pending booking',
+            description: [
+                'Some services ask for each booking to be confirmed; their bookings start as `pending`. Call',
+                'this when the person confirms one; it becomes `confirmed`. Only for `pending` bookings.',
+            ].join(' '),
             annotations: { idempotentHint: true, openWorldHint: true },
-            inputSchema: { booking_id: uuidSchema, confirm: confirmArg },
+            inputSchema: {
+                booking_id: uuidSchema.describe(
+                    'The `id` of a pending booking from list_my_bookings, or `booking.booking_id` from create_booking.',
+                ),
+                confirm: confirmArg,
+            },
             outputSchema: { booking: bookingView },
         },
         runPersonalTool('confirm_booking', ctx, async (args: { booking_id: string; confirm?: boolean }) => {
             const booking = await loadBooking(ctx, args.booking_id);
             await confirmWrite(
                 ctx,
-                `Confirm your booking of "${booking.service_label}" on ${whenOf(ctx, booking.starts_at)}?`,
+                `Confirm your booking of "${booking.service_label}"${bookingDay(booking)}?`,
                 args.confirm,
             );
             const { data } = await ctx.client.request<BookingResource>({
@@ -290,18 +350,20 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
         {
             title: 'Cancel a booking',
             description: [
-                'Cancels a booking of the signed-in account. This frees the place for someone else',
-                'and cannot be undone; after cancel_deadline_at the API refuses it outright.',
+                'Cancels one of the person’s bookings; the place goes to someone else and this cannot be',
+                'undone. After `cancel_deadline_at` the cancel is refused and the person has to contact the',
+                'organization. To change the time, use reschedule_booking instead — cancelling first may',
+                'lose the place.',
             ].join(' '),
             annotations: { destructiveHint: true, openWorldHint: true },
-            inputSchema: { booking_id: uuidSchema, confirm: confirmArg },
+            inputSchema: { booking_id: bookingIdArg, confirm: confirmArg },
             outputSchema: { cancelled: z.boolean(), booking_id: z.string() },
         },
         runPersonalTool('cancel_booking', ctx, async (args: { booking_id: string; confirm?: boolean }) => {
             const booking = await loadBooking(ctx, args.booking_id);
             await confirmWrite(
                 ctx,
-                `Cancel "${booking.service_label}" on ${whenOf(ctx, booking.starts_at)}? The place goes back to the queue.`,
+                `Cancel "${booking.service_label}"${bookingDay(booking)}? The place goes to someone else.`,
                 args.confirm,
             );
             await ctx.client.request({
@@ -321,17 +383,20 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
     server.registerTool(
         'reschedule_booking',
         {
-            title: 'Move a booking',
+            title: 'Reschedule a booking',
             description: [
-                'Moves a booking to another candidate from find_slots in one call.',
-                'Cancelling and rebooking would lose the place if the new slot fills in between.',
+                'Moves one of the person’s bookings to another time of the same service in one step, keeping',
+                'the current place until the new one is secured. First call find_slots with the booking’s',
+                '`service_id` and let the person choose; then pass that candidate’s ids here.',
             ].join(' '),
             annotations: { destructiveHint: true, openWorldHint: true },
             inputSchema: {
-                booking_id: uuidSchema,
-                slot_id: uuidSchema,
-                option_id: uuidSchema.optional(),
-                time: timeOfDaySchema.optional(),
+                booking_id: bookingIdArg,
+                slot_id: candidateArg,
+                option_id: uuidSchema
+                    .optional()
+                    .describe('From the chosen candidate; leave out to keep the current option.'),
+                time: candidateTimeArg,
                 confirm: confirmArg,
             },
             outputSchema: { booking: bookingView },
@@ -356,7 +421,7 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                 });
                 await confirmWrite(
                     ctx,
-                    `Move "${booking.service_label}" from ${whenOf(ctx, booking.starts_at)} to ${whenOf(ctx, target.starts_at)}?`,
+                    `Move "${booking.service_label}" from ${describeWhen(localOf(booking.date), localOf(booking.time))} to ${describeWhen(target.date, target.time)}?`,
                     args.confirm,
                 );
                 const { data } = await ctx.client.request<BookingResource>({
@@ -384,15 +449,17 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
         {
             title: 'Join a waitlist',
             description: [
-                'Queues for a candidate that find_slots reported as full (`available: 0`).',
-                'A slot with free places is refused: book it instead.',
+                'Puts the person in the queue for a candidate that find_slots returned with `full: true`.',
+                'When a place frees up, the first in line gets an SMS or e-mail and then books it with',
+                'create_booking; nothing is booked automatically. A candidate with free places is refused',
+                '(SLOT_NOT_FULL): book it instead.',
             ].join(' '),
             annotations: { openWorldHint: true },
             inputSchema: {
-                service_id: objectIdSchema,
-                option_id: uuidSchema,
-                slot_id: uuidSchema,
-                time: timeOfDaySchema.optional(),
+                service_id: objectIdSchema.describe('The `service_id` you passed to find_slots.'),
+                option_id: candidateArg,
+                slot_id: candidateArg,
+                time: candidateTimeArg,
                 confirm: confirmArg,
             },
             outputSchema: { entry: waitlistView },
@@ -407,9 +474,19 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                 time?: string;
                 confirm?: boolean;
             }) => {
+                const service = await loadBookingService(ctx, args.service_id);
+                const candidate = await findCandidate(ctx, service, args);
+
+                if (candidate.available !== 0)
+                    throw new ApiError({
+                        status: 422,
+                        code: 'SLOT_NOT_FULL',
+                        message: 'That time still has free places.',
+                    });
+
                 await confirmWrite(
                     ctx,
-                    `Join the waitlist for this slot${args.time ? ` at ${args.time}` : ''}? You are told by SMS if a place frees up.`,
+                    `Join the waitlist for "${service.label}"${onDay(candidate.date, candidate.time)}? You get an SMS or e-mail when a place frees up.`,
                     args.confirm,
                 );
                 const { data } = await ctx.client.request<WaitlistEntry>({
@@ -424,7 +501,7 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                 });
 
                 return {
-                    summary: `You are on the waitlist for "${data.service_label}".`,
+                    summary: `On the waitlist for "${data.service_label}".`,
                     data: { entry: redactWaitlistEntry(data, { pii: ctx.config.pii }) },
                 };
             },
@@ -435,15 +512,24 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
         'leave_waitlist',
         {
             title: 'Leave a waitlist',
-            description: 'Removes a waitlist entry of the signed-in account.',
+            description: 'Takes the person off a waitlist; they are no longer told when a place frees up.',
             annotations: { destructiveHint: true, openWorldHint: true },
-            inputSchema: { waitlist_id: uuidSchema, confirm: confirmArg },
+            inputSchema: {
+                waitlist_id: uuidSchema.describe('The `id` of an entry from list_my_waitlist.'),
+                confirm: confirmArg,
+            },
             outputSchema: { left: z.boolean(), waitlist_id: z.string() },
         },
         runPersonalTool('leave_waitlist', ctx, async (args: { waitlist_id: string; confirm?: boolean }) => {
             const entry = await findWaitlistEntry(ctx, args.waitlist_id);
-            const what = entry ? `the waitlist for "${entry.service_label}"` : 'this waitlist entry';
-            await confirmWrite(ctx, `Leave ${what}? You stop being told if a place frees up.`, args.confirm);
+            const what = entry
+                ? `the waitlist for "${entry.service_label}"${onDay(localOf(entry.date), localOf(entry.time))}`
+                : 'this waitlist entry';
+            await confirmWrite(
+                ctx,
+                `Leave ${what}? You stop being told when a place frees up.`,
+                args.confirm,
+            );
             await ctx.client.request({
                 method: 'DELETE',
                 path: `/waitlist/${args.waitlist_id}`,
@@ -467,8 +553,16 @@ async function loadBooking(ctx: ToolContext, bookingId: string): Promise<Booking
     return data;
 }
 
-function whenOf(ctx: ToolContext, isoInstant: string | null): string {
-    return isoInstant ? isoAtIn(new Date(isoInstant), ctx.config.timeZone) : 'no fixed time';
+function localOf(value: unknown): string | null {
+    return typeof value === 'string' ? value : null;
+}
+
+function onDay(date: string | null, time: string | null): string {
+    return date ? ` on ${describeWhen(date, time)}` : '';
+}
+
+function bookingDay(booking: BookingResource): string {
+    return onDay(localOf(booking.date), localOf(booking.time));
 }
 
 async function loadBookingService(ctx: ToolContext, serviceId: string): Promise<ServiceResource> {
@@ -498,18 +592,31 @@ async function findCandidate(
         },
         cache: true,
     });
-    const candidate = data.items.find(
-        (item) => item.slot_id === args.slot_id && (item.time ?? undefined) === args.time,
-    );
+    const offered = data.items.filter((item) => item.slot_id === args.slot_id);
+    const candidate = offered.find((item) => (item.time ?? undefined) === args.time);
 
-    if (!candidate)
+    if (candidate) return candidate;
+
+    if (args.time === undefined && offered.some((item) => item.time))
         throw new ApiError({
-            status: 404,
-            code: 'SLOT_NOT_FOUND',
-            message: 'That candidate is not on offer any more.',
+            status: 422,
+            code: 'SLOT_TIME_REQUIRED',
+            message: 'This candidate has a start time: pass its `time`.',
         });
 
-    return candidate;
+    if (args.time !== undefined && offered.length > 0 && offered.every((item) => !item.time))
+        throw new ApiError({
+            status: 400,
+            code: 'VALIDATION_ERROR',
+            message: 'This candidate has no start time: leave `time` out.',
+            details: [{ path: 'time', message: 'Not used for this candidate' }],
+        });
+
+    throw new ApiError({
+        status: 404,
+        code: 'SLOT_NOT_FOUND',
+        message: 'That time is not on offer any more.',
+    });
 }
 
 async function findWaitlistEntry(ctx: ToolContext, waitlistId: string): Promise<WaitlistEntry | null> {
@@ -541,8 +648,8 @@ async function collectFields(
         throw new ApiError({
             status: 422,
             code: 'BOOKING_FIELDS_INVALID',
-            message: 'The form carries a field this service does not have.',
-            details: first.details,
+            message: `This service’s form has only these fields: ${fields.map((field) => field.key).join(', ')}.`,
+            details: unknown,
         });
 
     const asked = new Set(first.details.map((detail) => (detail.path ?? '').split('.')[1]));
@@ -553,7 +660,7 @@ async function collectFields(
             status: 422,
             code: 'BOOKING_FIELDS_INVALID',
             message: 'The booking form is not filled in.',
-            details: first.details,
+            details: labelled(first.details, fields),
         });
 
     const outcome = await elicit(
@@ -563,7 +670,11 @@ async function collectFields(
     );
 
     if (!outcome.accepted)
-        throw new ApiError({ status: 400, code: 'NOT_CONFIRMED', message: 'The form was not filled in.' });
+        throw new ApiError({
+            status: 400,
+            code: 'NOT_CONFIRMED',
+            message: 'The person closed the form, so nothing was sent.',
+        });
 
     const second = validateAnswers(fields, { ...known, ...outcome.content });
 
@@ -572,10 +683,18 @@ async function collectFields(
             status: 422,
             code: 'BOOKING_FIELDS_INVALID',
             message: 'The booking form is still not valid.',
-            details: second.details,
+            details: labelled(second.details, fields),
         });
 
     return second.values;
+}
+
+function labelled(details: ApiErrorDetail[], fields: FormField[]): ApiErrorDetail[] {
+    return details.map((detail) => {
+        const field = fields.find((candidate) => `fields.${candidate.key}` === detail.path);
+
+        return field ? { ...detail, message: `${detail.message} — "${field.label}"` } : detail;
+    });
 }
 
 async function collectDocuments(
@@ -593,10 +712,10 @@ async function collectDocuments(
         throw new ApiError({
             status: 422,
             code: 'BOOKING_DOCUMENTS_REQUIRED',
-            message: 'Read the documents out and pass the confirmed keys in `documents`.',
+            message: 'The person has not confirmed the documents to bring.',
             details: documents.map((document) => ({
                 path: `documents.${document.key}`,
-                message: `Confirm "${document.label}"`,
+                message: `"${document.label}" (${document.required ? 'required' : 'optional'})`,
             })),
         });
 
@@ -619,7 +738,7 @@ async function collectDocuments(
         throw new ApiError({
             status: 400,
             code: 'NOT_CONFIRMED',
-            message: 'The documents were not confirmed.',
+            message: 'The person closed the documents prompt, so nothing was sent.',
         });
 
     const answered = documents
@@ -632,7 +751,10 @@ async function collectDocuments(
             status: 422,
             code: 'BOOKING_DOCUMENTS_REQUIRED',
             message: 'Some required documents were not confirmed.',
-            details: stillMissing.map((key) => ({ path: `documents.${key}`, message: 'Not confirmed' })),
+            details: stillMissing.map((key) => ({
+                path: `documents.${key}`,
+                message: `"${documents.find((document) => document.key === key)?.label ?? key}" (required)`,
+            })),
         });
 
     return answered;
@@ -656,19 +778,32 @@ function bookingSummary(
     fields: Record<string, unknown>,
     documents: string[],
     deadline: string | null,
+    timeZone: string,
 ): string {
     const organization = service.organization;
+    const labelOf = (items: { key: string; label: string }[], key: string): string =>
+        items.find((item) => item.key === key)?.label ?? key;
     const lines = [
         `Service: ${service.label}`,
         `Option: ${candidate.option_label}`,
-        candidate.starts_at ? `When: ${candidate.starts_at}` : 'When: no fixed time (application)',
+        `When: ${describeWhen(candidate.date, candidate.time)}`,
         organization ? `Organization: ${organization.main_label}` : null,
         (organization?.address ?? service.address)
             ? `Address: ${organization?.address ?? service.address}`
             : null,
-        deadline ? `Can be cancelled until: ${deadline}` : 'Cancellation deadline: none set',
-        Object.keys(fields).length > 0 ? `Form fields sent: ${Object.keys(fields).join(', ')}` : null,
-        documents.length > 0 ? `Documents confirmed: ${documents.join(', ')}` : null,
+        deadline === null
+            ? 'Cancellation deadline: none'
+            : isPast(deadline)
+              ? 'Cannot be cancelled once booked: the cancellation deadline has passed'
+              : `Can be cancelled until: ${humanInstant(deadline, timeZone)}`,
+        Object.keys(fields).length > 0
+            ? `Form answers sent: ${Object.keys(fields)
+                  .map((key) => labelOf(service.form_fields ?? [], key))
+                  .join(', ')}`
+            : null,
+        documents.length > 0
+            ? `Documents to bring: ${documents.map((key) => labelOf(service.required_documents ?? [], key)).join(', ')}`
+            : null,
     ].filter((line): line is string => line !== null);
 
     return `Book this?\n${lines.join('\n')}`;

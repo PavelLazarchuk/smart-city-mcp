@@ -58,7 +58,7 @@ startup: an invalid value stops the process with a message on stderr rather than
 
 **Public tools**, available without a session: `search_services`, `find_services_nearby`,
 `get_service`, `find_slots`, `list_organizations`, `get_organization`, `list_news`,
-`get_info_sections`.
+`list_info_sections`.
 
 **Personal tools**, listed from the start and refused with `UNAUTHENTICATED` (next step: `auth_start`)
 until a session exists: `whoami`, `logout`, `list_my_bookings`, `get_booking`, `list_my_waitlist`.
@@ -67,7 +67,9 @@ Desktop) never re-read the tool list, and a tool that appears on sign-in would n
 until the app restarts.
 
 **Writing tools**, only when `SMART_CITY_MCP_WRITE=true`: `create_booking`, `confirm_booking`,
-`cancel_booking`, `reschedule_booking`, `join_waitlist`, `leave_waitlist`, `set_contact_email`.
+`cancel_booking`, `reschedule_booking`, `join_waitlist`, `leave_waitlist`, `update_contact_details`.
+A tool description never names a tool that is not registered, so the read-only surface does not point
+the model at writes it cannot make.
 
 **Resources**: `smartcity://service/{id}`, `smartcity://service/{id}/form`,
 `smartcity://organization/{id}`, `smartcity://me/bookings` (updated after every write of its own).
@@ -78,8 +80,12 @@ until the app restarts.
 
 **Signing in.** `auth_start` sends the one-time code; `auth_confirm` asks the person for it through
 MCP elicitation, so the code is typed by the human and never enters the conversation as tool
-arguments. A first sign-in also asks for a name, because a booking carries one. Clients without
-elicitation may pass `code` as an argument instead — the only way to sign in there.
+arguments. The same prompt asks for a name, which a new account needs because a booking carries one.
+Clients without elicitation pass `code` as an argument instead — the only way to sign in there. The
+server knows which case it is in, so `auth_start` answers with the exact next step ("call
+auth_confirm now" or "ask the person for the code"), and a call without a code on such a client is
+`CODE_REQUIRED`, not a wrong code. An account still without a name after sign-in is reported, with
+`update_contact_details` as the way to set one.
 
 **Refreshing.** Reusing a refresh token revokes the whole session family on this API, and a model
 happily runs four tools at once. Refreshes therefore go through a single-flight slot: concurrent
@@ -101,7 +107,10 @@ that is the way into the waitlist, and at most six candidates come back alongsid
 **Booking.** The form is validated against the service's own `form_fields` before anything is sent,
 so a wrong answer costs a question and not a booking attempt. Required fields are asked of the
 person; required documents are read out and only confirmed keys are sent. Every write is confirmed
-by the person, and the idempotency key is derived:
+by the person: through elicitation where the client has it, otherwise as `CONFIRMATION_REQUIRED`
+carrying the summary to show, after which the model calls again with `confirm: true`. A booking of a
+service with `requires_confirmation` comes back `pending`; the person can confirm it with
+`confirm_booking`. The idempotency key is derived:
 
 ```
 Idempotency-Key = sha256(user_id, service_id, option_id, slot_id, time ?? '')
@@ -116,8 +125,12 @@ re-sent with that dead booking's id as salt — a fresh key that is still derive
 step to take. Those next steps are written into the text block, not only into `structuredContent`:
 an error result cannot match the tool's declared `outputSchema`, so a client that validates
 structured content would otherwise drop them — `SLOT_FULL` points at `join_waitlist`, `OTP_INVALID` says to ask for the code again
-rather than send a new one. The contract test walks the OpenAPI document and fails when a reachable
-code has neither a row nor an explicit "cannot happen here".
+rather than send a new one. A refusal raised by this server itself keeps its own message, since it
+already says exactly what happened (the confirmation summary, the missing phone number). A wait time
+is passed on only for a `429`: the API sends `RateLimit-Reset` with every answer, and reading it off
+a wrong code or a full slot would tell the model to pause for nothing. The session's own call budget
+runs out as `TOOL_BUDGET_EXHAUSTED`, which no wait fixes. The contract test walks the OpenAPI
+document and fails when a reachable code has neither a row nor an explicit "cannot happen here".
 
 **Personal data.** Off by default: phone numbers are masked to the last four digits, form answers
 come back as keys only, and the name on a booking not at all. `SMART_CITY_MCP_PII=true` opens it up.

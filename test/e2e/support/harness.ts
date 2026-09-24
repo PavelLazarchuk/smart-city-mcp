@@ -94,3 +94,7 @@ export function structured<T = Record<string, unknown>>(result: CallToolResult):
 export function errorOf(result: CallToolResult): { code: string; next_steps: string[] } {
     return (result.structuredContent as { error: { code: string; next_steps: string[] } }).error;
 }
+
+export function textOf(result: CallToolResult): string {
+    return result.content.map((part) => ('text' in part ? part.text : '')).join('\n');
+}

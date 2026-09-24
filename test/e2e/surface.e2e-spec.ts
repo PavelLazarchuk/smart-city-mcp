@@ -1,4 +1,4 @@
-import { errorOf, startHarness } from './support/harness.js';
+import { errorOf, startHarness, textOf } from './support/harness.js';
 import { IDS, startStubApi, type Stub } from './support/stub-api.js';
 
 const WRITE_TOOLS = [
@@ -8,7 +8,7 @@ const WRITE_TOOLS = [
     'reschedule_booking',
     'join_waitlist',
     'leave_waitlist',
-    'set_contact_email',
+    'update_contact_details',
 ];
 
 describe('tool surface', () => {
@@ -108,7 +108,7 @@ describe('tool surface', () => {
         }
     });
 
-    it('offers categories instead of an empty list when nothing matched', async () => {
+    it('says what to ask next when nothing matched, and offers no categories it does not have', async () => {
         const harness = await startHarness({ apiUrl: stub.url });
 
         try {
@@ -117,7 +117,38 @@ describe('tool surface', () => {
 
             expect(result.isError).toBeFalsy();
             expect(data.strategy).toBe('none');
-            expect(data.hint).toMatch(/organization or the district/);
+            expect(data.hint).toMatch(/which organization they mean/);
+            expect(data.hint).not.toContain('suggested_categories');
+            expect(textOf(result)).toContain('see `hint`');
+        } finally {
+            await harness.close();
+        }
+    });
+
+    it('never points a read-only model at a tool it does not have', async () => {
+        const harness = await startHarness({ apiUrl: stub.url });
+
+        try {
+            const { tools } = await harness.client.listTools();
+            const surface = JSON.stringify([
+                harness.client.getInstructions(),
+                tools.map((tool) => [tool.title, tool.description, tool.inputSchema]),
+            ]);
+
+            for (const tool of WRITE_TOOLS) expect(surface).not.toContain(tool);
+        } finally {
+            await harness.close();
+        }
+    });
+
+    it('refuses a name and a point together instead of silently dropping the name', async () => {
+        const harness = await startHarness({ apiUrl: stub.url });
+
+        try {
+            const result = await harness.call('list_organizations', { q: 'clinic', lat: 52.5, lng: 13.4 });
+
+            expect(errorOf(result).code).toBe('VALIDATION_ERROR');
+            expect(textOf(result)).toContain('not both');
         } finally {
             await harness.close();
         }
@@ -200,7 +231,7 @@ describe('tool surface', () => {
         }
     });
 
-    it('stops at the tool budget instead of hammering the API', async () => {
+    it('stops at the tool budget, and does not dress it up as a wait', async () => {
         const harness = await startHarness({ apiUrl: stub.url, budget: 2 });
 
         try {
@@ -209,7 +240,9 @@ describe('tool surface', () => {
             const third = await harness.call('search_services', { q: 'x-ray' });
 
             expect(third.isError).toBe(true);
-            expect(JSON.stringify(third.structuredContent)).toContain('RATE_LIMITED');
+            expect(errorOf(third).code).toBe('TOOL_BUDGET_EXHAUSTED');
+            expect(textOf(third)).toContain('limit of 2 tool calls');
+            expect(textOf(third)).not.toMatch(/Wait \d+ seconds/);
         } finally {
             await harness.close();
         }

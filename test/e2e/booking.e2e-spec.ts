@@ -1,4 +1,4 @@
-import { errorOf, startHarness, structured, type ElicitResponder } from './support/harness.js';
+import { errorOf, startHarness, structured, textOf, type ElicitResponder } from './support/harness.js';
 import { IDS, startStubApi, type Stub } from './support/stub-api.js';
 
 const acceptEverything: ElicitResponder = (_message, schema) => {
@@ -221,9 +221,10 @@ describe('booking a slot', () => {
                 time: '11:00',
             });
             const prompt = asked.join('\n');
+            const day = String.raw`\w{3} \d{1,2} \w{3} \d{4}, \d{2}:\d{2}`;
 
             expect(prompt).toContain('Chest X-ray');
-            expect(prompt).toMatch(/from .*T.* to .*T/);
+            expect(prompt).toMatch(new RegExp(`from ${day} to ${day}`));
             expect(prompt).not.toContain(IDS.farSlot);
         } finally {
             await harness.close();
@@ -309,9 +310,10 @@ describe('booking a slot', () => {
             });
 
             expect(errorOf(refused).code).toBe('CONFIRMATION_REQUIRED');
-            expect(refused.content.map((part) => ('text' in part ? part.text : '')).join('')).toContain(
-                'CONFIRMATION_REQUIRED',
-            );
+            expect(textOf(refused)).toContain('CONFIRMATION_REQUIRED');
+            expect(textOf(refused)).toContain('Service: Chest X-ray');
+            expect(textOf(refused)).toContain('Documents to bring: Passport');
+            expect(textOf(refused)).toContain('confirm: true');
             expect(stub.state.bookings).toHaveLength(0);
 
             const accepted = await harness.call('create_booking', {
@@ -345,10 +347,75 @@ describe('booking a slot', () => {
                 slot_id: IDS.fullSlot,
                 time: '14:00',
             });
-            const text = refused.content.map((part) => ('text' in part ? part.text : '')).join('');
+            const text = textOf(refused);
 
             expect(text).toContain('SLOT_FULL');
             expect(text).toContain('join_waitlist');
+            expect(text).not.toMatch(/Wait \d+ seconds/);
+        } finally {
+            await harness.close();
+        }
+    });
+
+    it('asks for the time of a timed candidate instead of calling it gone', async () => {
+        const harness = await startHarness({ apiUrl: stub.url, write: true, session: {} });
+
+        try {
+            const result = await harness.call('create_booking', {
+                service_id: IDS.service,
+                option_id: IDS.option,
+                slot_id: IDS.slot,
+            });
+
+            expect(errorOf(result).code).toBe('SLOT_TIME_REQUIRED');
+            expect(textOf(result)).toContain('`time`');
+        } finally {
+            await harness.close();
+        }
+    });
+
+    it('names a missing form field the way the form does', async () => {
+        const harness = await startHarness({ apiUrl: stub.url, write: true, session: {} });
+
+        try {
+            const result = await harness.call('create_booking', {
+                service_id: IDS.service,
+                option_id: IDS.option,
+                slot_id: IDS.slot,
+                time: '10:00',
+            });
+
+            expect(errorOf(result).code).toBe('BOOKING_FIELDS_INVALID');
+            expect(textOf(result)).toContain('fields.insurance_number: Required — "Insurance number"');
+        } finally {
+            await harness.close();
+        }
+    });
+
+    it('refuses a waitlist for a time with free places before asking the person', async () => {
+        let asked = 0;
+        const harness = await startHarness({
+            apiUrl: stub.url,
+            write: true,
+            session: {},
+            elicit: (message, schema) => {
+                asked += 1;
+
+                return acceptEverything(message, schema);
+            },
+        });
+
+        try {
+            const result = await harness.call('join_waitlist', {
+                service_id: IDS.service,
+                option_id: IDS.option,
+                slot_id: IDS.slot,
+                time: '10:00',
+            });
+
+            expect(errorOf(result).code).toBe('SLOT_NOT_FULL');
+            expect(asked).toBe(0);
+            expect(stub.state.calls).not.toContain(`POST /services/${IDS.service}/waitlist`);
         } finally {
             await harness.close();
         }

@@ -42,7 +42,7 @@ live('against a live API', () => {
     });
 
     it('reads organizations, news and info sections', async () => {
-        for (const tool of ['list_organizations', 'list_news', 'get_info_sections']) {
+        for (const tool of ['list_organizations', 'list_news', 'list_info_sections']) {
             const result = await harness.call(tool, { limit: 3 });
 
             expect({ tool, error: result.isError ?? false }).toEqual({ tool, error: false });

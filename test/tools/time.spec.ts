@@ -1,6 +1,10 @@
 import {
     dateOnlyIn,
+    describeWhen,
+    humanDate,
+    humanInstant,
     instantOf,
+    isPast,
     isSupportedTimeZone,
     isoAtIn,
     localTimeOf,
@@ -106,5 +110,29 @@ describe('parts of day', () => {
         expect(withinPartOfDay('2026-10-01T17:00:00+02:00', 'afternoon')).toBe(false);
         expect(withinPartOfDay('2026-10-01T17:00:00+02:00', 'evening')).toBe(true);
         expect(withinPartOfDay('2026-10-01T23:59:00+02:00', 'evening')).toBe(true);
+    });
+});
+
+describe('times read out to a person', () => {
+    it('names the day without going through a zone', () => {
+        expect(humanDate('2026-09-25')).toBe('Fri 25 Sep 2026');
+        expect(humanDate('2027-01-03')).toBe('Sun 3 Jan 2027');
+    });
+
+    it('reads an instant on the wall clock of the zone', () => {
+        expect(humanInstant('2026-09-24T08:00:00Z', BERLIN)).toBe('Thu 24 Sep 2026, 10:00');
+    });
+
+    it('tells a timed slot from a whole day and from an application', () => {
+        expect(describeWhen('2026-09-25', '10:00')).toBe('Fri 25 Sep 2026, 10:00');
+        expect(describeWhen('2026-09-25', null)).toBe('Fri 25 Sep 2026 (whole day)');
+        expect(describeWhen(null, null)).toBe('no fixed time (the organization schedules it)');
+    });
+
+    it('counts the present moment as past', () => {
+        const now = new Date('2026-09-24T10:00:00Z');
+
+        expect(isPast('2026-09-24T10:00:00Z', now)).toBe(true);
+        expect(isPast('2026-09-24T10:00:01Z', now)).toBe(false);
     });
 });

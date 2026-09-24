@@ -60,7 +60,7 @@ describe('validateAnswers', () => {
             'Must be a number',
             'Must be true or false',
             'Must be a date (YYYY-MM-DD)',
-            'Must be one of the options',
+            'Must be one of: a, b',
         ]);
     });
 

@@ -127,7 +127,12 @@ export class ApiClient {
 
         const body = await this.readBody(response);
 
-        if (!response.ok) throw apiErrorFrom(response.status, body, this.retryAfter(response.headers));
+        if (!response.ok)
+            throw apiErrorFrom(
+                response.status,
+                body,
+                response.status === 429 ? this.retryAfter(response.headers) : undefined,
+            );
 
         const envelope = (body ?? {}) as { data?: unknown; meta?: Record<string, unknown> };
         const data = (envelope.data ?? undefined) as T;
@@ -155,7 +160,7 @@ export class ApiClient {
             throw new ApiError({
                 status: 401,
                 code: 'UNAUTHENTICATED',
-                message: 'No session. Sign in with auth_start first.',
+                message: 'Nobody is signed in.',
             });
 
         return token;
@@ -244,7 +249,7 @@ export class ApiClient {
     }
 
     private retryAfter(headers: Headers): number | undefined {
-        return numberHeader(headers, 'ratelimit-reset') ?? numberHeader(headers, 'retry-after') ?? undefined;
+        return numberHeader(headers, 'retry-after') ?? numberHeader(headers, 'ratelimit-reset') ?? undefined;
     }
 
     private observeLimits(bucket: string, headers: Headers): void {
@@ -276,7 +281,7 @@ export class ApiClient {
         throw new ApiError({
             status: 429,
             code: 'RATE_LIMITED',
-            message: 'The request budget for this window is used up.',
+            message: 'The API asks to slow down.',
             retryAfterSeconds: waitSeconds,
         });
     }

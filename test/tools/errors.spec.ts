@@ -27,11 +27,24 @@ describe('apiErrorFrom', () => {
 describe('toToolError', () => {
     it('replaces the API message with this server’s own wording', () => {
         const failure = toToolError(
-            new ApiError({ status: 422, code: 'SLOT_FULL', message: 'The slot is fully booked.' }),
+            apiErrorFrom(422, { error: { code: 'SLOT_FULL', message: 'The slot is fully booked.' } }),
         );
 
         expect(failure.message).toBe(ERROR_GUIDANCE['SLOT_FULL']?.message);
         expect(failure.next_steps.join(' ')).toContain('join_waitlist');
+    });
+
+    it('keeps the message of a refusal raised here, which already says what happened', () => {
+        const failure = toToolError(
+            new ApiError({
+                status: 400,
+                code: 'CONFIRMATION_REQUIRED',
+                message: 'Nothing was sent yet. The person has to approve this:\n\nBook this?',
+            }),
+        );
+
+        expect(failure.message).toContain('Book this?');
+        expect(failure.next_steps.join(' ')).toContain('confirm: true');
     });
 
     it('keeps the wait time so the model does not retry silently', () => {
