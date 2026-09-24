@@ -135,7 +135,7 @@ export function registerResources(server: McpServer, ctx: ToolContext): Resource
 
             return json(
                 uri,
-                (data ?? []).map(booking => redactBooking(booking, { pii: ctx.config.pii })),
+                (data ?? []).map((booking) => redactBooking(booking, { pii: ctx.config.pii })),
             );
         },
     );

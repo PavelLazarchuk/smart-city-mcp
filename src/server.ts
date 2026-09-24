@@ -101,7 +101,7 @@ async function checkApiVersion(ctx: ToolContext): Promise<void> {
     try {
         const { data } = await ctx.client.request<BuildInfo>({ path: '/health/info' });
         const major = Number.parseInt(data.version.split('.')[0] ?? '', 10);
-        const supported = SUPPORTED_API_MAJORS.some(known => known === major);
+        const supported = SUPPORTED_API_MAJORS.some((known) => known === major);
 
         if (!supported)
             ctx.logger.warn('API version outside the supported range', {
