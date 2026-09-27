@@ -1,6 +1,6 @@
 {
     "name": "smart-city-mcp",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "MCP server over the Smart City API: the client profile",
     "private": true,
     "license": "UNLICENSED",
