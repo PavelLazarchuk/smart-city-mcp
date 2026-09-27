@@ -1715,7 +1715,7 @@
                         }
                     },
                     "422": {
-                        "description": "`CATEGORY_ORGANIZATION_MISMATCH` — The category belongs to a different organization.",
+                        "description": "`CATEGORY_ORGANIZATION_MISMATCH` — The category belongs to a different organization.\n\n`SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.\n\n`SLOT_RANGE_REQUIRED` — The interval needs from and to, or working hours for its weekday.\n\n`SLOT_TYPE_NOT_ALLOWED` — This slot type is not allowed for the option service type.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1731,7 +1731,10 @@
                                                     "properties": {
                                                         "code": {
                                                             "enum": [
-                                                                "CATEGORY_ORGANIZATION_MISMATCH"
+                                                                "CATEGORY_ORGANIZATION_MISMATCH",
+                                                                "SLOT_RANGE_INVALID",
+                                                                "SLOT_RANGE_REQUIRED",
+                                                                "SLOT_TYPE_NOT_ALLOWED"
                                                             ]
                                                         }
                                                     }
@@ -3975,6 +3978,37 @@
                             }
                         }
                     },
+                    "422": {
+                        "description": "`SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.\n\n`SLOT_RANGE_REQUIRED` — The interval needs from and to, or working hours for its weekday.\n\n`SLOT_TYPE_NOT_ALLOWED` — This slot type is not allowed for the option service type.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "SLOT_RANGE_INVALID",
+                                                                "SLOT_RANGE_REQUIRED",
+                                                                "SLOT_TYPE_NOT_ALLOWED"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
                     "429": {
                         "description": "`RATE_LIMITED` — Too many requests. Please try again later.",
                         "content": {
@@ -4202,6 +4236,35 @@
                                                                 "NOT_FOUND",
                                                                 "OPTION_NOT_FOUND",
                                                                 "SERVICE_NOT_FOUND"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "`SLOT_TYPE_NOT_ALLOWED` — This slot type is not allowed for the option service type.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "SLOT_TYPE_NOT_ALLOWED"
                                                             ]
                                                         }
                                                     }
@@ -4665,6 +4728,37 @@
                             }
                         }
                     },
+                    "422": {
+                        "description": "`SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.\n\n`SLOT_RANGE_REQUIRED` — The interval needs from and to, or working hours for its weekday.\n\n`SLOT_TYPE_NOT_ALLOWED` — This slot type is not allowed for the option service type.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "SLOT_RANGE_INVALID",
+                                                                "SLOT_RANGE_REQUIRED",
+                                                                "SLOT_TYPE_NOT_ALLOWED"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
                     "429": {
                         "description": "`RATE_LIMITED` — Too many requests. Please try again later.",
                         "content": {
@@ -4917,6 +5011,37 @@
                                                         "code": {
                                                             "enum": [
                                                                 "CONFLICT"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "`SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.\n\n`SLOT_RANGE_REQUIRED` — The interval needs from and to, or working hours for its weekday.\n\n`SLOT_TYPE_NOT_ALLOWED` — This slot type is not allowed for the option service type.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "SLOT_RANGE_INVALID",
+                                                                "SLOT_RANGE_REQUIRED",
+                                                                "SLOT_TYPE_NOT_ALLOWED"
                                                             ]
                                                         }
                                                     }
@@ -5205,7 +5330,7 @@
                         }
                     },
                     "422": {
-                        "description": "`SLOT_NOT_DATED` — This slot type has no date.\n\n`SLOT_NOT_LIMITED` — This slot type has no capacity limit.\n\n`SLOT_NOT_TIMED` — This slot type has no time entries.",
+                        "description": "`SLOT_NOT_DATED` — This slot type has no date.\n\n`SLOT_NOT_LIMITED` — This slot type has no capacity limit.\n\n`SLOT_NOT_RANGED` — This slot type has no bookable interval.\n\n`SLOT_NOT_TIMED` — This slot type has no time entries.\n\n`SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.\n\n`SLOT_RANGE_REQUIRED` — The interval needs from and to, or working hours for its weekday.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -5223,7 +5348,10 @@
                                                             "enum": [
                                                                 "SLOT_NOT_DATED",
                                                                 "SLOT_NOT_LIMITED",
-                                                                "SLOT_NOT_TIMED"
+                                                                "SLOT_NOT_RANGED",
+                                                                "SLOT_NOT_TIMED",
+                                                                "SLOT_RANGE_INVALID",
+                                                                "SLOT_RANGE_REQUIRED"
                                                             ]
                                                         }
                                                     }
@@ -6358,7 +6486,7 @@
                         }
                     },
                     "422": {
-                        "description": "`BOOKING_DOCUMENTS_REQUIRED` — Required documents were not confirmed.\n\n`BOOKING_FIELDS_INVALID` — The booking form is invalid.\n\n`BOOKING_LEAD_TIME` — The slot starts too soon to be booked.\n\n`BOOKING_LIMIT_REACHED` — You already have the maximum number of active bookings for this service.\n\n`BOOKING_TOO_FAR_AHEAD` — The slot is too far ahead to be booked.\n\n`CLIENT_ACCOUNT_REQUIRED` — This phone number belongs to a staff account. Book on behalf of clients only.\n\n`IDEMPOTENCY_KEY_REUSED` — This Idempotency-Key was already used for a different request.\n\n`OPTION_DISABLED` — This service option is disabled.\n\n`ORGANIZATION_CLOSED` — The organization is temporarily closed.\n\n`PHONE_COUNTRY_NOT_SUPPORTED` — The phone number must belong to the supported country.\n\n`SERVICE_NOT_PUBLISHED` — The service is not published.\n\n`SLOT_EXPIRED` — The slot date has passed.\n\n`SLOT_FULL` — The slot is fully booked.\n\n`SLOT_NOT_BOOKABLE` — This slot type cannot be booked.\n\n`SLOT_TIME_REQUIRED` — A time is required for this slot.",
+                        "description": "`BOOKING_ADDRESS_REQUIRED` — An address is required for this booking.\n\n`BOOKING_DOCUMENTS_REQUIRED` — Required documents were not confirmed.\n\n`BOOKING_FIELDS_INVALID` — The booking form is invalid.\n\n`BOOKING_LEAD_TIME` — The slot starts too soon to be booked.\n\n`BOOKING_LIMIT_REACHED` — You already have the maximum number of active bookings for this service.\n\n`BOOKING_PHONE_REQUIRED` — A phone number is required for a call-back request.\n\n`BOOKING_TOO_FAR_AHEAD` — The slot is too far ahead to be booked.\n\n`CLIENT_ACCOUNT_REQUIRED` — This phone number belongs to a staff account. Book on behalf of clients only.\n\n`IDEMPOTENCY_KEY_REUSED` — This Idempotency-Key was already used for a different request.\n\n`OPTION_DISABLED` — This service option is disabled.\n\n`ORGANIZATION_CLOSED` — The organization is temporarily closed.\n\n`PHONE_COUNTRY_NOT_SUPPORTED` — The phone number must belong to the supported country.\n\n`SERVICE_NOT_PUBLISHED` — The service is not published.\n\n`SLOT_EXPIRED` — The slot date has passed.\n\n`SLOT_FULL` — The slot is fully booked.\n\n`SLOT_NOT_BOOKABLE` — This slot type cannot be booked.\n\n`SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.\n\n`SLOT_TIME_REQUIRED` — A time is required for this slot.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -6374,10 +6502,12 @@
                                                     "properties": {
                                                         "code": {
                                                             "enum": [
+                                                                "BOOKING_ADDRESS_REQUIRED",
                                                                 "BOOKING_DOCUMENTS_REQUIRED",
                                                                 "BOOKING_FIELDS_INVALID",
                                                                 "BOOKING_LEAD_TIME",
                                                                 "BOOKING_LIMIT_REACHED",
+                                                                "BOOKING_PHONE_REQUIRED",
                                                                 "BOOKING_TOO_FAR_AHEAD",
                                                                 "CLIENT_ACCOUNT_REQUIRED",
                                                                 "IDEMPOTENCY_KEY_REUSED",
@@ -6388,6 +6518,7 @@
                                                                 "SLOT_EXPIRED",
                                                                 "SLOT_FULL",
                                                                 "SLOT_NOT_BOOKABLE",
+                                                                "SLOT_RANGE_INVALID",
                                                                 "SLOT_TIME_REQUIRED"
                                                             ]
                                                         }
@@ -7211,7 +7342,7 @@
                         }
                     },
                     "422": {
-                        "description": "`OPTION_DISABLED` — This service option is disabled.\n\n`ORGANIZATION_CLOSED` — The organization is temporarily closed.\n\n`SERVICE_NOT_PUBLISHED` — The service is not published.\n\n`SLOT_EXPIRED` — The slot date has passed.\n\n`SLOT_NOT_BOOKABLE` — This slot type cannot be booked.\n\n`SLOT_NOT_FULL` — The slot still has free capacity. Book it instead of joining the waitlist.\n\n`SLOT_TIME_REQUIRED` — A time is required for this slot.",
+                        "description": "`OPTION_DISABLED` — This service option is disabled.\n\n`ORGANIZATION_CLOSED` — The organization is temporarily closed.\n\n`SERVICE_NOT_PUBLISHED` — The service is not published.\n\n`SLOT_EXPIRED` — The slot date has passed.\n\n`SLOT_NOT_BOOKABLE` — This slot type cannot be booked.\n\n`SLOT_NOT_FULL` — The slot still has free capacity. Book it instead of joining the waitlist.\n\n`SLOT_TIME_REQUIRED` — A time is required for this slot.\n\n`WAITLIST_NOT_SUPPORTED` — This slot type has no waitlist.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -7233,7 +7364,8 @@
                                                                 "SLOT_EXPIRED",
                                                                 "SLOT_NOT_BOOKABLE",
                                                                 "SLOT_NOT_FULL",
-                                                                "SLOT_TIME_REQUIRED"
+                                                                "SLOT_TIME_REQUIRED",
+                                                                "WAITLIST_NOT_SUPPORTED"
                                                             ]
                                                         }
                                                     }
@@ -18748,7 +18880,10 @@
                                 "date_time",
                                 "date",
                                 "apply",
-                                "delivery",
+                                "time_range",
+                                "callback",
+                                "pickup",
+                                "courier",
                                 "paycard"
                             ]
                         }
@@ -21686,7 +21821,7 @@
                         }
                     },
                     "422": {
-                        "description": "`BOOKING_CANCEL_DEADLINE_PASSED` — The cancellation deadline for this booking has passed.\n\n`BOOKING_LEAD_TIME` — The slot starts too soon to be booked.\n\n`BOOKING_NOT_ACTIVE` — The booking is no longer active.\n\n`BOOKING_TOO_FAR_AHEAD` — The slot is too far ahead to be booked.\n\n`OPTION_DISABLED` — This service option is disabled.\n\n`SLOT_EXPIRED` — The slot date has passed.\n\n`SLOT_FULL` — The slot is fully booked.\n\n`SLOT_NOT_BOOKABLE` — This slot type cannot be booked.\n\n`SLOT_TIME_REQUIRED` — A time is required for this slot.",
+                        "description": "`BOOKING_ADDRESS_REQUIRED` — An address is required for this booking.\n\n`BOOKING_CANCEL_DEADLINE_PASSED` — The cancellation deadline for this booking has passed.\n\n`BOOKING_LEAD_TIME` — The slot starts too soon to be booked.\n\n`BOOKING_NOT_ACTIVE` — The booking is no longer active.\n\n`BOOKING_TOO_FAR_AHEAD` — The slot is too far ahead to be booked.\n\n`OPTION_DISABLED` — This service option is disabled.\n\n`SLOT_EXPIRED` — The slot date has passed.\n\n`SLOT_FULL` — The slot is fully booked.\n\n`SLOT_NOT_BOOKABLE` — This slot type cannot be booked.\n\n`SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.\n\n`SLOT_TIME_REQUIRED` — A time is required for this slot.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -21702,6 +21837,7 @@
                                                     "properties": {
                                                         "code": {
                                                             "enum": [
+                                                                "BOOKING_ADDRESS_REQUIRED",
                                                                 "BOOKING_CANCEL_DEADLINE_PASSED",
                                                                 "BOOKING_LEAD_TIME",
                                                                 "BOOKING_NOT_ACTIVE",
@@ -21710,6 +21846,7 @@
                                                                 "SLOT_EXPIRED",
                                                                 "SLOT_FULL",
                                                                 "SLOT_NOT_BOOKABLE",
+                                                                "SLOT_RANGE_INVALID",
                                                                 "SLOT_TIME_REQUIRED"
                                                             ]
                                                         }
@@ -24478,6 +24615,7 @@
                                 "booking.rescheduled",
                                 "booking.status_changed",
                                 "booking.reminder",
+                                "booking.callback_due",
                                 "waitlist.slot_available",
                                 "webhook.test"
                             ]
@@ -25363,7 +25501,8 @@
                                     "enum": [
                                         "service_apply",
                                         "service_payment",
-                                        "service_delivery"
+                                        "service_delivery",
+                                        "service_visit"
                                     ]
                                 },
                                 "enabled": {
@@ -25419,6 +25558,60 @@
                                         "required": [
                                             "day",
                                             "time"
+                                        ]
+                                    }
+                                },
+                                "recurrent_ranges": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "day": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "sunday",
+                                                    "monday",
+                                                    "tuesday",
+                                                    "wednesday",
+                                                    "thursday",
+                                                    "friday",
+                                                    "saturday"
+                                                ]
+                                            },
+                                            "from": {
+                                                "type": "string"
+                                            },
+                                            "to": {
+                                                "type": "string"
+                                            },
+                                            "resources": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "step_minutes": {
+                                                "type": "integer",
+                                                "minimum": -9007199254740991,
+                                                "maximum": 9007199254740991
+                                            },
+                                            "min_minutes": {
+                                                "type": "integer",
+                                                "minimum": -9007199254740991,
+                                                "maximum": 9007199254740991
+                                            },
+                                            "max_minutes": {
+                                                "type": "integer",
+                                                "minimum": -9007199254740991,
+                                                "maximum": 9007199254740991,
+                                                "default": null,
+                                                "nullable": true
+                                            }
+                                        },
+                                        "required": [
+                                            "day",
+                                            "resources",
+                                            "max_minutes"
                                         ]
                                     }
                                 },
@@ -25650,7 +25843,220 @@
                                                     "child_type": {
                                                         "type": "string",
                                                         "enum": [
-                                                            "delivery"
+                                                            "time_range"
+                                                        ]
+                                                    },
+                                                    "value": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "date": {
+                                                                "type": "string"
+                                                            },
+                                                            "resource": {
+                                                                "type": "string"
+                                                            },
+                                                            "from": {
+                                                                "type": "string"
+                                                            },
+                                                            "to": {
+                                                                "type": "string"
+                                                            },
+                                                            "step_minutes": {
+                                                                "type": "integer",
+                                                                "minimum": -9007199254740991,
+                                                                "maximum": 9007199254740991
+                                                            },
+                                                            "min_minutes": {
+                                                                "type": "integer",
+                                                                "minimum": -9007199254740991,
+                                                                "maximum": 9007199254740991
+                                                            },
+                                                            "max_minutes": {
+                                                                "type": "integer",
+                                                                "minimum": -9007199254740991,
+                                                                "maximum": 9007199254740991,
+                                                                "default": null,
+                                                                "nullable": true
+                                                            },
+                                                            "booked_count": {
+                                                                "default": 0,
+                                                                "type": "integer",
+                                                                "minimum": 0,
+                                                                "maximum": 9007199254740991
+                                                            },
+                                                            "bookings": {
+                                                                "default": [],
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "status": {
+                                                                            "type": "string",
+                                                                            "enum": [
+                                                                                "reserved"
+                                                                            ]
+                                                                        }
+                                                                    },
+                                                                    "required": [
+                                                                        "status"
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "date",
+                                                            "from",
+                                                            "to",
+                                                            "step_minutes",
+                                                            "min_minutes",
+                                                            "max_minutes",
+                                                            "booked_count"
+                                                        ]
+                                                    }
+                                                },
+                                                "required": [
+                                                    "id",
+                                                    "label",
+                                                    "child_type",
+                                                    "value"
+                                                ]
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "label": {
+                                                        "type": "string"
+                                                    },
+                                                    "child_type": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "callback"
+                                                        ]
+                                                    },
+                                                    "value": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "date": {
+                                                                "type": "string"
+                                                            },
+                                                            "time": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "time": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "to": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "limit": {
+                                                                            "type": "integer",
+                                                                            "minimum": 0,
+                                                                            "maximum": 9007199254740991,
+                                                                            "default": null,
+                                                                            "nullable": true
+                                                                        },
+                                                                        "booked_count": {
+                                                                            "default": 0,
+                                                                            "type": "integer",
+                                                                            "minimum": 0,
+                                                                            "maximum": 9007199254740991
+                                                                        },
+                                                                        "bookings": {
+                                                                            "default": [],
+                                                                            "type": "array",
+                                                                            "items": {
+                                                                                "type": "object",
+                                                                                "properties": {
+                                                                                    "status": {
+                                                                                        "type": "string",
+                                                                                        "enum": [
+                                                                                            "reserved"
+                                                                                        ]
+                                                                                    }
+                                                                                },
+                                                                                "required": [
+                                                                                    "status"
+                                                                                ]
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    "required": [
+                                                                        "time",
+                                                                        "to",
+                                                                        "limit",
+                                                                        "booked_count"
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "date",
+                                                            "time"
+                                                        ]
+                                                    }
+                                                },
+                                                "required": [
+                                                    "id",
+                                                    "label",
+                                                    "child_type",
+                                                    "value"
+                                                ]
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "label": {
+                                                        "type": "string"
+                                                    },
+                                                    "child_type": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "pickup"
+                                                        ]
+                                                    },
+                                                    "value": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "description": {
+                                                                "type": "string"
+                                                            },
+                                                            "link": {
+                                                                "type": "string"
+                                                            },
+                                                            "price": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "required": [
+                                                    "id",
+                                                    "label",
+                                                    "child_type",
+                                                    "value"
+                                                ]
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "label": {
+                                                        "type": "string"
+                                                    },
+                                                    "child_type": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "courier"
                                                         ]
                                                     },
                                                     "value": {
@@ -25859,7 +26265,8 @@
                                     "enum": [
                                         "service_apply",
                                         "service_payment",
-                                        "service_delivery"
+                                        "service_delivery",
+                                        "service_visit"
                                     ]
                                 },
                                 "enabled": {
@@ -25882,7 +26289,10 @@
                                                     "date_time",
                                                     "date",
                                                     "apply",
-                                                    "delivery",
+                                                    "time_range",
+                                                    "callback",
+                                                    "pickup",
+                                                    "courier",
                                                     "paycard"
                                                 ]
                                             },
@@ -25933,6 +26343,9 @@
                                                             "minimum": 0,
                                                             "maximum": 9007199254740991,
                                                             "nullable": true
+                                                        },
+                                                        "to": {
+                                                            "type": "string"
                                                         }
                                                     },
                                                     "required": [
@@ -25942,6 +26355,59 @@
                                                         "available"
                                                     ]
                                                 }
+                                            },
+                                            "range": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "from": {
+                                                        "type": "string"
+                                                    },
+                                                    "to": {
+                                                        "type": "string"
+                                                    },
+                                                    "step_minutes": {
+                                                        "type": "integer",
+                                                        "minimum": -9007199254740991,
+                                                        "maximum": 9007199254740991
+                                                    },
+                                                    "min_minutes": {
+                                                        "type": "integer",
+                                                        "minimum": -9007199254740991,
+                                                        "maximum": 9007199254740991
+                                                    },
+                                                    "max_minutes": {
+                                                        "type": "integer",
+                                                        "minimum": -9007199254740991,
+                                                        "maximum": 9007199254740991,
+                                                        "nullable": true
+                                                    },
+                                                    "free": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "from": {
+                                                                    "type": "string"
+                                                                },
+                                                                "to": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "from",
+                                                                "to"
+                                                            ]
+                                                        }
+                                                    }
+                                                },
+                                                "required": [
+                                                    "from",
+                                                    "to",
+                                                    "step_minutes",
+                                                    "min_minutes",
+                                                    "max_minutes",
+                                                    "free"
+                                                ]
                                             }
                                         },
                                         "required": [
@@ -26013,7 +26479,8 @@
                                     "enum": [
                                         "service_apply",
                                         "service_payment",
-                                        "service_delivery"
+                                        "service_delivery",
+                                        "service_visit"
                                     ]
                                 },
                                 "slot_id": {
@@ -26028,7 +26495,10 @@
                                         "date_time",
                                         "date",
                                         "apply",
-                                        "delivery",
+                                        "time_range",
+                                        "callback",
+                                        "pickup",
+                                        "courier",
                                         "paycard"
                                     ]
                                 },
@@ -26072,6 +26542,32 @@
                                     "minimum": 0,
                                     "maximum": 9007199254740991,
                                     "nullable": true
+                                },
+                                "range": {
+                                    "type": "object",
+                                    "properties": {
+                                        "step_minutes": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 1440
+                                        },
+                                        "min_minutes": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 1440
+                                        },
+                                        "max_minutes": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 1440,
+                                            "nullable": true
+                                        }
+                                    },
+                                    "required": [
+                                        "step_minutes",
+                                        "min_minutes",
+                                        "max_minutes"
+                                    ]
                                 }
                             },
                             "required": [
@@ -26267,7 +26763,8 @@
                                     "enum": [
                                         "service_apply",
                                         "service_payment",
-                                        "service_delivery"
+                                        "service_delivery",
+                                        "service_visit"
                                     ]
                                 },
                                 "enabled": {
@@ -26323,6 +26820,66 @@
                                         },
                                         "required": [
                                             "day"
+                                        ]
+                                    },
+                                    "nullable": true
+                                },
+                                "recurrent_ranges": {
+                                    "maxItems": 50,
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "day": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "sunday",
+                                                    "monday",
+                                                    "tuesday",
+                                                    "wednesday",
+                                                    "thursday",
+                                                    "friday",
+                                                    "saturday"
+                                                ]
+                                            },
+                                            "from": {
+                                                "type": "string",
+                                                "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                                            },
+                                            "to": {
+                                                "type": "string",
+                                                "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                                            },
+                                            "resources": {
+                                                "minItems": 1,
+                                                "maxItems": 50,
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string",
+                                                    "minLength": 1,
+                                                    "maxLength": 100
+                                                }
+                                            },
+                                            "step_minutes": {
+                                                "type": "integer",
+                                                "minimum": 1,
+                                                "maximum": 1440
+                                            },
+                                            "min_minutes": {
+                                                "type": "integer",
+                                                "minimum": 1,
+                                                "maximum": 1440
+                                            },
+                                            "max_minutes": {
+                                                "type": "integer",
+                                                "minimum": 1,
+                                                "maximum": 1440,
+                                                "nullable": true
+                                            }
+                                        },
+                                        "required": [
+                                            "day",
+                                            "resources"
                                         ]
                                     },
                                     "nullable": true
@@ -26489,7 +27046,178 @@
                                                     "child_type": {
                                                         "type": "string",
                                                         "enum": [
-                                                            "delivery"
+                                                            "time_range"
+                                                        ]
+                                                    },
+                                                    "value": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "date": {
+                                                                "type": "string",
+                                                                "format": "date",
+                                                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                                                            },
+                                                            "from": {
+                                                                "type": "string",
+                                                                "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                                                            },
+                                                            "to": {
+                                                                "type": "string",
+                                                                "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                                                            },
+                                                            "step_minutes": {
+                                                                "type": "integer",
+                                                                "minimum": 1,
+                                                                "maximum": 1440
+                                                            },
+                                                            "min_minutes": {
+                                                                "type": "integer",
+                                                                "minimum": 1,
+                                                                "maximum": 1440
+                                                            },
+                                                            "max_minutes": {
+                                                                "type": "integer",
+                                                                "minimum": 1,
+                                                                "maximum": 1440,
+                                                                "nullable": true
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "date"
+                                                        ]
+                                                    }
+                                                },
+                                                "required": [
+                                                    "child_type",
+                                                    "value"
+                                                ]
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "format": "uuid",
+                                                        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                                                    },
+                                                    "label": {
+                                                        "type": "string",
+                                                        "minLength": 1,
+                                                        "maxLength": 200
+                                                    },
+                                                    "child_type": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "callback"
+                                                        ]
+                                                    },
+                                                    "value": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "date": {
+                                                                "type": "string",
+                                                                "format": "date",
+                                                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                                                            },
+                                                            "time": {
+                                                                "maxItems": 200,
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "time": {
+                                                                            "type": "string",
+                                                                            "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                                                                        },
+                                                                        "to": {
+                                                                            "type": "string",
+                                                                            "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                                                                        },
+                                                                        "limit": {
+                                                                            "type": "integer",
+                                                                            "minimum": 0,
+                                                                            "maximum": 9007199254740991,
+                                                                            "nullable": true
+                                                                        }
+                                                                    },
+                                                                    "required": [
+                                                                        "time",
+                                                                        "to"
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "date",
+                                                            "time"
+                                                        ]
+                                                    }
+                                                },
+                                                "required": [
+                                                    "child_type",
+                                                    "value"
+                                                ]
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "format": "uuid",
+                                                        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                                                    },
+                                                    "label": {
+                                                        "type": "string",
+                                                        "minLength": 1,
+                                                        "maxLength": 200
+                                                    },
+                                                    "child_type": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "pickup"
+                                                        ]
+                                                    },
+                                                    "value": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "description": {
+                                                                "type": "string",
+                                                                "maxLength": 5000
+                                                            },
+                                                            "link": {
+                                                                "type": "string",
+                                                                "maxLength": 2048,
+                                                                "format": "uri"
+                                                            },
+                                                            "price": {
+                                                                "type": "string",
+                                                                "maxLength": 5000
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "required": [
+                                                    "child_type",
+                                                    "value"
+                                                ]
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "format": "uuid",
+                                                        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                                                    },
+                                                    "label": {
+                                                        "type": "string",
+                                                        "minLength": 1,
+                                                        "maxLength": 200
+                                                    },
+                                                    "child_type": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "courier"
                                                         ]
                                                     },
                                                     "value": {
@@ -27152,7 +27880,8 @@
                                     "enum": [
                                         "service_apply",
                                         "service_payment",
-                                        "service_delivery"
+                                        "service_delivery",
+                                        "service_visit"
                                     ]
                                 },
                                 "enabled": {
@@ -27208,6 +27937,60 @@
                                         "required": [
                                             "day",
                                             "time"
+                                        ]
+                                    }
+                                },
+                                "recurrent_ranges": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "day": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "sunday",
+                                                    "monday",
+                                                    "tuesday",
+                                                    "wednesday",
+                                                    "thursday",
+                                                    "friday",
+                                                    "saturday"
+                                                ]
+                                            },
+                                            "from": {
+                                                "type": "string"
+                                            },
+                                            "to": {
+                                                "type": "string"
+                                            },
+                                            "resources": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "step_minutes": {
+                                                "type": "integer",
+                                                "minimum": -9007199254740991,
+                                                "maximum": 9007199254740991
+                                            },
+                                            "min_minutes": {
+                                                "type": "integer",
+                                                "minimum": -9007199254740991,
+                                                "maximum": 9007199254740991
+                                            },
+                                            "max_minutes": {
+                                                "type": "integer",
+                                                "minimum": -9007199254740991,
+                                                "maximum": 9007199254740991,
+                                                "default": null,
+                                                "nullable": true
+                                            }
+                                        },
+                                        "required": [
+                                            "day",
+                                            "resources",
+                                            "max_minutes"
                                         ]
                                     }
                                 },
@@ -27282,6 +28065,27 @@
                                                                                             "info": {
                                                                                                 "default": "",
                                                                                                 "type": "string"
+                                                                                            },
+                                                                                            "time": {
+                                                                                                "default": null,
+                                                                                                "type": [
+                                                                                                    "string",
+                                                                                                    "null"
+                                                                                                ]
+                                                                                            },
+                                                                                            "end_time": {
+                                                                                                "default": null,
+                                                                                                "type": [
+                                                                                                    "string",
+                                                                                                    "null"
+                                                                                                ]
+                                                                                            },
+                                                                                            "address": {
+                                                                                                "default": null,
+                                                                                                "type": [
+                                                                                                    "string",
+                                                                                                    "null"
+                                                                                                ]
                                                                                             },
                                                                                             "status": {
                                                                                                 "default": "confirmed",
@@ -27402,6 +28206,27 @@
                                                                                     "default": "",
                                                                                     "type": "string"
                                                                                 },
+                                                                                "time": {
+                                                                                    "default": null,
+                                                                                    "type": [
+                                                                                        "string",
+                                                                                        "null"
+                                                                                    ]
+                                                                                },
+                                                                                "end_time": {
+                                                                                    "default": null,
+                                                                                    "type": [
+                                                                                        "string",
+                                                                                        "null"
+                                                                                    ]
+                                                                                },
+                                                                                "address": {
+                                                                                    "default": null,
+                                                                                    "type": [
+                                                                                        "string",
+                                                                                        "null"
+                                                                                    ]
+                                                                                },
                                                                                 "status": {
                                                                                     "default": "confirmed",
                                                                                     "type": "string"
@@ -27511,6 +28336,27 @@
                                                                                     "default": "",
                                                                                     "type": "string"
                                                                                 },
+                                                                                "time": {
+                                                                                    "default": null,
+                                                                                    "type": [
+                                                                                        "string",
+                                                                                        "null"
+                                                                                    ]
+                                                                                },
+                                                                                "end_time": {
+                                                                                    "default": null,
+                                                                                    "type": [
+                                                                                        "string",
+                                                                                        "null"
+                                                                                    ]
+                                                                                },
+                                                                                "address": {
+                                                                                    "default": null,
+                                                                                    "type": [
+                                                                                        "string",
+                                                                                        "null"
+                                                                                    ]
+                                                                                },
                                                                                 "status": {
                                                                                     "default": "confirmed",
                                                                                     "type": "string"
@@ -27574,7 +28420,352 @@
                                                     "child_type": {
                                                         "type": "string",
                                                         "enum": [
-                                                            "delivery"
+                                                            "time_range"
+                                                        ]
+                                                    },
+                                                    "value": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "date": {
+                                                                "type": "string"
+                                                            },
+                                                            "resource": {
+                                                                "type": "string"
+                                                            },
+                                                            "from": {
+                                                                "type": "string"
+                                                            },
+                                                            "to": {
+                                                                "type": "string"
+                                                            },
+                                                            "step_minutes": {
+                                                                "type": "integer",
+                                                                "minimum": -9007199254740991,
+                                                                "maximum": 9007199254740991
+                                                            },
+                                                            "min_minutes": {
+                                                                "type": "integer",
+                                                                "minimum": -9007199254740991,
+                                                                "maximum": 9007199254740991
+                                                            },
+                                                            "max_minutes": {
+                                                                "type": "integer",
+                                                                "minimum": -9007199254740991,
+                                                                "maximum": 9007199254740991,
+                                                                "default": null,
+                                                                "nullable": true
+                                                            },
+                                                            "booked_count": {
+                                                                "default": 0,
+                                                                "type": "integer",
+                                                                "minimum": 0,
+                                                                "maximum": 9007199254740991
+                                                            },
+                                                            "bookings": {
+                                                                "default": [],
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "id": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "user_id": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "person": {
+                                                                                    "default": "",
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "phone": {
+                                                                                    "default": "",
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "info": {
+                                                                                    "default": "",
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "time": {
+                                                                                    "default": null,
+                                                                                    "type": [
+                                                                                        "string",
+                                                                                        "null"
+                                                                                    ]
+                                                                                },
+                                                                                "end_time": {
+                                                                                    "default": null,
+                                                                                    "type": [
+                                                                                        "string",
+                                                                                        "null"
+                                                                                    ]
+                                                                                },
+                                                                                "address": {
+                                                                                    "default": null,
+                                                                                    "type": [
+                                                                                        "string",
+                                                                                        "null"
+                                                                                    ]
+                                                                                },
+                                                                                "status": {
+                                                                                    "default": "confirmed",
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "created_at": {
+                                                                                    "type": "string",
+                                                                                    "format": "date-time",
+                                                                                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                                                                                }
+                                                                            },
+                                                                            "required": [
+                                                                                "id",
+                                                                                "user_id",
+                                                                                "person",
+                                                                                "phone",
+                                                                                "info",
+                                                                                "status",
+                                                                                "created_at"
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "status": {
+                                                                                    "type": "string",
+                                                                                    "enum": [
+                                                                                        "reserved"
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            "required": [
+                                                                                "status"
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "date",
+                                                            "from",
+                                                            "to",
+                                                            "step_minutes",
+                                                            "min_minutes",
+                                                            "max_minutes",
+                                                            "booked_count"
+                                                        ]
+                                                    }
+                                                },
+                                                "required": [
+                                                    "id",
+                                                    "label",
+                                                    "child_type",
+                                                    "value"
+                                                ]
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "label": {
+                                                        "type": "string"
+                                                    },
+                                                    "child_type": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "callback"
+                                                        ]
+                                                    },
+                                                    "value": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "date": {
+                                                                "type": "string"
+                                                            },
+                                                            "time": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "time": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "to": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "limit": {
+                                                                            "type": "integer",
+                                                                            "minimum": 0,
+                                                                            "maximum": 9007199254740991,
+                                                                            "default": null,
+                                                                            "nullable": true
+                                                                        },
+                                                                        "booked_count": {
+                                                                            "default": 0,
+                                                                            "type": "integer",
+                                                                            "minimum": 0,
+                                                                            "maximum": 9007199254740991
+                                                                        },
+                                                                        "bookings": {
+                                                                            "default": [],
+                                                                            "type": "array",
+                                                                            "items": {
+                                                                                "anyOf": [
+                                                                                    {
+                                                                                        "type": "object",
+                                                                                        "properties": {
+                                                                                            "id": {
+                                                                                                "type": "string"
+                                                                                            },
+                                                                                            "user_id": {
+                                                                                                "type": "string"
+                                                                                            },
+                                                                                            "person": {
+                                                                                                "default": "",
+                                                                                                "type": "string"
+                                                                                            },
+                                                                                            "phone": {
+                                                                                                "default": "",
+                                                                                                "type": "string"
+                                                                                            },
+                                                                                            "info": {
+                                                                                                "default": "",
+                                                                                                "type": "string"
+                                                                                            },
+                                                                                            "time": {
+                                                                                                "default": null,
+                                                                                                "type": [
+                                                                                                    "string",
+                                                                                                    "null"
+                                                                                                ]
+                                                                                            },
+                                                                                            "end_time": {
+                                                                                                "default": null,
+                                                                                                "type": [
+                                                                                                    "string",
+                                                                                                    "null"
+                                                                                                ]
+                                                                                            },
+                                                                                            "address": {
+                                                                                                "default": null,
+                                                                                                "type": [
+                                                                                                    "string",
+                                                                                                    "null"
+                                                                                                ]
+                                                                                            },
+                                                                                            "status": {
+                                                                                                "default": "confirmed",
+                                                                                                "type": "string"
+                                                                                            },
+                                                                                            "created_at": {
+                                                                                                "type": "string",
+                                                                                                "format": "date-time",
+                                                                                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                                                                                            }
+                                                                                        },
+                                                                                        "required": [
+                                                                                            "id",
+                                                                                            "user_id",
+                                                                                            "person",
+                                                                                            "phone",
+                                                                                            "info",
+                                                                                            "status",
+                                                                                            "created_at"
+                                                                                        ]
+                                                                                    },
+                                                                                    {
+                                                                                        "type": "object",
+                                                                                        "properties": {
+                                                                                            "status": {
+                                                                                                "type": "string",
+                                                                                                "enum": [
+                                                                                                    "reserved"
+                                                                                                ]
+                                                                                            }
+                                                                                        },
+                                                                                        "required": [
+                                                                                            "status"
+                                                                                        ]
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    "required": [
+                                                                        "time",
+                                                                        "to",
+                                                                        "limit",
+                                                                        "booked_count"
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "date",
+                                                            "time"
+                                                        ]
+                                                    }
+                                                },
+                                                "required": [
+                                                    "id",
+                                                    "label",
+                                                    "child_type",
+                                                    "value"
+                                                ]
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "label": {
+                                                        "type": "string"
+                                                    },
+                                                    "child_type": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "pickup"
+                                                        ]
+                                                    },
+                                                    "value": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "description": {
+                                                                "type": "string"
+                                                            },
+                                                            "link": {
+                                                                "type": "string"
+                                                            },
+                                                            "price": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "required": [
+                                                    "id",
+                                                    "label",
+                                                    "child_type",
+                                                    "value"
+                                                ]
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "label": {
+                                                        "type": "string"
+                                                    },
+                                                    "child_type": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "courier"
                                                         ]
                                                     },
                                                     "value": {
@@ -28098,7 +29289,8 @@
                         "enum": [
                             "service_apply",
                             "service_payment",
-                            "service_delivery"
+                            "service_delivery",
+                            "service_visit"
                         ]
                     },
                     "enabled": {
@@ -28154,6 +29346,66 @@
                             },
                             "required": [
                                 "day"
+                            ]
+                        },
+                        "nullable": true
+                    },
+                    "recurrent_ranges": {
+                        "maxItems": 50,
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "day": {
+                                    "type": "string",
+                                    "enum": [
+                                        "sunday",
+                                        "monday",
+                                        "tuesday",
+                                        "wednesday",
+                                        "thursday",
+                                        "friday",
+                                        "saturday"
+                                    ]
+                                },
+                                "from": {
+                                    "type": "string",
+                                    "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                                },
+                                "to": {
+                                    "type": "string",
+                                    "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                                },
+                                "resources": {
+                                    "minItems": 1,
+                                    "maxItems": 50,
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "maxLength": 100
+                                    }
+                                },
+                                "step_minutes": {
+                                    "type": "integer",
+                                    "minimum": 1,
+                                    "maximum": 1440
+                                },
+                                "min_minutes": {
+                                    "type": "integer",
+                                    "minimum": 1,
+                                    "maximum": 1440
+                                },
+                                "max_minutes": {
+                                    "type": "integer",
+                                    "minimum": 1,
+                                    "maximum": 1440,
+                                    "nullable": true
+                                }
+                            },
+                            "required": [
+                                "day",
+                                "resources"
                             ]
                         },
                         "nullable": true
@@ -28320,7 +29572,178 @@
                                         "child_type": {
                                             "type": "string",
                                             "enum": [
-                                                "delivery"
+                                                "time_range"
+                                            ]
+                                        },
+                                        "value": {
+                                            "type": "object",
+                                            "properties": {
+                                                "date": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                                                },
+                                                "from": {
+                                                    "type": "string",
+                                                    "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                                                },
+                                                "to": {
+                                                    "type": "string",
+                                                    "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                                                },
+                                                "step_minutes": {
+                                                    "type": "integer",
+                                                    "minimum": 1,
+                                                    "maximum": 1440
+                                                },
+                                                "min_minutes": {
+                                                    "type": "integer",
+                                                    "minimum": 1,
+                                                    "maximum": 1440
+                                                },
+                                                "max_minutes": {
+                                                    "type": "integer",
+                                                    "minimum": 1,
+                                                    "maximum": 1440,
+                                                    "nullable": true
+                                                }
+                                            },
+                                            "required": [
+                                                "date"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "child_type",
+                                        "value"
+                                    ]
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                                        },
+                                        "label": {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 200
+                                        },
+                                        "child_type": {
+                                            "type": "string",
+                                            "enum": [
+                                                "callback"
+                                            ]
+                                        },
+                                        "value": {
+                                            "type": "object",
+                                            "properties": {
+                                                "date": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                                                },
+                                                "time": {
+                                                    "maxItems": 200,
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "time": {
+                                                                "type": "string",
+                                                                "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                                                            },
+                                                            "to": {
+                                                                "type": "string",
+                                                                "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                                                            },
+                                                            "limit": {
+                                                                "type": "integer",
+                                                                "minimum": 0,
+                                                                "maximum": 9007199254740991,
+                                                                "nullable": true
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "time",
+                                                            "to"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            "required": [
+                                                "date",
+                                                "time"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "child_type",
+                                        "value"
+                                    ]
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                                        },
+                                        "label": {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 200
+                                        },
+                                        "child_type": {
+                                            "type": "string",
+                                            "enum": [
+                                                "pickup"
+                                            ]
+                                        },
+                                        "value": {
+                                            "type": "object",
+                                            "properties": {
+                                                "description": {
+                                                    "type": "string",
+                                                    "maxLength": 5000
+                                                },
+                                                "link": {
+                                                    "type": "string",
+                                                    "maxLength": 2048,
+                                                    "format": "uri"
+                                                },
+                                                "price": {
+                                                    "type": "string",
+                                                    "maxLength": 5000
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "child_type",
+                                        "value"
+                                    ]
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                                        },
+                                        "label": {
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 200
+                                        },
+                                        "child_type": {
+                                            "type": "string",
+                                            "enum": [
+                                                "courier"
                                             ]
                                         },
                                         "value": {
@@ -28408,7 +29831,8 @@
                         "enum": [
                             "service_apply",
                             "service_payment",
-                            "service_delivery"
+                            "service_delivery",
+                            "service_visit"
                         ]
                     },
                     "enabled": {
@@ -28472,11 +29896,68 @@
                             ]
                         },
                         "nullable": true
+                    },
+                    "recurrent_ranges": {
+                        "maxItems": 50,
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "day": {
+                                    "type": "string",
+                                    "enum": [
+                                        "sunday",
+                                        "monday",
+                                        "tuesday",
+                                        "wednesday",
+                                        "thursday",
+                                        "friday",
+                                        "saturday"
+                                    ]
+                                },
+                                "from": {
+                                    "type": "string",
+                                    "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                                },
+                                "to": {
+                                    "type": "string",
+                                    "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                                },
+                                "resources": {
+                                    "minItems": 1,
+                                    "maxItems": 50,
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "maxLength": 100
+                                    }
+                                },
+                                "step_minutes": {
+                                    "type": "integer",
+                                    "minimum": 1,
+                                    "maximum": 1440
+                                },
+                                "min_minutes": {
+                                    "type": "integer",
+                                    "minimum": 1,
+                                    "maximum": 1440
+                                },
+                                "max_minutes": {
+                                    "type": "integer",
+                                    "minimum": 1,
+                                    "maximum": 1440,
+                                    "nullable": true
+                                }
+                            },
+                            "required": [
+                                "day",
+                                "resources"
+                            ]
+                        },
+                        "nullable": true
                     }
-                },
-                "required": [
-                    "recurrent_dates"
-                ]
+                }
             },
             "UpdateSlotDto": {
                 "type": "object",
@@ -28507,6 +29988,10 @@
                                     "type": "string",
                                     "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
                                 },
+                                "to": {
+                                    "type": "string",
+                                    "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                                },
                                 "limit": {
                                     "type": "integer",
                                     "minimum": 0,
@@ -28518,6 +30003,30 @@
                                 "time"
                             ]
                         }
+                    },
+                    "from": {
+                        "type": "string",
+                        "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                    },
+                    "to": {
+                        "type": "string",
+                        "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                    },
+                    "step_minutes": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 1440
+                    },
+                    "min_minutes": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 1440
+                    },
+                    "max_minutes": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 1440,
+                        "nullable": true
                     }
                 }
             },
@@ -28669,6 +30178,15 @@
                         "type": "string",
                         "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
                     },
+                    "end_time": {
+                        "type": "string",
+                        "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                    },
+                    "address": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 500
+                    },
                     "info": {
                         "type": "string",
                         "maxLength": 1000
@@ -28735,7 +30253,10 @@
                             "date_time",
                             "date",
                             "apply",
-                            "delivery",
+                            "time_range",
+                            "callback",
+                            "pickup",
+                            "courier",
                             "paycard"
                         ]
                     },
@@ -28749,6 +30270,12 @@
                         }
                     },
                     "time": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "end_time": {
                         "type": "array",
                         "items": {
                             "type": "string"
@@ -30721,7 +32248,8 @@
                                                 "enum": [
                                                     "service_apply",
                                                     "service_payment",
-                                                    "service_delivery"
+                                                    "service_delivery",
+                                                    "service_visit"
                                                 ]
                                             },
                                             "enabled": {
@@ -30777,6 +32305,60 @@
                                                     "required": [
                                                         "day",
                                                         "time"
+                                                    ]
+                                                }
+                                            },
+                                            "recurrent_ranges": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "day": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "sunday",
+                                                                "monday",
+                                                                "tuesday",
+                                                                "wednesday",
+                                                                "thursday",
+                                                                "friday",
+                                                                "saturday"
+                                                            ]
+                                                        },
+                                                        "from": {
+                                                            "type": "string"
+                                                        },
+                                                        "to": {
+                                                            "type": "string"
+                                                        },
+                                                        "resources": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "step_minutes": {
+                                                            "type": "integer",
+                                                            "minimum": -9007199254740991,
+                                                            "maximum": 9007199254740991
+                                                        },
+                                                        "min_minutes": {
+                                                            "type": "integer",
+                                                            "minimum": -9007199254740991,
+                                                            "maximum": 9007199254740991
+                                                        },
+                                                        "max_minutes": {
+                                                            "type": "integer",
+                                                            "minimum": -9007199254740991,
+                                                            "maximum": 9007199254740991,
+                                                            "default": null,
+                                                            "nullable": true
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "day",
+                                                        "resources",
+                                                        "max_minutes"
                                                     ]
                                                 }
                                             },
@@ -31008,7 +32590,220 @@
                                                                 "child_type": {
                                                                     "type": "string",
                                                                     "enum": [
-                                                                        "delivery"
+                                                                        "time_range"
+                                                                    ]
+                                                                },
+                                                                "value": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "date": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "resource": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "from": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "to": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "step_minutes": {
+                                                                            "type": "integer",
+                                                                            "minimum": -9007199254740991,
+                                                                            "maximum": 9007199254740991
+                                                                        },
+                                                                        "min_minutes": {
+                                                                            "type": "integer",
+                                                                            "minimum": -9007199254740991,
+                                                                            "maximum": 9007199254740991
+                                                                        },
+                                                                        "max_minutes": {
+                                                                            "type": "integer",
+                                                                            "minimum": -9007199254740991,
+                                                                            "maximum": 9007199254740991,
+                                                                            "default": null,
+                                                                            "nullable": true
+                                                                        },
+                                                                        "booked_count": {
+                                                                            "default": 0,
+                                                                            "type": "integer",
+                                                                            "minimum": 0,
+                                                                            "maximum": 9007199254740991
+                                                                        },
+                                                                        "bookings": {
+                                                                            "default": [],
+                                                                            "type": "array",
+                                                                            "items": {
+                                                                                "type": "object",
+                                                                                "properties": {
+                                                                                    "status": {
+                                                                                        "type": "string",
+                                                                                        "enum": [
+                                                                                            "reserved"
+                                                                                        ]
+                                                                                    }
+                                                                                },
+                                                                                "required": [
+                                                                                    "status"
+                                                                                ]
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    "required": [
+                                                                        "date",
+                                                                        "from",
+                                                                        "to",
+                                                                        "step_minutes",
+                                                                        "min_minutes",
+                                                                        "max_minutes",
+                                                                        "booked_count"
+                                                                    ]
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "id",
+                                                                "label",
+                                                                "child_type",
+                                                                "value"
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "string"
+                                                                },
+                                                                "label": {
+                                                                    "type": "string"
+                                                                },
+                                                                "child_type": {
+                                                                    "type": "string",
+                                                                    "enum": [
+                                                                        "callback"
+                                                                    ]
+                                                                },
+                                                                "value": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "date": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "time": {
+                                                                            "type": "array",
+                                                                            "items": {
+                                                                                "type": "object",
+                                                                                "properties": {
+                                                                                    "time": {
+                                                                                        "type": "string"
+                                                                                    },
+                                                                                    "to": {
+                                                                                        "type": "string"
+                                                                                    },
+                                                                                    "limit": {
+                                                                                        "type": "integer",
+                                                                                        "minimum": 0,
+                                                                                        "maximum": 9007199254740991,
+                                                                                        "default": null,
+                                                                                        "nullable": true
+                                                                                    },
+                                                                                    "booked_count": {
+                                                                                        "default": 0,
+                                                                                        "type": "integer",
+                                                                                        "minimum": 0,
+                                                                                        "maximum": 9007199254740991
+                                                                                    },
+                                                                                    "bookings": {
+                                                                                        "default": [],
+                                                                                        "type": "array",
+                                                                                        "items": {
+                                                                                            "type": "object",
+                                                                                            "properties": {
+                                                                                                "status": {
+                                                                                                    "type": "string",
+                                                                                                    "enum": [
+                                                                                                        "reserved"
+                                                                                                    ]
+                                                                                                }
+                                                                                            },
+                                                                                            "required": [
+                                                                                                "status"
+                                                                                            ]
+                                                                                        }
+                                                                                    }
+                                                                                },
+                                                                                "required": [
+                                                                                    "time",
+                                                                                    "to",
+                                                                                    "limit",
+                                                                                    "booked_count"
+                                                                                ]
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    "required": [
+                                                                        "date",
+                                                                        "time"
+                                                                    ]
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "id",
+                                                                "label",
+                                                                "child_type",
+                                                                "value"
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "string"
+                                                                },
+                                                                "label": {
+                                                                    "type": "string"
+                                                                },
+                                                                "child_type": {
+                                                                    "type": "string",
+                                                                    "enum": [
+                                                                        "pickup"
+                                                                    ]
+                                                                },
+                                                                "value": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "description": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "link": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "price": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "id",
+                                                                "label",
+                                                                "child_type",
+                                                                "value"
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "string"
+                                                                },
+                                                                "label": {
+                                                                    "type": "string"
+                                                                },
+                                                                "child_type": {
+                                                                    "type": "string",
+                                                                    "enum": [
+                                                                        "courier"
                                                                     ]
                                                                 },
                                                                 "value": {
@@ -33538,7 +35333,21 @@
                             "type": "string"
                         }
                     },
+                    "end_time": {
+                        "default": null,
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
                     "starts_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$",
+                        "default": null,
+                        "nullable": true
+                    },
+                    "ends_at": {
                         "type": "string",
                         "format": "date-time",
                         "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$",
@@ -33566,6 +35375,13 @@
                     "info": {
                         "default": "",
                         "type": "string"
+                    },
+                    "address": {
+                        "default": null,
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
                     },
                     "fields": {
                         "default": {},
@@ -33627,12 +35443,15 @@
                     "service_label",
                     "date",
                     "time",
+                    "end_time",
                     "starts_at",
+                    "ends_at",
                     "cancel_deadline_at",
                     "user_id",
                     "person",
                     "phone",
                     "info",
+                    "address",
                     "fields",
                     "documents",
                     "status",
@@ -33755,6 +35574,15 @@
                     "time": {
                         "type": "string",
                         "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                    },
+                    "end_time": {
+                        "type": "string",
+                        "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                    },
+                    "address": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 500
                     }
                 },
                 "required": [
@@ -34255,7 +36083,7 @@
                     },
                     "events": {
                         "minItems": 1,
-                        "maxItems": 7,
+                        "maxItems": 8,
                         "type": "array",
                         "items": {
                             "type": "string",
@@ -34265,6 +36093,7 @@
                                 "booking.rescheduled",
                                 "booking.status_changed",
                                 "booking.reminder",
+                                "booking.callback_due",
                                 "waitlist.slot_available",
                                 "webhook.test"
                             ]
@@ -34365,7 +36194,7 @@
                     },
                     "events": {
                         "minItems": 1,
-                        "maxItems": 7,
+                        "maxItems": 8,
                         "type": "array",
                         "items": {
                             "type": "string",
@@ -34375,6 +36204,7 @@
                                 "booking.rescheduled",
                                 "booking.status_changed",
                                 "booking.reminder",
+                                "booking.callback_due",
                                 "waitlist.slot_available",
                                 "webhook.test"
                             ]
@@ -34617,6 +36447,10 @@
                                     "SLOT_DATE_TAKEN",
                                     "SLOT_TIME_OUT_OF_RANGE",
                                     "SLOT_BULK_TOO_LARGE",
+                                    "SLOT_TYPE_NOT_ALLOWED",
+                                    "SLOT_NOT_RANGED",
+                                    "SLOT_RANGE_REQUIRED",
+                                    "SLOT_RANGE_INVALID",
                                     "SERVICE_SLUG_TAKEN",
                                     "SERVICE_NOT_DELETED",
                                     "SERVICE_NOT_PUBLISHED",
@@ -34630,8 +36464,11 @@
                                     "BOOKING_STATUS_TRANSITION",
                                     "BOOKING_NOT_ACTIVE",
                                     "BOOKING_NOT_DATED",
+                                    "BOOKING_ADDRESS_REQUIRED",
+                                    "BOOKING_PHONE_REQUIRED",
                                     "WAITLIST_NOT_FOUND",
                                     "WAITLIST_ALREADY_JOINED",
+                                    "WAITLIST_NOT_SUPPORTED",
                                     "SLOT_NOT_FULL",
                                     "NEWS_SLUG_TAKEN",
                                     "WEBHOOK_NOT_FOUND",

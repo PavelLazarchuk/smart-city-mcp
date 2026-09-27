@@ -7,7 +7,12 @@ export interface RedactOptions {
 const SLOT_NOTES: Record<string, string> = {
     apply: 'Application without a time: the organization schedules it later.',
     date: 'Whole day: the organization assigns the time.',
+    callback: 'Call-back: the organization phones the person between `starts_at` and `ends_at`.',
 };
+
+function textOf(value: unknown): string | undefined {
+    return typeof value === 'string' ? value : undefined;
+}
 
 export function maskPhone(phone: string | undefined): string | undefined {
     if (!phone) return undefined;
@@ -34,6 +39,7 @@ export interface BookingView {
     slot_id: string;
     child_type: string;
     starts_at: string | null;
+    ends_at: string | null;
     cancel_deadline_at: string | null;
     status: string;
     confirmed_at: string | null;
@@ -45,6 +51,7 @@ export interface BookingView {
     info?: string;
     person?: string;
     phone?: string;
+    address?: string;
     fields?: Record<string, unknown>;
 }
 
@@ -58,6 +65,7 @@ export function redactBooking(booking: BookingResource, options: RedactOptions):
         slot_id: booking.slot_id,
         child_type: booking.child_type,
         starts_at: booking.starts_at,
+        ends_at: booking.ends_at,
         cancel_deadline_at: booking.cancel_deadline_at,
         status: booking.status,
         confirmed_at: booking.confirmed_at,
@@ -79,6 +87,10 @@ export function redactBooking(booking: BookingResource, options: RedactOptions):
         view.person = booking.person;
         view.phone = booking.phone;
         view.fields = booking.fields;
+
+        const address = textOf(booking.address);
+
+        if (address) view.address = address;
     }
 
     return view;

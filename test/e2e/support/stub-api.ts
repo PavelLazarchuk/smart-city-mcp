@@ -10,6 +10,9 @@ const OPTION_ID = '11111111-1111-4111-8111-111111111111';
 const SLOT_ID = '22222222-2222-4222-8222-222222222222';
 const FULL_SLOT_ID = '33333333-3333-4333-8333-333333333333';
 const FAR_SLOT_ID = '66666666-6666-4666-8666-666666666666';
+const VISIT_OPTION_ID = '77777777-7777-4777-8777-777777777777';
+const RANGE_SLOT_ID = '88888888-8888-4888-8888-888888888888';
+const RANGE_SLOT_DAYS = 2;
 const DEFAULT_HORIZON_DAYS = 30;
 const FAR_SLOT_DAYS = 90;
 const USER_ID = '64b7f0c2a1b2c3d4e5f60003';
@@ -22,6 +25,9 @@ export const IDS = {
     fullSlot: FULL_SLOT_ID,
     farSlot: FAR_SLOT_ID,
     farSlotDays: FAR_SLOT_DAYS,
+    visitOption: VISIT_OPTION_ID,
+    rangeSlot: RANGE_SLOT_ID,
+    rangeSlotDays: RANGE_SLOT_DAYS,
     user: USER_ID,
 };
 
@@ -40,6 +46,7 @@ export interface StubState {
     authRemaining: number;
     favorites: { type: string; id: string; available: boolean }[];
     calendarToken: string | null;
+    reschedules: Record<string, unknown>[];
 }
 
 export interface Stub {
@@ -56,15 +63,16 @@ function fail(code: string, message = code, details: unknown[] = []): unknown {
     return { error: { code, message, details, request_id: 'stub' } };
 }
 
-function dayAt(time: string, inDays: number): { date: string; startsAt: string; endsAt: string } {
+function dayAt(
+    time: string,
+    inDays: number,
+    until?: string,
+): { date: string; startsAt: string; endsAt: string } {
     const date = shiftDateOnly(dateOnlyIn(new Date(), TIME_ZONE), inDays);
     const start = instantOf(date, time, TIME_ZONE);
+    const end = until ? instantOf(date, until, TIME_ZONE) : new Date(start.getTime() + 30 * 60_000);
 
-    return {
-        date,
-        startsAt: isoAtIn(start, TIME_ZONE),
-        endsAt: isoAtIn(new Date(start.getTime() + 30 * 60_000), TIME_ZONE),
-    };
+    return { date, startsAt: isoAtIn(start, TIME_ZONE), endsAt: isoAtIn(end, TIME_ZONE) };
 }
 
 function tomorrowAt(time: string): { date: string; startsAt: string; endsAt: string } {
@@ -161,7 +169,48 @@ function slotCandidates(state: StubState): Record<string, unknown>[] {
             booked_count: 0,
             available: 1,
         },
+        ...freeWindows(state).map(([from = '', to = '']) => {
+            const window = dayAt(from, RANGE_SLOT_DAYS, to);
+
+            return {
+                ...base,
+                option_id: VISIT_OPTION_ID,
+                option_label: 'Home visit',
+                service_type: 'service_visit',
+                slot_id: RANGE_SLOT_ID,
+                slot_label: 'Dr. Weber',
+                child_type: 'time_range',
+                date: window.date,
+                time: from,
+                starts_at: window.startsAt,
+                ends_at: window.endsAt,
+                limit: 1,
+                booked_count: 0,
+                available: 1,
+                range: { step_minutes: 30, min_minutes: 60, max_minutes: null },
+            };
+        }),
     ];
+}
+
+function freeWindows(state: StubState): string[][] {
+    const busy = state.bookings
+        .filter((booking) => booking['slot_id'] === RANGE_SLOT_ID && booking['status'] === 'confirmed')
+        .map((booking) => [String(booking['time']), String(booking['end_time'])]);
+
+    return [
+        ['09:00', '12:00'],
+        ['14:00', '16:00'],
+    ].flatMap(([from = '', to = '']) => {
+        const taken = busy.find(([start = '', end = '']) => start < to && end > from);
+
+        if (!taken) return [[from, to]];
+
+        return [
+            [from, taken[0] ?? from],
+            [taken[1] ?? to, to],
+        ].filter(([start = '', end = '']) => start < end);
+    });
 }
 
 function tokenPair(state: StubState): unknown {
@@ -187,7 +236,7 @@ function tokenPair(state: StubState): unknown {
 
 let bookingCounter = 0;
 
-function bookingOf(body: Record<string, unknown>): Record<string, unknown> {
+function bookingOf(body: Record<string, unknown>, childType: unknown): Record<string, unknown> {
     const moment = tomorrowAt('10:00');
     bookingCounter += 1;
 
@@ -197,10 +246,11 @@ function bookingOf(body: Record<string, unknown>): Record<string, unknown> {
         organization_id: ORGANIZATION_ID,
         option_id: body['option_id'],
         slot_id: body['slot_id'],
-        child_type: 'date_time',
+        child_type: childType,
         status: 'confirmed',
         date: moment.date,
         time: body['time'],
+        end_time: body['end_time'] ?? null,
         created_at: new Date().toISOString(),
     };
 }
@@ -231,6 +281,7 @@ export async function startStubApi(): Promise<Stub> {
         authRemaining: 9,
         favorites: [],
         calendarToken: null,
+        reschedules: [],
     };
 
     const server = createServer((request, response) => {
@@ -413,10 +464,17 @@ async function handle(request: IncomingMessage, response: ServerResponse, state:
         if (body['slot_id'] === FULL_SLOT_ID || (body['slot_id'] === SLOT_ID && state.slotTaken))
             return send(422, fail('SLOT_FULL'));
 
-        if (!slotCandidates(state).some((item) => item['slot_id'] === body['slot_id']))
-            return send(404, fail('SLOT_NOT_FOUND'));
+        const slot = slotCandidates(state).find((item) => item['slot_id'] === body['slot_id']);
 
-        const created = bookingOf(body);
+        if (!slot) return send(404, fail('SLOT_NOT_FOUND'));
+
+        if (slot['child_type'] === 'time_range' && !body['end_time'])
+            return send(422, fail('SLOT_TIME_REQUIRED'));
+
+        if (slot['service_type'] === 'service_visit' && !body['address'])
+            return send(422, fail('BOOKING_ADDRESS_REQUIRED'));
+
+        const created = bookingOf(body, slot['child_type']);
         state.slotTaken = true;
         state.bookings.push({
             id: created['booking_id'],
@@ -424,11 +482,14 @@ async function handle(request: IncomingMessage, response: ServerResponse, state:
             organization_id: ORGANIZATION_ID,
             option_id: body['option_id'],
             slot_id: body['slot_id'],
-            child_type: 'date_time',
+            child_type: slot['child_type'],
             service_label: service.label,
             date: created['date'],
             time: created['time'],
+            end_time: created['end_time'],
+            address: body['address'] ?? null,
             starts_at: new Date().toISOString(),
+            ends_at: null,
             cancel_deadline_at: null,
             user_id: USER_ID,
             person: 'Alex',
@@ -539,6 +600,27 @@ async function handle(request: IncomingMessage, response: ServerResponse, state:
         );
 
         return;
+    }
+
+    const rescheduleMatch = /^\/bookings\/([^/]+)\/reschedule$/.exec(path);
+
+    if (rescheduleMatch && method === 'POST') {
+        if (!requireAuth()) return;
+
+        const booking = state.bookings.find((row) => row['id'] === rescheduleMatch[1]);
+
+        if (!booking) return send(404, fail('BOOKING_NOT_FOUND'));
+
+        const body = await readBody(request);
+        state.reschedules.push(body);
+        Object.assign(booking, {
+            slot_id: body['slot_id'],
+            time: body['time'] ?? null,
+            end_time: body['end_time'] ?? null,
+            ...(body['address'] ? { address: body['address'] } : {}),
+        });
+
+        return send(200, envelope(booking));
     }
 
     const bookingMatch = /^\/bookings\/([^/]+)$/.exec(path);

@@ -66,7 +66,7 @@ live('against a live API', () => {
         expect(data.timezone).toMatch(/^[A-Za-z]+(\/[A-Za-z_+-]+)*$/);
 
         for (const item of data.items) {
-            expect(['date_time', 'date', 'apply']).toContain(item.child_type);
+            expect(['date_time', 'date', 'apply', 'time_range', 'callback']).toContain(item.child_type);
 
             if (item.starts_at) expect(Date.parse(item.starts_at)).toBeGreaterThan(Date.now());
         }

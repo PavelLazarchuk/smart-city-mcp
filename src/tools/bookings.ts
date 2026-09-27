@@ -10,7 +10,9 @@ import {
     type ServiceSlots,
     type SlotCandidate,
     type WaitlistEntry,
+    ADDRESS_SERVICE_TYPES,
     BOOKING_STATUSES,
+    addressSchema,
     fieldKeySchema,
     objectIdSchema,
     timeOfDaySchema,
@@ -27,7 +29,18 @@ import {
     validateAnswers,
 } from '../mapping/form.js';
 import { redactBooking, redactWaitlistEntry } from '../mapping/redact.js';
-import { dateOnlyIn, describeWhen, humanInstant, isPast, isoAtIn, shiftDateOnly } from '../mapping/time.js';
+import { openingFor, rangeProblem } from '../mapping/slots.js';
+import {
+    dateOnlyIn,
+    describeWhen,
+    humanDate,
+    humanInstant,
+    instantOf,
+    isPast,
+    isoAtIn,
+    localTimeOf,
+    shiftDateOnly,
+} from '../mapping/time.js';
 import { confirmArg, confirmWrite, elicit, supportsElicitation, type ToolContext } from './context.js';
 import { DATA_NOTICE, plural, runPersonalTool } from './registry.js';
 
@@ -40,10 +53,17 @@ interface BookingTarget {
     option_id: string;
     slot_id: string;
     time?: string;
+    end_time?: string;
+}
+
+interface Span {
+    from: string;
+    to: string;
 }
 
 const SLOT_LOOKUP_LIMIT = 200;
 const SLOT_LOOKUP_DAYS = 365;
+const OWN_BOOKING_LOOKUP_LIMIT = 100;
 
 const bookingView = z.looseObject({
     id: z.string(),
@@ -73,7 +93,17 @@ const bookingIdArg = uuidSchema.describe('The `id` of a booking from list_my_boo
 const candidateArg = uuidSchema.describe('From the chosen find_slots candidate.');
 const candidateTimeArg = timeOfDaySchema
     .optional()
-    .describe('The chosen candidate’s `time` (HH:mm); required when its `child_type` is `date_time`.');
+    .describe(
+        'The chosen candidate’s `time` (HH:mm); required when its `child_type` is `date_time` or `callback`. For `time_range`, the start the person chose inside its `range`.',
+    );
+const candidateEndArg = timeOfDaySchema
+    .optional()
+    .describe('Only for a `time_range` candidate: the end (HH:mm) the person chose inside its `range`.');
+const addressArg = addressSchema
+    .optional()
+    .describe(
+        'Where the organization comes to, in the person’s own words; only for a candidate with `needs_address: true`.',
+    );
 
 export function registerBookingTools(server: McpServer, ctx: ToolContext): void {
     const write = ctx.config.write;
@@ -201,7 +231,9 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
             title: 'Book a time',
             description: [
                 'Books the candidate the person chose from find_slots: pass `service_id` and the candidate’s',
-                '`option_id`, `slot_id` and `time` exactly as returned. For a `full: true` candidate use',
+                '`option_id`, `slot_id` and `time` exactly as returned. For a `time_range` candidate pass the',
+                'start and end the person chose inside its `range` as `time` and `end_time`. A candidate with',
+                '`needs_address: true` needs the person’s `address`. For a `full: true` candidate use',
                 'join_waitlist instead. Never fill `fields` or `documents` yourself; pass only what the',
                 'person said. Anything missing is asked of the person, or comes back as',
                 'BOOKING_FIELDS_INVALID / BOOKING_DOCUMENTS_REQUIRED for you to ask them. The person',
@@ -214,6 +246,8 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                 option_id: candidateArg,
                 slot_id: candidateArg,
                 time: candidateTimeArg,
+                end_time: candidateEndArg,
+                address: addressArg,
                 info: z
                     .string()
                     .trim()
@@ -241,6 +275,7 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                 booking: z.looseObject({ booking_id: z.string(), status: z.string() }),
                 already_existed: z.boolean(),
                 starts_at: z.string().nullable(),
+                ends_at: z.string().nullable(),
                 cancel_deadline_at: z.string().nullable(),
                 needs_confirmation: z.boolean(),
             },
@@ -253,21 +288,53 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                 option_id: string;
                 slot_id: string;
                 time?: string;
+                end_time?: string;
+                address?: string;
                 info?: string;
                 fields?: Record<string, unknown>;
                 documents?: string[];
                 confirm?: boolean;
             }) => {
                 const service = await loadBookingService(ctx, args.service_id);
-                const candidate = await findCandidate(ctx, service, args);
+                let candidate: SlotCandidate;
+
+                try {
+                    candidate = await findCandidate(ctx, service, args);
+                } catch (error) {
+                    const existing = await existingInterval(ctx, args, error);
+
+                    if (!existing) throw error;
+
+                    return {
+                        summary: 'This booking already existed; nothing new was created.',
+                        data: {
+                            booking: {
+                                booking_id: existing.id,
+                                status: existing.status,
+                                option_id: existing.option_id,
+                                slot_id: existing.slot_id,
+                                date: existing.date,
+                                time: existing.time,
+                                end_time: existing.end_time,
+                            },
+                            already_existed: true,
+                            starts_at: existing.starts_at,
+                            ends_at: existing.ends_at,
+                            cancel_deadline_at: existing.cancel_deadline_at,
+                            needs_confirmation: existing.status === 'pending',
+                        },
+                    };
+                }
+
+                const address = await collectAddress(ctx, service, candidate, args.address);
                 const fields = await collectFields(ctx, service, args.fields ?? {});
                 const documents = await collectDocuments(ctx, service, args.documents ?? []);
-                const timeZone = service.organization?.timezone ?? ctx.config.timeZone;
+                const timeZone = timeZoneOf(ctx, service);
                 const deadline = cancelDeadlineOf(candidate, service, timeZone);
 
                 await confirmWrite(
                     ctx,
-                    bookingSummary(service, candidate, fields, documents, deadline, timeZone),
+                    bookingSummary(service, candidate, address, fields, documents, deadline, timeZone),
                     args.confirm,
                 );
 
@@ -275,6 +342,8 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                     option_id: args.option_id,
                     slot_id: args.slot_id,
                     ...(args.time ? { time: args.time } : {}),
+                    ...(args.end_time ? { end_time: args.end_time } : {}),
+                    ...(address ? { address } : {}),
                     ...(args.info ? { info: args.info } : {}),
                     ...(Object.keys(fields).length > 0 ? { fields } : {}),
                     ...(documents.length > 0 ? { documents } : {}),
@@ -300,6 +369,7 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                         booking: result.data,
                         already_existed: result.replayed,
                         starts_at: candidate.starts_at,
+                        ends_at: candidate.ends_at,
                         cancel_deadline_at: deadline,
                         needs_confirmation: pending,
                     },
@@ -388,7 +458,9 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
             description: [
                 'Moves one of the person’s bookings to another time of the same service in one step, keeping',
                 'the current place until the new one is secured. First call find_slots with the booking’s',
-                '`service_id` and let the person choose; then pass that candidate’s ids here.',
+                '`service_id` and let the person choose; then pass that candidate’s ids here, with',
+                '`end_time` for a `time_range` candidate as in create_booking. The address of a booking with',
+                'one is kept unless the person gives a new `address`.',
             ].join(' '),
             annotations: { destructiveHint: true, openWorldHint: true },
             inputSchema: {
@@ -398,6 +470,8 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                     .optional()
                     .describe('From the chosen candidate; leave out to keep the current option.'),
                 time: candidateTimeArg,
+                end_time: candidateEndArg,
+                address: addressArg,
                 confirm: confirmArg,
             },
             outputSchema: { booking: bookingView },
@@ -410,19 +484,42 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                 slot_id: string;
                 option_id?: string;
                 time?: string;
+                end_time?: string;
+                address?: string;
                 confirm?: boolean;
             }) => {
                 const booking = await loadBooking(ctx, args.booking_id);
                 const service = await loadBookingService(ctx, booking.service_id);
-                const target = await findCandidate(ctx, service, {
-                    service_id: booking.service_id,
-                    option_id: args.option_id ?? booking.option_id,
-                    slot_id: args.slot_id,
-                    time: args.time,
-                });
+                const optionId = args.option_id ?? booking.option_id;
+                const target = await findCandidate(
+                    ctx,
+                    service,
+                    {
+                        service_id: booking.service_id,
+                        option_id: optionId,
+                        slot_id: args.slot_id,
+                        time: args.time,
+                        end_time: args.end_time,
+                    },
+                    optionId === booking.option_id && args.slot_id === booking.slot_id
+                        ? spanOf(booking)
+                        : undefined,
+                );
+                const address = await collectAddress(
+                    ctx,
+                    service,
+                    target,
+                    args.address,
+                    localOf(booking.address) ?? undefined,
+                );
                 await confirmWrite(
                     ctx,
-                    `Move "${booking.service_label}" from ${describeWhen(localOf(booking.date), localOf(booking.time))} to ${describeWhen(target.date, target.time)}?`,
+                    [
+                        `Move "${booking.service_label}" from ${describeSpan(localOf(booking.date), localOf(booking.time), localOf(booking.end_time))} to ${describeCandidate(target)}?`,
+                        address ? `Address: ${address}` : null,
+                    ]
+                        .filter((line): line is string => line !== null)
+                        .join('\n'),
                     args.confirm,
                 );
                 const { data } = await ctx.client.request<BookingResource>({
@@ -432,6 +529,8 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                         slot_id: args.slot_id,
                         ...(args.option_id ? { option_id: args.option_id } : {}),
                         ...(args.time ? { time: args.time } : {}),
+                        ...(args.end_time ? { end_time: args.end_time } : {}),
+                        ...(address && address !== localOf(booking.address) ? { address } : {}),
                     },
                     auth: true,
                 });
@@ -453,7 +552,7 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                 'Puts the person in the queue for a candidate that find_slots returned with `full: true`.',
                 'When a place frees up, the first in line gets an SMS or e-mail and then books it with',
                 'create_booking; nothing is booked automatically. A candidate with free places is refused',
-                '(SLOT_NOT_FULL): book it instead.',
+                '(SLOT_NOT_FULL): book it instead. A `time_range` candidate has no waitlist.',
             ].join(' '),
             annotations: { openWorldHint: true },
             inputSchema: {
@@ -476,7 +575,16 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                 confirm?: boolean;
             }) => {
                 const service = await loadBookingService(ctx, args.service_id);
-                const candidate = await findCandidate(ctx, service, args);
+                const offered = await offeredSlots(ctx, service, args);
+
+                if (offered.some((item) => item.child_type === 'time_range'))
+                    throw new ApiError({
+                        status: 422,
+                        code: 'WAITLIST_NOT_SUPPORTED',
+                        message: 'A free-interval slot has no waitlist.',
+                    });
+
+                const candidate = pickCandidate(offered, args, timeZoneOf(ctx, service));
 
                 if (candidate.available !== 0)
                     throw new ApiError({
@@ -566,6 +674,26 @@ function bookingDay(booking: BookingResource): string {
     return onDay(localOf(booking.date), localOf(booking.time));
 }
 
+function spanOf(booking: BookingResource): Span | undefined {
+    const from = localOf(booking.time);
+    const to = localOf(booking.end_time);
+
+    return booking.child_type === 'time_range' && from && to ? { from, to } : undefined;
+}
+
+function describeSpan(date: string | null, time: string | null, end: string | null): string {
+    return date && time && end ? `${describeWhen(date, time)}–${end}` : describeWhen(date, time);
+}
+
+function describeCandidate(candidate: SlotCandidate): string {
+    const end = candidate.date && candidate.time && candidate.ends_at ? localTimeOf(candidate.ends_at) : null;
+
+    if (candidate.child_type === 'callback' && candidate.date && end)
+        return `a call back on ${humanDate(candidate.date)} between ${candidate.time} and ${end}`;
+
+    return describeSpan(candidate.date, candidate.time, candidate.child_type === 'time_range' ? end : null);
+}
+
 async function loadBookingService(ctx: ToolContext, serviceId: string): Promise<ServiceResource> {
     const { data } = await ctx.client.request<ServiceResource>({
         path: `/services/${serviceId}`,
@@ -580,9 +708,17 @@ async function findCandidate(
     ctx: ToolContext,
     service: ServiceResource,
     args: BookingTarget,
+    own?: Span,
 ): Promise<SlotCandidate> {
-    const timeZone = service.organization?.timezone ?? ctx.config.timeZone;
-    const from = dateOnlyIn(new Date(), timeZone);
+    return pickCandidate(await offeredSlots(ctx, service, args), args, timeZoneOf(ctx, service), own);
+}
+
+async function offeredSlots(
+    ctx: ToolContext,
+    service: ServiceResource,
+    args: BookingTarget,
+): Promise<SlotCandidate[]> {
+    const from = dateOnlyIn(new Date(), timeZoneOf(ctx, service));
     const { data } = await ctx.client.request<ServiceSlots>({
         path: `/services/${args.service_id}/slots`,
         query: {
@@ -593,7 +729,31 @@ async function findCandidate(
         },
         cache: true,
     });
-    const offered = data.items.filter((item) => item.slot_id === args.slot_id);
+
+    return data.items.filter((item) => item.slot_id === args.slot_id);
+}
+
+function timeZoneOf(ctx: ToolContext, service: ServiceResource): string {
+    return service.organization?.timezone ?? ctx.config.timeZone;
+}
+
+function pickCandidate(
+    offered: SlotCandidate[],
+    args: BookingTarget,
+    timeZone: string,
+    own?: Span,
+): SlotCandidate {
+    if (offered.some((item) => item.child_type === 'time_range'))
+        return pickOpening(offered, args, timeZone, own);
+
+    if (args.end_time !== undefined)
+        throw new ApiError({
+            status: 400,
+            code: 'VALIDATION_ERROR',
+            message: 'Only a `time_range` candidate takes an end: leave `end_time` out.',
+            details: [{ path: 'end_time', message: 'Not used for this candidate' }],
+        });
+
     const candidate = offered.find((item) => (item.time ?? undefined) === args.time);
 
     if (candidate) return candidate;
@@ -618,6 +778,122 @@ async function findCandidate(
         code: 'SLOT_NOT_FOUND',
         message: 'That time is not on offer any more.',
     });
+}
+
+function pickOpening(
+    offered: SlotCandidate[],
+    args: BookingTarget,
+    timeZone: string,
+    own?: Span,
+): SlotCandidate {
+    if (args.time === undefined || args.end_time === undefined)
+        throw new ApiError({
+            status: 422,
+            code: 'SLOT_TIME_REQUIRED',
+            message:
+                'This candidate is a free interval: pass the chosen start as `time` and end as `end_time`.',
+        });
+
+    if (args.end_time <= args.time)
+        throw new ApiError({
+            status: 400,
+            code: 'VALIDATION_ERROR',
+            message: 'The end has to come after the start.',
+            details: [{ path: 'end_time', message: `Must be later than ${args.time}` }],
+        });
+
+    const template = offered.find((item) => item.child_type === 'time_range');
+    const opening =
+        own && template ? { ...template, time: own.from } : openingFor(offered, args.time, args.end_time);
+
+    if (!opening || !opening.date)
+        throw new ApiError({
+            status: 422,
+            code: 'SLOT_FULL',
+            message: `${args.time}–${args.end_time} is not free in this slot.`,
+        });
+
+    const problem = rangeProblem(opening, args.time, args.end_time);
+
+    if (problem)
+        throw new ApiError({
+            status: 422,
+            code: 'SLOT_RANGE_INVALID',
+            message: 'That interval does not fit this slot.',
+            details: [{ path: 'end_time', message: problem }],
+        });
+
+    return {
+        ...opening,
+        time: args.time,
+        starts_at: isoAtIn(instantOf(opening.date, args.time, timeZone), timeZone),
+        ends_at: isoAtIn(instantOf(opening.date, args.end_time, timeZone), timeZone),
+    };
+}
+
+async function existingInterval(
+    ctx: ToolContext,
+    args: BookingTarget,
+    error: unknown,
+): Promise<BookingResource | null> {
+    if (
+        args.end_time === undefined ||
+        !isApiError(error) ||
+        !['SLOT_FULL', 'SLOT_NOT_FOUND'].includes(error.code)
+    )
+        return null;
+
+    const { data } = await ctx.client.request<BookingResource[]>({
+        path: '/me/bookings',
+        query: { status: 'active', limit: OWN_BOOKING_LOOKUP_LIMIT },
+        auth: true,
+    });
+
+    return (
+        (data ?? []).find(
+            (booking) =>
+                booking.service_id === args.service_id &&
+                booking.option_id === args.option_id &&
+                booking.slot_id === args.slot_id &&
+                localOf(booking.time) === args.time &&
+                localOf(booking.end_time) === args.end_time,
+        ) ?? null
+    );
+}
+
+async function collectAddress(
+    ctx: ToolContext,
+    service: ServiceResource,
+    candidate: SlotCandidate,
+    given: string | undefined,
+    current?: string,
+): Promise<string | undefined> {
+    if (!ADDRESS_SERVICE_TYPES.includes(candidate.service_type)) return undefined;
+
+    if (given ?? current) return given ?? current;
+
+    if (!supportsElicitation(ctx))
+        throw new ApiError({
+            status: 422,
+            code: 'BOOKING_ADDRESS_REQUIRED',
+            message: 'This service comes to the person, and no address was given.',
+        });
+
+    const outcome = await elicit(ctx, `"${service.label}" comes to you. Where should they come?`, {
+        type: 'object',
+        properties: { address: { type: 'string', title: 'Address', minLength: 1, maxLength: 500 } },
+        required: ['address'],
+    });
+    const address = outcome.accepted ? addressSchema.safeParse(outcome.content['address']) : null;
+
+    if (!address?.success)
+        throw new ApiError({
+            status: 400,
+            code: 'NOT_CONFIRMED',
+            message: 'The person gave no address, so nothing was sent.',
+        });
+
+    return address.data;
 }
 
 async function findWaitlistEntry(ctx: ToolContext, waitlistId: string): Promise<WaitlistEntry | null> {
@@ -776,6 +1052,7 @@ function cancelDeadlineOf(
 function bookingSummary(
     service: ServiceResource,
     candidate: SlotCandidate,
+    address: string | undefined,
     fields: Record<string, unknown>,
     documents: string[],
     deadline: string | null,
@@ -787,11 +1064,13 @@ function bookingSummary(
     const lines = [
         `Service: ${service.label}`,
         `Option: ${candidate.option_label}`,
-        `When: ${describeWhen(candidate.date, candidate.time)}`,
+        `When: ${describeCandidate(candidate)}`,
         organization ? `Organization: ${organization.main_label}` : null,
-        (organization?.address ?? service.address)
-            ? `Address: ${organization?.address ?? service.address}`
-            : null,
+        address
+            ? `Visit to: ${address}`
+            : (organization?.address ?? service.address)
+              ? `Address: ${organization?.address ?? service.address}`
+              : null,
         deadline === null
             ? 'Cancellation deadline: none'
             : isPast(deadline)
@@ -817,6 +1096,7 @@ function idempotencyKeyFor(ctx: ToolContext, args: BookingTarget, salt: string):
         args.option_id,
         args.slot_id,
         args.time ?? '',
+        ...(args.end_time ? [args.end_time] : []),
         salt,
     ];
 

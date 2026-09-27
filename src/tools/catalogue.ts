@@ -88,6 +88,16 @@ const slotView = z.looseObject({
     time: z.string().nullable(),
     available: z.number().nullable(),
     full: z.boolean(),
+    range: z
+        .object({
+            from: z.string(),
+            to: z.string(),
+            step_minutes: z.number(),
+            min_minutes: z.number(),
+            max_minutes: z.number().nullable(),
+        })
+        .optional(),
+    needs_address: z.boolean().optional(),
     note: z.string().optional(),
 });
 
@@ -402,6 +412,10 @@ export function registerCatalogueTools(server: McpServer, ctx: ToolContext): voi
                 ctx.config.write
                     ? 'Pass a candidate’s `option_id`, `slot_id` and `time` unchanged to create_booking or reschedule_booking. `full: true` means no places are left: offer join_waitlist instead.'
                     : '`full: true` means no places are left.',
+                'A `time_range` candidate is a free interval of one resource (a court, a specialist, a visit):',
+                'the person picks a start and an end inside its `range`. A `callback` candidate is a window in',
+                'which the organization phones the person. `needs_address: true` means the organization comes',
+                'to the person, whose address the booking needs.',
                 'For later times, call again with `after` set to the last candidate’s `starts_at`.',
                 DATA_NOTICE,
             ].join(' '),
@@ -420,7 +434,8 @@ export function registerCatalogueTools(server: McpServer, ctx: ToolContext): voi
                     .optional()
                     .describe(
                         'morning is before 12:00, afternoon 12:00–17:00, evening from 17:00, organization’s ' +
-                            'local time. Whole-day and no-time candidates are not filtered by it.',
+                            'local time. Whole-day and no-time candidates are not filtered by it; a free interval ' +
+                            'is cut to start within it.',
                     ),
                 after: z
                     .string()

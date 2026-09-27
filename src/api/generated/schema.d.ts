@@ -1525,7 +1525,7 @@ export interface components {
                 id: string;
                 label: string;
                 /** @enum {string} */
-                service_type: "service_apply" | "service_payment" | "service_delivery";
+                service_type: "service_apply" | "service_payment" | "service_delivery" | "service_visit";
                 enabled: boolean;
                 recurrent_dates?: {
                     /** @enum {string} */
@@ -1537,6 +1537,17 @@ export interface components {
                     }[];
                     /** @default null */
                     limit: number | null;
+                }[];
+                recurrent_ranges?: {
+                    /** @enum {string} */
+                    day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
+                    from?: string;
+                    to?: string;
+                    resources: string[];
+                    step_minutes?: number;
+                    min_minutes?: number;
+                    /** @default null */
+                    max_minutes: number | null;
                 }[];
                 slots: ({
                     id: string;
@@ -1595,7 +1606,60 @@ export interface components {
                     id: string;
                     label: string;
                     /** @enum {string} */
-                    child_type: "delivery";
+                    child_type: "time_range";
+                    value: {
+                        date: string;
+                        resource?: string;
+                        from: string;
+                        to: string;
+                        step_minutes: number;
+                        min_minutes: number;
+                        /** @default null */
+                        max_minutes: number | null;
+                        /** @default 0 */
+                        booked_count: number;
+                        /** @default [] */
+                        bookings: {
+                            /** @enum {string} */
+                            status: "reserved";
+                        }[];
+                    };
+                } | {
+                    id: string;
+                    label: string;
+                    /** @enum {string} */
+                    child_type: "callback";
+                    value: {
+                        date: string;
+                        time: {
+                            time: string;
+                            to: string;
+                            /** @default null */
+                            limit: number | null;
+                            /** @default 0 */
+                            booked_count: number;
+                            /** @default [] */
+                            bookings: {
+                                /** @enum {string} */
+                                status: "reserved";
+                            }[];
+                        }[];
+                    };
+                } | {
+                    id: string;
+                    label: string;
+                    /** @enum {string} */
+                    child_type: "pickup";
+                    value: {
+                        description?: string;
+                        link?: string;
+                        price?: string;
+                    };
+                } | {
+                    id: string;
+                    label: string;
+                    /** @enum {string} */
+                    child_type: "courier";
                     value: {
                         description?: string;
                         link?: string;
@@ -1650,13 +1714,13 @@ export interface components {
                 id: string;
                 label: string;
                 /** @enum {string} */
-                service_type: "service_apply" | "service_payment" | "service_delivery";
+                service_type: "service_apply" | "service_payment" | "service_delivery" | "service_visit";
                 enabled: boolean;
                 slots: {
                     id: string;
                     label: string;
                     /** @enum {string} */
-                    child_type: "date_time" | "date" | "apply" | "delivery" | "paycard";
+                    child_type: "date_time" | "date" | "apply" | "time_range" | "callback" | "pickup" | "courier" | "paycard";
                     date: string | null;
                     limit: number | null;
                     booked_count: number;
@@ -1666,7 +1730,19 @@ export interface components {
                         limit: number | null;
                         booked_count: number;
                         available: number | null;
+                        to?: string;
                     }[];
+                    range?: {
+                        from: string;
+                        to: string;
+                        step_minutes: number;
+                        min_minutes: number;
+                        max_minutes: number | null;
+                        free: {
+                            from: string;
+                            to: string;
+                        }[];
+                    };
                 }[];
             }[];
         };
@@ -1681,11 +1757,11 @@ export interface components {
                 option_id: string;
                 option_label: string;
                 /** @enum {string} */
-                service_type: "service_apply" | "service_payment" | "service_delivery";
+                service_type: "service_apply" | "service_payment" | "service_delivery" | "service_visit";
                 slot_id: string;
                 slot_label: string;
                 /** @enum {string} */
-                child_type: "date_time" | "date" | "apply" | "delivery" | "paycard";
+                child_type: "date_time" | "date" | "apply" | "time_range" | "callback" | "pickup" | "courier" | "paycard";
                 date: string | null;
                 time: string | null;
                 /** Format: date-time */
@@ -1695,6 +1771,11 @@ export interface components {
                 limit: number | null;
                 booked_count: number;
                 available: number | null;
+                range?: {
+                    step_minutes: number;
+                    min_minutes: number;
+                    max_minutes: number | null;
+                };
             }[];
         };
         ServiceRevisionResponseDto: {
@@ -1740,7 +1821,7 @@ export interface components {
                 id?: string;
                 label?: string;
                 /** @enum {string} */
-                service_type?: "service_apply" | "service_payment" | "service_delivery";
+                service_type?: "service_apply" | "service_payment" | "service_delivery" | "service_visit";
                 enabled?: boolean;
                 recurrent_dates?: {
                     /** @enum {string} */
@@ -1751,6 +1832,16 @@ export interface components {
                         limit?: number | null;
                     }[];
                     limit?: number | null;
+                }[] | null;
+                recurrent_ranges?: {
+                    /** @enum {string} */
+                    day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
+                    from?: string;
+                    to?: string;
+                    resources: string[];
+                    step_minutes?: number;
+                    min_minutes?: number;
+                    max_minutes?: number | null;
                 }[] | null;
                 slots?: ({
                     /** Format: uuid */
@@ -1791,7 +1882,49 @@ export interface components {
                     id?: string;
                     label?: string;
                     /** @enum {string} */
-                    child_type: "delivery";
+                    child_type: "time_range";
+                    value: {
+                        /** Format: date */
+                        date: string;
+                        from?: string;
+                        to?: string;
+                        step_minutes?: number;
+                        min_minutes?: number;
+                        max_minutes?: number | null;
+                    };
+                } | {
+                    /** Format: uuid */
+                    id?: string;
+                    label?: string;
+                    /** @enum {string} */
+                    child_type: "callback";
+                    value: {
+                        /** Format: date */
+                        date: string;
+                        time: {
+                            time: string;
+                            to: string;
+                            limit?: number | null;
+                        }[];
+                    };
+                } | {
+                    /** Format: uuid */
+                    id?: string;
+                    label?: string;
+                    /** @enum {string} */
+                    child_type: "pickup";
+                    value: {
+                        description?: string;
+                        /** Format: uri */
+                        link?: string;
+                        price?: string;
+                    };
+                } | {
+                    /** Format: uuid */
+                    id?: string;
+                    label?: string;
+                    /** @enum {string} */
+                    child_type: "courier";
                     value: {
                         description?: string;
                         /** Format: uri */
@@ -1964,7 +2097,7 @@ export interface components {
                 id: string;
                 label: string;
                 /** @enum {string} */
-                service_type: "service_apply" | "service_payment" | "service_delivery";
+                service_type: "service_apply" | "service_payment" | "service_delivery" | "service_visit";
                 enabled: boolean;
                 recurrent_dates?: {
                     /** @enum {string} */
@@ -1976,6 +2109,17 @@ export interface components {
                     }[];
                     /** @default null */
                     limit: number | null;
+                }[];
+                recurrent_ranges?: {
+                    /** @enum {string} */
+                    day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
+                    from?: string;
+                    to?: string;
+                    resources: string[];
+                    step_minutes?: number;
+                    min_minutes?: number;
+                    /** @default null */
+                    max_minutes: number | null;
                 }[];
                 slots: ({
                     id: string;
@@ -2000,6 +2144,12 @@ export interface components {
                                 phone: string;
                                 /** @default  */
                                 info: string;
+                                /** @default null */
+                                time: string | null;
+                                /** @default null */
+                                end_time: string | null;
+                                /** @default null */
+                                address: string | null;
                                 /** @default confirmed */
                                 status: string;
                                 /** Format: date-time */
@@ -2031,6 +2181,12 @@ export interface components {
                             phone: string;
                             /** @default  */
                             info: string;
+                            /** @default null */
+                            time: string | null;
+                            /** @default null */
+                            end_time: string | null;
+                            /** @default null */
+                            address: string | null;
                             /** @default confirmed */
                             status: string;
                             /** Format: date-time */
@@ -2060,6 +2216,12 @@ export interface components {
                             phone: string;
                             /** @default  */
                             info: string;
+                            /** @default null */
+                            time: string | null;
+                            /** @default null */
+                            end_time: string | null;
+                            /** @default null */
+                            address: string | null;
                             /** @default confirmed */
                             status: string;
                             /** Format: date-time */
@@ -2073,7 +2235,98 @@ export interface components {
                     id: string;
                     label: string;
                     /** @enum {string} */
-                    child_type: "delivery";
+                    child_type: "time_range";
+                    value: {
+                        date: string;
+                        resource?: string;
+                        from: string;
+                        to: string;
+                        step_minutes: number;
+                        min_minutes: number;
+                        /** @default null */
+                        max_minutes: number | null;
+                        /** @default 0 */
+                        booked_count: number;
+                        /** @default [] */
+                        bookings: ({
+                            id: string;
+                            user_id: string;
+                            /** @default  */
+                            person: string;
+                            /** @default  */
+                            phone: string;
+                            /** @default  */
+                            info: string;
+                            /** @default null */
+                            time: string | null;
+                            /** @default null */
+                            end_time: string | null;
+                            /** @default null */
+                            address: string | null;
+                            /** @default confirmed */
+                            status: string;
+                            /** Format: date-time */
+                            created_at: string;
+                        } | {
+                            /** @enum {string} */
+                            status: "reserved";
+                        })[];
+                    };
+                } | {
+                    id: string;
+                    label: string;
+                    /** @enum {string} */
+                    child_type: "callback";
+                    value: {
+                        date: string;
+                        time: {
+                            time: string;
+                            to: string;
+                            /** @default null */
+                            limit: number | null;
+                            /** @default 0 */
+                            booked_count: number;
+                            /** @default [] */
+                            bookings: ({
+                                id: string;
+                                user_id: string;
+                                /** @default  */
+                                person: string;
+                                /** @default  */
+                                phone: string;
+                                /** @default  */
+                                info: string;
+                                /** @default null */
+                                time: string | null;
+                                /** @default null */
+                                end_time: string | null;
+                                /** @default null */
+                                address: string | null;
+                                /** @default confirmed */
+                                status: string;
+                                /** Format: date-time */
+                                created_at: string;
+                            } | {
+                                /** @enum {string} */
+                                status: "reserved";
+                            })[];
+                        }[];
+                    };
+                } | {
+                    id: string;
+                    label: string;
+                    /** @enum {string} */
+                    child_type: "pickup";
+                    value: {
+                        description?: string;
+                        link?: string;
+                        price?: string;
+                    };
+                } | {
+                    id: string;
+                    label: string;
+                    /** @enum {string} */
+                    child_type: "courier";
                     value: {
                         description?: string;
                         link?: string;
@@ -2193,7 +2446,7 @@ export interface components {
             id?: string;
             label?: string;
             /** @enum {string} */
-            service_type?: "service_apply" | "service_payment" | "service_delivery";
+            service_type?: "service_apply" | "service_payment" | "service_delivery" | "service_visit";
             enabled?: boolean;
             recurrent_dates?: {
                 /** @enum {string} */
@@ -2204,6 +2457,16 @@ export interface components {
                     limit?: number | null;
                 }[];
                 limit?: number | null;
+            }[] | null;
+            recurrent_ranges?: {
+                /** @enum {string} */
+                day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
+                from?: string;
+                to?: string;
+                resources: string[];
+                step_minutes?: number;
+                min_minutes?: number;
+                max_minutes?: number | null;
             }[] | null;
             slots?: ({
                 /** Format: uuid */
@@ -2244,7 +2507,49 @@ export interface components {
                 id?: string;
                 label?: string;
                 /** @enum {string} */
-                child_type: "delivery";
+                child_type: "time_range";
+                value: {
+                    /** Format: date */
+                    date: string;
+                    from?: string;
+                    to?: string;
+                    step_minutes?: number;
+                    min_minutes?: number;
+                    max_minutes?: number | null;
+                };
+            } | {
+                /** Format: uuid */
+                id?: string;
+                label?: string;
+                /** @enum {string} */
+                child_type: "callback";
+                value: {
+                    /** Format: date */
+                    date: string;
+                    time: {
+                        time: string;
+                        to: string;
+                        limit?: number | null;
+                    }[];
+                };
+            } | {
+                /** Format: uuid */
+                id?: string;
+                label?: string;
+                /** @enum {string} */
+                child_type: "pickup";
+                value: {
+                    description?: string;
+                    /** Format: uri */
+                    link?: string;
+                    price?: string;
+                };
+            } | {
+                /** Format: uuid */
+                id?: string;
+                label?: string;
+                /** @enum {string} */
+                child_type: "courier";
                 value: {
                     description?: string;
                     /** Format: uri */
@@ -2268,11 +2573,11 @@ export interface components {
         UpdateOptionDto: {
             label?: string;
             /** @enum {string} */
-            service_type?: "service_apply" | "service_payment" | "service_delivery";
+            service_type?: "service_apply" | "service_payment" | "service_delivery" | "service_visit";
             enabled?: boolean;
         };
         RecurrenceDto: {
-            recurrent_dates: {
+            recurrent_dates?: {
                 /** @enum {string} */
                 day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
                 /** @default [] */
@@ -2282,6 +2587,16 @@ export interface components {
                 }[];
                 limit?: number | null;
             }[] | null;
+            recurrent_ranges?: {
+                /** @enum {string} */
+                day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
+                from?: string;
+                to?: string;
+                resources: string[];
+                step_minutes?: number;
+                min_minutes?: number;
+                max_minutes?: number | null;
+            }[] | null;
         };
         UpdateSlotDto: {
             label?: string;
@@ -2290,8 +2605,14 @@ export interface components {
             limit?: number | null;
             time?: {
                 time: string;
+                to?: string;
                 limit?: number | null;
             }[];
+            from?: string;
+            to?: string;
+            step_minutes?: number;
+            min_minutes?: number;
+            max_minutes?: number | null;
         };
         CloseSlotResponseDto: {
             service_id: string;
@@ -2331,6 +2652,8 @@ export interface components {
             /** Format: uuid */
             slot_id: string;
             time?: string;
+            end_time?: string;
+            address?: string;
             info?: string;
             fields?: {
                 [key: string]: unknown;
@@ -2349,10 +2672,11 @@ export interface components {
             option_id: string;
             slot_id: string;
             /** @enum {string} */
-            child_type: "date_time" | "date" | "apply" | "delivery" | "paycard";
+            child_type: "date_time" | "date" | "apply" | "time_range" | "callback" | "pickup" | "courier" | "paycard";
             status: string;
             date?: string[];
             time?: string[];
+            end_time?: string[];
             user_id?: string;
             /** Format: date-time */
             created_at: string;
@@ -2908,7 +3232,7 @@ export interface components {
                     id: string;
                     label: string;
                     /** @enum {string} */
-                    service_type: "service_apply" | "service_payment" | "service_delivery";
+                    service_type: "service_apply" | "service_payment" | "service_delivery" | "service_visit";
                     enabled: boolean;
                     recurrent_dates?: {
                         /** @enum {string} */
@@ -2920,6 +3244,17 @@ export interface components {
                         }[];
                         /** @default null */
                         limit: number | null;
+                    }[];
+                    recurrent_ranges?: {
+                        /** @enum {string} */
+                        day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
+                        from?: string;
+                        to?: string;
+                        resources: string[];
+                        step_minutes?: number;
+                        min_minutes?: number;
+                        /** @default null */
+                        max_minutes: number | null;
                     }[];
                     slots: ({
                         id: string;
@@ -2978,7 +3313,60 @@ export interface components {
                         id: string;
                         label: string;
                         /** @enum {string} */
-                        child_type: "delivery";
+                        child_type: "time_range";
+                        value: {
+                            date: string;
+                            resource?: string;
+                            from: string;
+                            to: string;
+                            step_minutes: number;
+                            min_minutes: number;
+                            /** @default null */
+                            max_minutes: number | null;
+                            /** @default 0 */
+                            booked_count: number;
+                            /** @default [] */
+                            bookings: {
+                                /** @enum {string} */
+                                status: "reserved";
+                            }[];
+                        };
+                    } | {
+                        id: string;
+                        label: string;
+                        /** @enum {string} */
+                        child_type: "callback";
+                        value: {
+                            date: string;
+                            time: {
+                                time: string;
+                                to: string;
+                                /** @default null */
+                                limit: number | null;
+                                /** @default 0 */
+                                booked_count: number;
+                                /** @default [] */
+                                bookings: {
+                                    /** @enum {string} */
+                                    status: "reserved";
+                                }[];
+                            }[];
+                        };
+                    } | {
+                        id: string;
+                        label: string;
+                        /** @enum {string} */
+                        child_type: "pickup";
+                        value: {
+                            description?: string;
+                            link?: string;
+                            price?: string;
+                        };
+                    } | {
+                        id: string;
+                        label: string;
+                        /** @enum {string} */
+                        child_type: "courier";
                         value: {
                             description?: string;
                             link?: string;
@@ -3641,11 +4029,18 @@ export interface components {
             date: string[];
             /** @default null */
             time: string[];
+            /** @default null */
+            end_time: string[];
             /**
              * Format: date-time
              * @default null
              */
             starts_at: string | null;
+            /**
+             * Format: date-time
+             * @default null
+             */
+            ends_at: string | null;
             /**
              * Format: date-time
              * @default null
@@ -3658,6 +4053,8 @@ export interface components {
             phone: string;
             /** @default  */
             info: string;
+            /** @default null */
+            address: string[];
             /** @default {} */
             fields: {
                 [key: string]: unknown;
@@ -3710,6 +4107,8 @@ export interface components {
             /** Format: uuid */
             slot_id: string;
             time?: string;
+            end_time?: string;
+            address?: string;
         };
         FavoriteResponseDto: {
             /** @enum {string} */
@@ -3855,7 +4254,7 @@ export interface components {
             organization_id?: string | null;
             /** Format: uri */
             url: string;
-            events: ("booking.created" | "booking.cancelled" | "booking.rescheduled" | "booking.status_changed" | "booking.reminder" | "waitlist.slot_available" | "webhook.test")[];
+            events: ("booking.created" | "booking.cancelled" | "booking.rescheduled" | "booking.status_changed" | "booking.reminder" | "booking.callback_due" | "waitlist.slot_available" | "webhook.test")[];
             enabled?: boolean;
             description?: string;
         };
@@ -3882,7 +4281,7 @@ export interface components {
         UpdateWebhookDto: {
             /** Format: uri */
             url?: string;
-            events?: ("booking.created" | "booking.cancelled" | "booking.rescheduled" | "booking.status_changed" | "booking.reminder" | "waitlist.slot_available" | "webhook.test")[];
+            events?: ("booking.created" | "booking.cancelled" | "booking.rescheduled" | "booking.status_changed" | "booking.reminder" | "booking.callback_due" | "waitlist.slot_available" | "webhook.test")[];
             enabled?: boolean;
             description?: string | null;
         };
@@ -3927,7 +4326,7 @@ export interface components {
         ErrorEnvelope: {
             error: {
                 /** @enum {string} */
-                code: "VALIDATION_ERROR" | "UNAUTHENTICATED" | "TOKEN_INVALID" | "TOKEN_EXPIRED" | "SESSION_REVOKED" | "REFRESH_TOKEN_REUSED" | "FORBIDDEN" | "NOT_FOUND" | "CONFLICT" | "RATE_LIMITED" | "INTERNAL_ERROR" | "SERIALIZATION_ERROR" | "PAYLOAD_TOO_LARGE" | "UNSUPPORTED_MEDIA_TYPE" | "PAGE_OUT_OF_RANGE" | "DEPENDENCY_UNAVAILABLE" | "INVALID_CREDENTIALS" | "LOGIN_METHOD_DISABLED" | "LOGIN_IDENTIFIER_REQUIRED" | "OTP_INVALID" | "OTP_EXPIRED" | "OTP_ATTEMPTS_EXCEEDED" | "PHONE_COUNTRY_NOT_SUPPORTED" | "PASSWORD_TOO_SHORT" | "PASSWORD_TOO_LONG" | "PASSWORD_TOO_WEAK" | "PASSWORD_UNCHANGED" | "LOGIN_TOO_SHORT" | "ACCOUNT_HAS_NO_PASSWORD" | "USER_NOT_FOUND" | "LOGIN_TAKEN" | "PHONE_TAKEN" | "ADMIN_IDENTIFIER_REQUIRED" | "CLIENT_PHONE_REQUIRED" | "CLIENT_ACCOUNT_REQUIRED" | "ADMIN_PASSWORD_REQUIRED" | "ADMIN_PHONE_REQUIRED" | "LAST_SUPER_ADMIN" | "SELF_ROLE_CHANGE" | "ORGANIZATION_NOT_FOUND" | "CATEGORY_NOT_FOUND" | "SERVICE_NOT_FOUND" | "NEWS_NOT_FOUND" | "INFOSECTION_NOT_FOUND" | "IMAGE_NOT_FOUND" | "ARCHIVE_NOT_FOUND" | "CATEGORY_ORGANIZATION_MISMATCH" | "REORDER_MISMATCH" | "INCLUDE_NOT_ALLOWED" | "OPTION_NOT_FOUND" | "OPTION_HAS_BOOKINGS" | "SLOT_NOT_FOUND" | "SLOT_HAS_BOOKINGS" | "SLOT_NOT_DATED" | "SLOT_NOT_LIMITED" | "SLOT_NOT_TIMED" | "SLOT_NOT_BOOKABLE" | "SLOT_TIME_REQUIRED" | "SLOT_FULL" | "SLOT_EXPIRED" | "BOOKING_NOT_FOUND" | "SESSION_NOT_FOUND" | "BOOKING_ALREADY_EXISTS" | "IDEMPOTENCY_IN_PROGRESS" | "IDEMPOTENCY_KEY_REUSED" | "OPTION_DISABLED" | "SERVICE_MODIFIED" | "SLOT_TIME_BOOKED" | "SLOT_DATE_TAKEN" | "SLOT_TIME_OUT_OF_RANGE" | "SLOT_BULK_TOO_LARGE" | "SERVICE_SLUG_TAKEN" | "SERVICE_NOT_DELETED" | "SERVICE_NOT_PUBLISHED" | "ORGANIZATION_CLOSED" | "BOOKING_LIMIT_REACHED" | "BOOKING_LEAD_TIME" | "BOOKING_TOO_FAR_AHEAD" | "BOOKING_CANCEL_DEADLINE_PASSED" | "BOOKING_FIELDS_INVALID" | "BOOKING_DOCUMENTS_REQUIRED" | "BOOKING_STATUS_TRANSITION" | "BOOKING_NOT_ACTIVE" | "BOOKING_NOT_DATED" | "WAITLIST_NOT_FOUND" | "WAITLIST_ALREADY_JOINED" | "SLOT_NOT_FULL" | "NEWS_SLUG_TAKEN" | "WEBHOOK_NOT_FOUND" | "FIELDS_NOT_ALLOWED" | "FAVORITES_LIMIT_REACHED" | "FILE_REQUIRED" | "FILE_TYPE_NOT_ALLOWED" | "FILE_TOO_LARGE" | "IMAGE_TOO_LARGE" | "IMAGE_UNREADABLE" | "SMS_DELIVERY_FAILED" | "SMS_BUDGET_EXCEEDED" | "ARCHIVE_SERVICE_MISMATCH";
+                code: "VALIDATION_ERROR" | "UNAUTHENTICATED" | "TOKEN_INVALID" | "TOKEN_EXPIRED" | "SESSION_REVOKED" | "REFRESH_TOKEN_REUSED" | "FORBIDDEN" | "NOT_FOUND" | "CONFLICT" | "RATE_LIMITED" | "INTERNAL_ERROR" | "SERIALIZATION_ERROR" | "PAYLOAD_TOO_LARGE" | "UNSUPPORTED_MEDIA_TYPE" | "PAGE_OUT_OF_RANGE" | "DEPENDENCY_UNAVAILABLE" | "INVALID_CREDENTIALS" | "LOGIN_METHOD_DISABLED" | "LOGIN_IDENTIFIER_REQUIRED" | "OTP_INVALID" | "OTP_EXPIRED" | "OTP_ATTEMPTS_EXCEEDED" | "PHONE_COUNTRY_NOT_SUPPORTED" | "PASSWORD_TOO_SHORT" | "PASSWORD_TOO_LONG" | "PASSWORD_TOO_WEAK" | "PASSWORD_UNCHANGED" | "LOGIN_TOO_SHORT" | "ACCOUNT_HAS_NO_PASSWORD" | "USER_NOT_FOUND" | "LOGIN_TAKEN" | "PHONE_TAKEN" | "ADMIN_IDENTIFIER_REQUIRED" | "CLIENT_PHONE_REQUIRED" | "CLIENT_ACCOUNT_REQUIRED" | "ADMIN_PASSWORD_REQUIRED" | "ADMIN_PHONE_REQUIRED" | "LAST_SUPER_ADMIN" | "SELF_ROLE_CHANGE" | "ORGANIZATION_NOT_FOUND" | "CATEGORY_NOT_FOUND" | "SERVICE_NOT_FOUND" | "NEWS_NOT_FOUND" | "INFOSECTION_NOT_FOUND" | "IMAGE_NOT_FOUND" | "ARCHIVE_NOT_FOUND" | "CATEGORY_ORGANIZATION_MISMATCH" | "REORDER_MISMATCH" | "INCLUDE_NOT_ALLOWED" | "OPTION_NOT_FOUND" | "OPTION_HAS_BOOKINGS" | "SLOT_NOT_FOUND" | "SLOT_HAS_BOOKINGS" | "SLOT_NOT_DATED" | "SLOT_NOT_LIMITED" | "SLOT_NOT_TIMED" | "SLOT_NOT_BOOKABLE" | "SLOT_TIME_REQUIRED" | "SLOT_FULL" | "SLOT_EXPIRED" | "BOOKING_NOT_FOUND" | "SESSION_NOT_FOUND" | "BOOKING_ALREADY_EXISTS" | "IDEMPOTENCY_IN_PROGRESS" | "IDEMPOTENCY_KEY_REUSED" | "OPTION_DISABLED" | "SERVICE_MODIFIED" | "SLOT_TIME_BOOKED" | "SLOT_DATE_TAKEN" | "SLOT_TIME_OUT_OF_RANGE" | "SLOT_BULK_TOO_LARGE" | "SLOT_TYPE_NOT_ALLOWED" | "SLOT_NOT_RANGED" | "SLOT_RANGE_REQUIRED" | "SLOT_RANGE_INVALID" | "SERVICE_SLUG_TAKEN" | "SERVICE_NOT_DELETED" | "SERVICE_NOT_PUBLISHED" | "ORGANIZATION_CLOSED" | "BOOKING_LIMIT_REACHED" | "BOOKING_LEAD_TIME" | "BOOKING_TOO_FAR_AHEAD" | "BOOKING_CANCEL_DEADLINE_PASSED" | "BOOKING_FIELDS_INVALID" | "BOOKING_DOCUMENTS_REQUIRED" | "BOOKING_STATUS_TRANSITION" | "BOOKING_NOT_ACTIVE" | "BOOKING_NOT_DATED" | "BOOKING_ADDRESS_REQUIRED" | "BOOKING_PHONE_REQUIRED" | "WAITLIST_NOT_FOUND" | "WAITLIST_ALREADY_JOINED" | "WAITLIST_NOT_SUPPORTED" | "SLOT_NOT_FULL" | "NEWS_SLUG_TAKEN" | "WEBHOOK_NOT_FOUND" | "FIELDS_NOT_ALLOWED" | "FAVORITES_LIMIT_REACHED" | "FILE_REQUIRED" | "FILE_TYPE_NOT_ALLOWED" | "FILE_TOO_LARGE" | "IMAGE_TOO_LARGE" | "IMAGE_UNREADABLE" | "SMS_DELIVERY_FAILED" | "SMS_BUDGET_EXCEEDED" | "ARCHIVE_SERVICE_MISMATCH";
                 message: string;
                 details?: {
                     path?: string;
@@ -4869,7 +5268,15 @@ export interface operations {
                     };
                 };
             };
-            /** @description `CATEGORY_ORGANIZATION_MISMATCH` — The category belongs to a different organization. */
+            /**
+             * @description `CATEGORY_ORGANIZATION_MISMATCH` — The category belongs to a different organization.
+             *
+             *     `SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.
+             *
+             *     `SLOT_RANGE_REQUIRED` — The interval needs from and to, or working hours for its weekday.
+             *
+             *     `SLOT_TYPE_NOT_ALLOWED` — This slot type is not allowed for the option service type.
+             */
             422: {
                 headers: {
                     [name: string]: unknown;
@@ -4878,7 +5285,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorEnvelope"] & {
                         error?: {
                             /** @enum {unknown} */
-                            code?: "CATEGORY_ORGANIZATION_MISMATCH";
+                            code?: "CATEGORY_ORGANIZATION_MISMATCH" | "SLOT_RANGE_INVALID" | "SLOT_RANGE_REQUIRED" | "SLOT_TYPE_NOT_ALLOWED";
                         };
                     };
                 };
@@ -6043,6 +6450,26 @@ export interface operations {
                     };
                 };
             };
+            /**
+             * @description `SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.
+             *
+             *     `SLOT_RANGE_REQUIRED` — The interval needs from and to, or working hours for its weekday.
+             *
+             *     `SLOT_TYPE_NOT_ALLOWED` — This slot type is not allowed for the option service type.
+             */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SLOT_RANGE_INVALID" | "SLOT_RANGE_REQUIRED" | "SLOT_TYPE_NOT_ALLOWED";
+                        };
+                    };
+                };
+            };
             /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
             429: {
                 headers: {
@@ -6295,6 +6722,20 @@ export interface operations {
                     };
                 };
             };
+            /** @description `SLOT_TYPE_NOT_ALLOWED` — This slot type is not allowed for the option service type. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SLOT_TYPE_NOT_ALLOWED";
+                        };
+                    };
+                };
+            };
             /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
             429: {
                 headers: {
@@ -6421,6 +6862,26 @@ export interface operations {
                         error?: {
                             /** @enum {unknown} */
                             code?: "NOT_FOUND" | "OPTION_NOT_FOUND" | "SERVICE_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.
+             *
+             *     `SLOT_RANGE_REQUIRED` — The interval needs from and to, or working hours for its weekday.
+             *
+             *     `SLOT_TYPE_NOT_ALLOWED` — This slot type is not allowed for the option service type.
+             */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SLOT_RANGE_INVALID" | "SLOT_RANGE_REQUIRED" | "SLOT_TYPE_NOT_ALLOWED";
                         };
                     };
                 };
@@ -6563,6 +7024,26 @@ export interface operations {
                         error?: {
                             /** @enum {unknown} */
                             code?: "CONFLICT";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.
+             *
+             *     `SLOT_RANGE_REQUIRED` — The interval needs from and to, or working hours for its weekday.
+             *
+             *     `SLOT_TYPE_NOT_ALLOWED` — This slot type is not allowed for the option service type.
+             */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SLOT_RANGE_INVALID" | "SLOT_RANGE_REQUIRED" | "SLOT_TYPE_NOT_ALLOWED";
                         };
                     };
                 };
@@ -6844,7 +7325,13 @@ export interface operations {
              *
              *     `SLOT_NOT_LIMITED` — This slot type has no capacity limit.
              *
+             *     `SLOT_NOT_RANGED` — This slot type has no bookable interval.
+             *
              *     `SLOT_NOT_TIMED` — This slot type has no time entries.
+             *
+             *     `SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.
+             *
+             *     `SLOT_RANGE_REQUIRED` — The interval needs from and to, or working hours for its weekday.
              */
             422: {
                 headers: {
@@ -6854,7 +7341,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorEnvelope"] & {
                         error?: {
                             /** @enum {unknown} */
-                            code?: "SLOT_NOT_DATED" | "SLOT_NOT_LIMITED" | "SLOT_NOT_TIMED";
+                            code?: "SLOT_NOT_DATED" | "SLOT_NOT_LIMITED" | "SLOT_NOT_RANGED" | "SLOT_NOT_TIMED" | "SLOT_RANGE_INVALID" | "SLOT_RANGE_REQUIRED";
                         };
                     };
                 };
@@ -7499,13 +7986,17 @@ export interface operations {
                 };
             };
             /**
-             * @description `BOOKING_DOCUMENTS_REQUIRED` — Required documents were not confirmed.
+             * @description `BOOKING_ADDRESS_REQUIRED` — An address is required for this booking.
+             *
+             *     `BOOKING_DOCUMENTS_REQUIRED` — Required documents were not confirmed.
              *
              *     `BOOKING_FIELDS_INVALID` — The booking form is invalid.
              *
              *     `BOOKING_LEAD_TIME` — The slot starts too soon to be booked.
              *
              *     `BOOKING_LIMIT_REACHED` — You already have the maximum number of active bookings for this service.
+             *
+             *     `BOOKING_PHONE_REQUIRED` — A phone number is required for a call-back request.
              *
              *     `BOOKING_TOO_FAR_AHEAD` — The slot is too far ahead to be booked.
              *
@@ -7527,6 +8018,8 @@ export interface operations {
              *
              *     `SLOT_NOT_BOOKABLE` — This slot type cannot be booked.
              *
+             *     `SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.
+             *
              *     `SLOT_TIME_REQUIRED` — A time is required for this slot.
              */
             422: {
@@ -7537,7 +8030,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorEnvelope"] & {
                         error?: {
                             /** @enum {unknown} */
-                            code?: "BOOKING_DOCUMENTS_REQUIRED" | "BOOKING_FIELDS_INVALID" | "BOOKING_LEAD_TIME" | "BOOKING_LIMIT_REACHED" | "BOOKING_TOO_FAR_AHEAD" | "CLIENT_ACCOUNT_REQUIRED" | "IDEMPOTENCY_KEY_REUSED" | "OPTION_DISABLED" | "ORGANIZATION_CLOSED" | "PHONE_COUNTRY_NOT_SUPPORTED" | "SERVICE_NOT_PUBLISHED" | "SLOT_EXPIRED" | "SLOT_FULL" | "SLOT_NOT_BOOKABLE" | "SLOT_TIME_REQUIRED";
+                            code?: "BOOKING_ADDRESS_REQUIRED" | "BOOKING_DOCUMENTS_REQUIRED" | "BOOKING_FIELDS_INVALID" | "BOOKING_LEAD_TIME" | "BOOKING_LIMIT_REACHED" | "BOOKING_PHONE_REQUIRED" | "BOOKING_TOO_FAR_AHEAD" | "CLIENT_ACCOUNT_REQUIRED" | "IDEMPOTENCY_KEY_REUSED" | "OPTION_DISABLED" | "ORGANIZATION_CLOSED" | "PHONE_COUNTRY_NOT_SUPPORTED" | "SERVICE_NOT_PUBLISHED" | "SLOT_EXPIRED" | "SLOT_FULL" | "SLOT_NOT_BOOKABLE" | "SLOT_RANGE_INVALID" | "SLOT_TIME_REQUIRED";
                         };
                     };
                 };
@@ -7958,6 +8451,8 @@ export interface operations {
              *     `SLOT_NOT_FULL` — The slot still has free capacity. Book it instead of joining the waitlist.
              *
              *     `SLOT_TIME_REQUIRED` — A time is required for this slot.
+             *
+             *     `WAITLIST_NOT_SUPPORTED` — This slot type has no waitlist.
              */
             422: {
                 headers: {
@@ -7967,7 +8462,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorEnvelope"] & {
                         error?: {
                             /** @enum {unknown} */
-                            code?: "OPTION_DISABLED" | "ORGANIZATION_CLOSED" | "SERVICE_NOT_PUBLISHED" | "SLOT_EXPIRED" | "SLOT_NOT_BOOKABLE" | "SLOT_NOT_FULL" | "SLOT_TIME_REQUIRED";
+                            code?: "OPTION_DISABLED" | "ORGANIZATION_CLOSED" | "SERVICE_NOT_PUBLISHED" | "SLOT_EXPIRED" | "SLOT_NOT_BOOKABLE" | "SLOT_NOT_FULL" | "SLOT_TIME_REQUIRED" | "WAITLIST_NOT_SUPPORTED";
                         };
                     };
                 };
@@ -13821,7 +14316,7 @@ export interface operations {
                 user_id?: string;
                 option_id?: string;
                 slot_id?: string;
-                child_type?: "date_time" | "date" | "apply" | "delivery" | "paycard";
+                child_type?: "date_time" | "date" | "apply" | "time_range" | "callback" | "pickup" | "courier" | "paycard";
                 status?: "pending" | "confirmed" | "completed" | "no_show" | "cancelled" | "active" | "all";
                 date_from?: string;
                 date_to?: string;
@@ -15387,7 +15882,9 @@ export interface operations {
                 };
             };
             /**
-             * @description `BOOKING_CANCEL_DEADLINE_PASSED` — The cancellation deadline for this booking has passed.
+             * @description `BOOKING_ADDRESS_REQUIRED` — An address is required for this booking.
+             *
+             *     `BOOKING_CANCEL_DEADLINE_PASSED` — The cancellation deadline for this booking has passed.
              *
              *     `BOOKING_LEAD_TIME` — The slot starts too soon to be booked.
              *
@@ -15403,6 +15900,8 @@ export interface operations {
              *
              *     `SLOT_NOT_BOOKABLE` — This slot type cannot be booked.
              *
+             *     `SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.
+             *
              *     `SLOT_TIME_REQUIRED` — A time is required for this slot.
              */
             422: {
@@ -15413,7 +15912,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorEnvelope"] & {
                         error?: {
                             /** @enum {unknown} */
-                            code?: "BOOKING_CANCEL_DEADLINE_PASSED" | "BOOKING_LEAD_TIME" | "BOOKING_NOT_ACTIVE" | "BOOKING_TOO_FAR_AHEAD" | "OPTION_DISABLED" | "SLOT_EXPIRED" | "SLOT_FULL" | "SLOT_NOT_BOOKABLE" | "SLOT_TIME_REQUIRED";
+                            code?: "BOOKING_ADDRESS_REQUIRED" | "BOOKING_CANCEL_DEADLINE_PASSED" | "BOOKING_LEAD_TIME" | "BOOKING_NOT_ACTIVE" | "BOOKING_TOO_FAR_AHEAD" | "OPTION_DISABLED" | "SLOT_EXPIRED" | "SLOT_FULL" | "SLOT_NOT_BOOKABLE" | "SLOT_RANGE_INVALID" | "SLOT_TIME_REQUIRED";
                         };
                     };
                 };
@@ -16824,7 +17323,7 @@ export interface operations {
                 sort?: string;
                 order?: "asc" | "desc";
                 organization_id?: string;
-                type?: "booking.created" | "booking.cancelled" | "booking.rescheduled" | "booking.status_changed" | "booking.reminder" | "waitlist.slot_available" | "webhook.test";
+                type?: "booking.created" | "booking.cancelled" | "booking.rescheduled" | "booking.status_changed" | "booking.reminder" | "booking.callback_due" | "waitlist.slot_available" | "webhook.test";
                 status?: "pending" | "delivered" | "failed";
                 request_id?: string;
             };

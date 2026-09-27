@@ -1,5 +1,5 @@
 import { type ServiceSlots, type SlotCandidate } from '../../src/api/contracts.js';
-import { flattenSlots } from '../../src/mapping/slots.js';
+import { flattenSlots, openingFor, rangeProblem } from '../../src/mapping/slots.js';
 
 const NOW = new Date('2026-10-01T08:00:00Z');
 
@@ -37,7 +37,7 @@ function response(items: SlotCandidate[], total = items.length): ServiceSlots {
 describe('flattenSlots', () => {
     it('drops slot types that cannot be booked at all', () => {
         const result = flattenSlots(
-            response([candidate({}), candidate({ slot_id: 'slot-2', child_type: 'delivery' })]),
+            response([candidate({}), candidate({ slot_id: 'slot-2', child_type: 'pickup' })]),
             { now: NOW },
         );
 
@@ -175,6 +175,131 @@ describe('flattenSlots', () => {
 
         expect(result.items.map((item) => item.slot_id)).toEqual(['slot-1', 'later', 'apply']);
         expect(result.items[2]?.note).toMatch(/Application/);
+    });
+
+    it('drops a callback window without a time, which the API would refuse anyway', () => {
+        const result = flattenSlots(response([candidate({ child_type: 'callback', time: null })]), {
+            now: NOW,
+        });
+
+        expect(result.dropped.not_bookable).toBe(1);
+    });
+
+    it('describes a callback window and flags a visit that needs an address', () => {
+        const result = flattenSlots(
+            response([candidate({ child_type: 'callback', service_type: 'service_visit' })]),
+            { now: NOW },
+        );
+
+        expect(result.items[0]).toMatchObject({ needs_address: true, note: expect.stringMatching(/phones/) });
+    });
+
+    describe('time_range', () => {
+        const opening = (overrides: Partial<SlotCandidate> = {}): SlotCandidate =>
+            candidate({
+                child_type: 'time_range',
+                time: '08:00',
+                starts_at: '2026-10-02T08:00:00+02:00',
+                ends_at: '2026-10-02T14:00:00+02:00',
+                date: '2026-10-02',
+                limit: 1,
+                available: 1,
+                range: { step_minutes: 30, min_minutes: 60, max_minutes: null },
+                ...overrides,
+            });
+
+        it('offers the free interval with the bounds to choose from', () => {
+            const result = flattenSlots(response([opening()]), { now: NOW });
+
+            expect(result.items[0]).toMatchObject({
+                time: '08:00',
+                starts_at: '2026-10-02T08:00:00+02:00',
+                range: { from: '08:00', to: '14:00', step_minutes: 30, min_minutes: 60, max_minutes: null },
+                full: false,
+            });
+        });
+
+        it('starts the interval at the part of day instead of dropping it', () => {
+            const result = flattenSlots(response([opening()]), { now: NOW, partOfDay: 'afternoon' });
+
+            expect(result.items[0]).toMatchObject({
+                time: '12:00',
+                starts_at: '2026-10-02T12:00:00+02:00',
+                range: { from: '12:00', to: '14:00' },
+            });
+        });
+
+        it('drops the interval when too little of it is left in the part of day', () => {
+            const result = flattenSlots(response([opening()]), { now: NOW, partOfDay: 'evening' });
+
+            expect(result.items).toEqual([]);
+            expect(result.dropped.part_of_day).toBe(1);
+        });
+
+        it('moves the start past the lead time onto the next step of the grid', () => {
+            const today = opening({
+                date: '2026-10-01',
+                starts_at: '2026-10-01T10:00:00+02:00',
+                ends_at: '2026-10-01T14:00:00+02:00',
+                time: '10:00',
+            });
+            const result = flattenSlots(response([today]), {
+                now: NOW,
+                policy: {
+                    lead_time_minutes: 100,
+                    max_active_per_user: null,
+                    max_advance_days: null,
+                    cancel_deadline_minutes: null,
+                    requires_confirmation: false,
+                },
+            });
+
+            expect(result.items[0]).toMatchObject({ time: '12:00', range: { from: '12:00', to: '14:00' } });
+        });
+
+        it('counts an interval the lead time leaves too short as a lead-time drop', () => {
+            const today = opening({
+                date: '2026-10-01',
+                starts_at: '2026-10-01T10:00:00+02:00',
+                ends_at: '2026-10-01T12:00:00+02:00',
+                time: '10:00',
+            });
+            const result = flattenSlots(response([today]), {
+                now: NOW,
+                policy: {
+                    lead_time_minutes: 100,
+                    max_active_per_user: null,
+                    max_advance_days: null,
+                    cancel_deadline_minutes: null,
+                    requires_confirmation: false,
+                },
+            });
+
+            expect(result.items).toEqual([]);
+            expect(result.dropped.lead_time).toBe(1);
+        });
+
+        it('finds the free interval that holds a chosen start and end, and checks the grid and length', () => {
+            const windows = [
+                opening({ time: '08:00', ends_at: '2026-10-02T10:00:00+02:00' }),
+                opening({ time: '12:00', ends_at: '2026-10-02T14:00:00+02:00' }),
+            ];
+
+            expect(openingFor(windows, '12:30', '14:00')?.time).toBe('12:00');
+            expect(openingFor(windows, '09:30', '12:30')).toBeUndefined();
+
+            const second = windows[1]!;
+            expect(rangeProblem(second, '12:00', '13:00')).toBeNull();
+            expect(rangeProblem(second, '12:15', '13:15')).toMatch(/grid/);
+            expect(rangeProblem(second, '12:00', '12:30')).toMatch(/at least 60/);
+            expect(
+                rangeProblem(
+                    { ...second, range: { step_minutes: 30, min_minutes: 60, max_minutes: 60 } },
+                    '12:00',
+                    '13:30',
+                ),
+            ).toMatch(/at most 60/);
+        });
     });
 
     it('trims the list and still reports how many matched', () => {

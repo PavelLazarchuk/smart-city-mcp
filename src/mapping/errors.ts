@@ -23,15 +23,28 @@ const LATER = ['try once more later; if it keeps failing, tell the person and gi
 export const ERROR_GUIDANCE: Record<string, ErrorGuidance> = {
     SLOT_FULL: {
         message: 'That time is fully booked.',
-        next_steps: ['offer the person join_waitlist for this candidate', 'or find_slots for another time'],
+        next_steps: [
+            'offer the person join_waitlist for this candidate; a `time_range` candidate has none, so find_slots again for its free intervals',
+            'or find_slots for another time',
+        ],
     },
     SLOT_EXPIRED: {
         message: 'That time has already passed.',
         next_steps: ['find_slots again for current times'],
     },
     SLOT_TIME_REQUIRED: {
-        message: 'This candidate has a start time, and none was sent.',
-        next_steps: ['call again with the `time` of the chosen find_slots candidate'],
+        message: 'This candidate needs a start time, and a free interval an end time too; one was not sent.',
+        next_steps: [
+            'call again with the `time` of the chosen find_slots candidate',
+            'for a `time_range` candidate also pass `end_time`, both inside its `range`',
+        ],
+    },
+    SLOT_RANGE_INVALID: {
+        message: 'That start and end do not fit the free interval.',
+        next_steps: [
+            'check the candidate’s `range` from find_slots: start and end on the `step_minutes` grid, the length between `min_minutes` and `max_minutes`',
+            'ask the person to adjust the times, then call again',
+        ],
     },
     SLOT_NOT_BOOKABLE: {
         message: 'This slot type cannot be booked.',
@@ -40,6 +53,10 @@ export const ERROR_GUIDANCE: Record<string, ErrorGuidance> = {
     SLOT_NOT_FOUND: {
         message: 'That time is not on offer any more.',
         next_steps: ['find_slots again and let the person choose again'],
+    },
+    WAITLIST_NOT_SUPPORTED: {
+        message: 'A free-interval slot has no waitlist.',
+        next_steps: ['find_slots again for another free interval or another day'],
     },
     SLOT_NOT_FULL: {
         message: 'That time still has free places, so no waitlist is needed.',
@@ -63,6 +80,16 @@ export const ERROR_GUIDANCE: Record<string, ErrorGuidance> = {
             'tell the person and show them list_my_bookings',
             'cancel one only if the person asks to, then book again',
         ],
+    },
+    BOOKING_ADDRESS_REQUIRED: {
+        message: 'This service comes to the person, so it needs their address.',
+        next_steps: [
+            'ask the person where the organization should come, then call again with it as `address`',
+        ],
+    },
+    BOOKING_PHONE_REQUIRED: {
+        message: 'A call-back needs a phone number on the account, and this one has none.',
+        next_steps: ['tell the person to arrange the call with the organization directly (get_organization)'],
     },
     BOOKING_ALREADY_EXISTS: {
         message: 'The person already has a booking for this time.',

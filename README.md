@@ -106,8 +106,21 @@ API's own rules: a past _time_, a `date_time` entry without a time, anything ins
 `lead_time_minutes` where the service sets one. A whole day is not a time, so today's `date` slot
 survives and no part of the day is read into it. A full slot is marked rather than hidden, since
 that is the way into the waitlist, and at most six candidates come back alongside `total_found`.
+A `time_range` candidate is one free interval with a `range` (`from`, `to`, `step_minutes`,
+`min_minutes`, `max_minutes`); the lead time and `part_of_day` move its start forward on the step grid
+instead of dropping it, and it is dropped only when less than `min_minutes` is left. A `callback`
+candidate is a window in which the organization phones the person. `needs_address: true` marks a
+`service_visit` option, where the organization comes to the person.
 
-**Booking.** The form is validated against the service's own `form_fields` before anything is sent,
+**Booking.** A `time_range` booking takes `time` and `end_time`, checked against the free intervals,
+the step grid and the length limits before anything is sent. When the interval is no longer free
+because the person already booked exactly it, the answer is `already_existed: true`, not
+`SLOT_FULL`. A reschedule inside the booking's own slot leaves the overlap with itself to the API,
+which alone knows the buffer. A visit asks the person for the address the same way as the form, or
+refuses with `BOOKING_ADDRESS_REQUIRED` on a client without elicitation. A reschedule keeps the
+address unless a new one is given. A free interval has no waitlist (`WAITLIST_NOT_SUPPORTED`).
+
+The form is validated against the service's own `form_fields` before anything is sent,
 so a wrong answer costs a question and not a booking attempt. Required fields are asked of the
 person; required documents are read out and only confirmed keys are sent. Every write is confirmed
 by the person: through elicitation where the client has it, otherwise as `CONFIRMATION_REQUIRED`
@@ -116,7 +129,7 @@ service with `requires_confirmation` comes back `pending`; the person can confir
 `confirm_booking`. The idempotency key is derived:
 
 ```
-Idempotency-Key = sha256(user_id, service_id, option_id, slot_id, time ?? '')
+Idempotency-Key = sha256(user_id, service_id, option_id, slot_id, time ?? '', end_time?)
 ```
 
 A repeat of the same booking replays the original `201` and is reported as "this already existed",

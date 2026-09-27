@@ -51,6 +51,21 @@ describe('redactBooking', () => {
         expect(view.fields).toEqual(booking.fields);
     });
 
+    it('keeps the end of an interval and shows a visit address only with SMART_CITY_MCP_PII', () => {
+        const visit = {
+            ...booking,
+            child_type: 'time_range',
+            end_time: '15:00',
+            ends_at: '2026-10-01T13:00:00Z',
+            address: 'Main st. 1, apt. 5',
+        } as unknown as BookingResource;
+
+        const masked = redactBooking(visit, { pii: false });
+        expect(masked.ends_at).toBe('2026-10-01T13:00:00Z');
+        expect(JSON.stringify(masked)).not.toContain('Main st.');
+        expect(redactBooking(visit, { pii: true }).address).toBe('Main st. 1, apt. 5');
+    });
+
     it('explains a slot type that has no clock time', () => {
         const view = redactBooking({ ...booking, child_type: 'apply' }, { pii: false });
 

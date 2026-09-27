@@ -3,11 +3,33 @@ import { z } from 'zod';
 
 import { type components } from './generated/schema.js';
 
-export const SLOT_TYPES = ['date_time', 'date', 'apply', 'delivery', 'paycard'] as const;
+export const SLOT_TYPES = [
+    'date_time',
+    'date',
+    'apply',
+    'time_range',
+    'callback',
+    'pickup',
+    'courier',
+    'paycard',
+] as const;
 export type SlotType = (typeof SLOT_TYPES)[number];
-export const BOOKABLE_SLOT_TYPES: readonly SlotType[] = ['date_time', 'date', 'apply'];
+export const BOOKABLE_SLOT_TYPES: readonly SlotType[] = [
+    'date_time',
+    'date',
+    'apply',
+    'time_range',
+    'callback',
+];
+export const TIMED_SLOT_TYPES: readonly SlotType[] = ['date_time', 'callback'];
 
-export const SERVICE_TYPES = ['service_apply', 'service_payment', 'service_delivery'] as const;
+export const SERVICE_TYPES = [
+    'service_apply',
+    'service_payment',
+    'service_delivery',
+    'service_visit',
+] as const;
+export const ADDRESS_SERVICE_TYPES: readonly string[] = ['service_visit'];
 export const SERVICE_STATUSES = ['draft', 'published', 'archived'] as const;
 export const BOOKING_STATUSES = ['pending', 'confirmed', 'completed', 'no_show', 'cancelled'] as const;
 export const WAITLIST_STATUSES = ['waiting', 'notified'] as const;
@@ -37,6 +59,7 @@ export const dateOnlySchema = z.iso.date();
 export const timeOfDaySchema = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, 'Must be HH:mm');
 export const isoDateTimeSchema = z.iso.datetime({ offset: true });
 export const fieldKeySchema = z.string().regex(/^[a-z][a-z0-9_]{0,39}$/, 'Must be snake_case');
+export const addressSchema = z.string().trim().min(1).max(500);
 
 export const otpRequestSchema = z.object({ phone: phoneSchema });
 
@@ -55,6 +78,8 @@ export const createBookingSchema = z.object({
     option_id: uuidSchema,
     slot_id: uuidSchema,
     time: timeOfDaySchema.optional(),
+    end_time: timeOfDaySchema.optional(),
+    address: addressSchema.optional(),
     info: z.string().trim().max(1000).optional(),
     fields: z.record(fieldKeySchema, z.unknown()).optional(),
     documents: z.array(fieldKeySchema).max(30).optional(),
@@ -65,6 +90,8 @@ export const rescheduleBookingSchema = z.object({
     option_id: uuidSchema.optional(),
     slot_id: uuidSchema,
     time: timeOfDaySchema.optional(),
+    end_time: timeOfDaySchema.optional(),
+    address: addressSchema.optional(),
 });
 
 export const joinWaitlistSchema = z.object({
