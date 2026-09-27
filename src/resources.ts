@@ -3,12 +3,14 @@ import {
     ResourceTemplate,
     type RegisteredResource,
 } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { type z } from 'zod';
 
 import {
     type BookingResource,
     type OrganizationDetail,
     type ServiceResource,
     objectIdSchema,
+    uuidSchema,
 } from './api/contracts.js';
 import { ApiError } from './api/errors.js';
 import {
@@ -21,6 +23,7 @@ import { elicitationSchemaFor } from './mapping/form.js';
 import { redactBooking } from './mapping/redact.js';
 import { type ToolContext } from './tools/context.js';
 import { MY_BOOKINGS_URI } from './tools/bookings.js';
+import { BOOKING_CALENDAR_URI, CALENDAR_MIME_TYPE, bookingCalendar } from './tools/calendar.js';
 
 function json(
     uri: URL | string,
@@ -37,18 +40,22 @@ function json(
     };
 }
 
-function objectIdOf(variable: string | string[] | undefined): string {
+function idOf(schema: z.ZodType<string>, variable: string | string[] | undefined, what: string): string {
     const value = Array.isArray(variable) ? variable[0] : variable;
-    const parsed = objectIdSchema.safeParse(value);
+    const parsed = schema.safeParse(value);
 
     if (!parsed.success)
         throw new ApiError({
             status: 400,
             code: 'VALIDATION_ERROR',
-            message: 'The id in the resource URI is not a valid object id.',
+            message: `The id in the resource URI is not a valid ${what}.`,
         });
 
     return parsed.data;
+}
+
+function objectIdOf(variable: string | string[] | undefined): string {
+    return idOf(objectIdSchema, variable, 'object id');
 }
 
 export interface Resources {
@@ -140,6 +147,25 @@ export function registerResources(server: McpServer, ctx: ToolContext): Resource
         },
     );
     bookings.disable();
+
+    server.registerResource(
+        'booking-calendar',
+        new ResourceTemplate(BOOKING_CALENDAR_URI, { list: undefined }),
+        {
+            title: 'Booking calendar file',
+            description: 'One booking of the signed-in account as an iCalendar file.',
+            mimeType: CALENDAR_MIME_TYPE,
+        },
+        async (uri, variables) => ({
+            contents: [
+                {
+                    uri: uri.href,
+                    mimeType: CALENDAR_MIME_TYPE,
+                    text: await bookingCalendar(ctx, idOf(uuidSchema, variables['id'], 'booking id')),
+                },
+            ],
+        }),
+    );
 
     return { personal: [bookings] };
 }

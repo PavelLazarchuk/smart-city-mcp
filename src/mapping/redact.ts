@@ -38,6 +38,7 @@ export interface BookingView {
     status: string;
     confirmed_at: string | null;
     created_at: string;
+    booked_by_staff?: true;
     note?: string;
     form_field_keys: string[];
     documents: string[];
@@ -65,6 +66,10 @@ export function redactBooking(booking: BookingResource, options: RedactOptions):
         documents: booking.documents ?? [],
     };
     const note = SLOT_NOTES[booking.child_type];
+
+    const createdBy: unknown = booking.created_by;
+
+    if (typeof createdBy === 'string' && createdBy !== booking.user_id) view.booked_by_staff = true;
 
     if (note) view.note = note;
 

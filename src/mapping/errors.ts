@@ -91,6 +91,12 @@ export const ERROR_GUIDANCE: Record<string, ErrorGuidance> = {
         message: 'This booking is finished or already cancelled.',
         next_steps: ['get_booking to show its current status'],
     },
+    BOOKING_NOT_DATED: {
+        message: 'This booking has no date yet: the organization schedules it later.',
+        next_steps: [
+            'tell the person there is nothing to add to a calendar until the organization sets a time',
+        ],
+    },
     BOOKING_NOT_FOUND: {
         message: 'No booking with that id belongs to this account.',
         next_steps: ['list_my_bookings for the right `id`'],
@@ -132,6 +138,12 @@ export const ERROR_GUIDANCE: Record<string, ErrorGuidance> = {
     NEWS_NOT_FOUND: { message: 'No such news item.', next_steps: ['list_news'] },
     INFOSECTION_NOT_FOUND: { message: 'No such info section.', next_steps: ['list_info_sections'] },
     CATEGORY_NOT_FOUND: { message: 'No such category.', next_steps: ['search_services'] },
+    FAVORITES_LIMIT_REACHED: {
+        message: 'The favorites are full: an account keeps up to 100.',
+        next_steps: [
+            'show the person list_favorites and ask which one to remove_favorite, then add_favorite again',
+        ],
+    },
     WAITLIST_ALREADY_JOINED: {
         message: 'The person is already on the waitlist for this time.',
         next_steps: ['list_my_waitlist'],
@@ -282,6 +294,7 @@ export const UNREACHABLE_CODES: ReadonlySet<string> = new Set([
     'PHONE_TAKEN',
     'ADMIN_IDENTIFIER_REQUIRED',
     'CLIENT_PHONE_REQUIRED',
+    'CLIENT_ACCOUNT_REQUIRED',
     'ADMIN_PASSWORD_REQUIRED',
     'ADMIN_PHONE_REQUIRED',
     'LAST_SUPER_ADMIN',

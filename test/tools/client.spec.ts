@@ -1,4 +1,4 @@
-import { createServer, type Server } from 'node:http';
+import { createServer, type IncomingHttpHeaders, type Server } from 'node:http';
 import { type AddressInfo } from 'node:net';
 
 import { ApiClient } from '../../src/api/client.js';
@@ -14,15 +14,21 @@ interface Stub {
     close(): Promise<void>;
 }
 
-async function serve(handler: (url: URL, respond: Respond) => void): Promise<Stub> {
+async function serve(
+    handler: (url: URL, respond: Respond, headers: IncomingHttpHeaders) => void,
+): Promise<Stub> {
     const hits: string[] = [];
     const server: Server = createServer((request, response) => {
         const url = new URL(request.url ?? '/', 'http://stub');
         hits.push(url.pathname + url.search);
-        handler(url, (status, body, headers = {}) => {
-            response.writeHead(status, { 'content-type': 'application/json', ...headers });
-            response.end(body === undefined ? '' : JSON.stringify(body));
-        });
+        handler(
+            url,
+            (status, body, headers = {}) => {
+                response.writeHead(status, { 'content-type': 'application/json', ...headers });
+                response.end(body === undefined ? '' : JSON.stringify(body));
+            },
+            request.headers,
+        );
     });
     await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
     const { port } = server.address() as AddressInfo;
@@ -58,14 +64,18 @@ describe('ApiClient', () => {
     }, 20_000);
 
     it('serves a 304 from the cache instead of an empty body', async () => {
-        let served = 0;
-        const stub = await serve((url, respond) => {
-            served += 1;
+        let notModified = 0;
+        const stub = await serve((url, respond, headers) => {
+            const fresh =
+                headers['if-none-match'] === 'W/"v1"' && !/no-cache/.test(headers['cache-control'] ?? '');
 
-            if (served === 1)
-                return respond(200, { data: [{ id: 'a' }], meta: { total: 1 } }, { etag: '"v1"' });
+            if (fresh) {
+                notModified += 1;
 
-            return respond(304, undefined, { etag: '"v1"' });
+                return respond(304, undefined, { etag: 'W/"v1"' });
+            }
+
+            return respond(200, { data: [{ id: 'a' }], meta: { total: 1 } }, { etag: 'W/"v1"' });
         });
 
         try {
@@ -77,6 +87,7 @@ describe('ApiClient', () => {
             expect(first.data).toEqual([{ id: 'a' }]);
             expect(warm.data).toEqual([{ id: 'a' }]);
             expect(warm.meta).toEqual({ total: 1 });
+            expect(notModified).toBe(1);
             expect(stub.hits).toHaveLength(2);
         } finally {
             await stub.close();

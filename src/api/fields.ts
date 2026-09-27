@@ -44,6 +44,10 @@ export const SERVICE_BOOKING_FIELDS = [
 
 export const SERVICE_FORM_FIELDS = ['label', 'form_fields', 'required_documents'] as const;
 
+export const SERVICE_LABEL_FIELDS = ['label'] as const;
+
+export const ORGANIZATION_LABEL_FIELDS = ['main_label'] as const;
+
 export const ORGANIZATION_FIELDS = [
     'main_label',
     'main_category',

@@ -38,6 +38,8 @@ export interface StubState {
     slotTaken: boolean;
     issuedAccess: number;
     authRemaining: number;
+    favorites: { type: string; id: string; available: boolean }[];
+    calendarToken: string | null;
 }
 
 export interface Stub {
@@ -227,6 +229,8 @@ export async function startStubApi(): Promise<Stub> {
         slotTaken: false,
         issuedAccess: 0,
         authRemaining: 9,
+        favorites: [],
+        calendarToken: null,
     };
 
     const server = createServer((request, response) => {
@@ -442,6 +446,99 @@ async function handle(request: IncomingMessage, response: ServerResponse, state:
         if (key) state.idempotent.set(key, { status: 201, body: payload });
 
         return send(201, payload);
+    }
+
+    if (path === '/me/favorites' && method === 'GET') {
+        if (!requireAuth()) return;
+
+        const type = url.searchParams.get('type');
+        const limit = Number(url.searchParams.get('limit') ?? 20);
+        const page = Number(url.searchParams.get('page') ?? 1);
+        const matching = state.favorites.filter((favorite) => !type || favorite.type === type);
+        const items = matching.slice((page - 1) * limit, page * limit).map((favorite) => ({
+            type: favorite.type,
+            id: favorite.id,
+            organization_id: ORGANIZATION_ID,
+            available: favorite.available,
+            ...(favorite.type === 'service'
+                ? { service: favorite.available ? service : null }
+                : { organization }),
+            created_at: '2026-01-01T00:00:00Z',
+        }));
+
+        return send(200, envelope(items, { total: matching.length, page, limit }));
+    }
+
+    const favoriteMatch = /^\/me\/favorites\/(service|organization)\/([^/]+)$/.exec(path);
+
+    if (favoriteMatch && (method === 'PUT' || method === 'DELETE')) {
+        if (!requireAuth()) return;
+
+        const type = favoriteMatch[1]!;
+        const id = favoriteMatch[2]!;
+        const known = type === 'service' ? id === SERVICE_ID : id === ORGANIZATION_ID;
+
+        if (method === 'PUT' && !known)
+            return send(404, fail(type === 'service' ? 'SERVICE_NOT_FOUND' : 'ORGANIZATION_NOT_FOUND'));
+
+        state.favorites = state.favorites.filter((favorite) => favorite.type !== type || favorite.id !== id);
+
+        if (method === 'PUT') state.favorites.unshift({ type, id, available: true });
+
+        response.writeHead(204);
+        response.end();
+
+        return;
+    }
+
+    if (path === '/me/calendar-token') {
+        if (!requireAuth()) return;
+
+        if (method === 'POST') {
+            state.calendarToken = `cal-${state.issuedAccess}-${Date.now()}`;
+
+            return send(
+                201,
+                envelope({
+                    token: state.calendarToken,
+                    path: `/api/v1/me/bookings.ics?token=${state.calendarToken}`,
+                }),
+            );
+        }
+
+        state.calendarToken = null;
+        response.writeHead(204);
+        response.end();
+
+        return;
+    }
+
+    const calendarMatch = /^\/bookings\/([^/]+)\/calendar\.ics$/.exec(path);
+
+    if (calendarMatch) {
+        if (!requireAuth()) return;
+
+        const booking = state.bookings.find((row) => row['id'] === calendarMatch[1]);
+
+        if (!booking) return send(404, fail('BOOKING_NOT_FOUND'));
+
+        if (booking['child_type'] === 'apply') return send(422, fail('BOOKING_NOT_DATED'));
+
+        response.writeHead(200, { 'content-type': 'text/calendar; charset=utf-8' });
+        response.end(
+            [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'BEGIN:VEVENT',
+                `UID:booking-${String(booking['id'])}@stub`,
+                `SUMMARY:${String(booking['service_label'])}`,
+                'END:VEVENT',
+                'END:VCALENDAR',
+                '',
+            ].join('\r\n'),
+        );
+
+        return;
     }
 
     const bookingMatch = /^\/bookings\/([^/]+)$/.exec(path);

@@ -6327,7 +6327,7 @@
                         }
                     },
                     "409": {
-                        "description": "`BOOKING_ALREADY_EXISTS` — You already have a booking for this slot.\n\n`IDEMPOTENCY_IN_PROGRESS` — A request with this Idempotency-Key is still being processed.",
+                        "description": "`BOOKING_ALREADY_EXISTS` — You already have a booking for this slot.\n\n`CONFLICT` — The request conflicts with the current state.\n\n`IDEMPOTENCY_IN_PROGRESS` — A request with this Idempotency-Key is still being processed.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -6344,6 +6344,7 @@
                                                         "code": {
                                                             "enum": [
                                                                 "BOOKING_ALREADY_EXISTS",
+                                                                "CONFLICT",
                                                                 "IDEMPOTENCY_IN_PROGRESS"
                                                             ]
                                                         }
@@ -6357,7 +6358,7 @@
                         }
                     },
                     "422": {
-                        "description": "`BOOKING_DOCUMENTS_REQUIRED` — Required documents were not confirmed.\n\n`BOOKING_FIELDS_INVALID` — The booking form is invalid.\n\n`BOOKING_LEAD_TIME` — The slot starts too soon to be booked.\n\n`BOOKING_LIMIT_REACHED` — You already have the maximum number of active bookings for this service.\n\n`BOOKING_TOO_FAR_AHEAD` — The slot is too far ahead to be booked.\n\n`IDEMPOTENCY_KEY_REUSED` — This Idempotency-Key was already used for a different request.\n\n`OPTION_DISABLED` — This service option is disabled.\n\n`ORGANIZATION_CLOSED` — The organization is temporarily closed.\n\n`SERVICE_NOT_PUBLISHED` — The service is not published.\n\n`SLOT_EXPIRED` — The slot date has passed.\n\n`SLOT_FULL` — The slot is fully booked.\n\n`SLOT_NOT_BOOKABLE` — This slot type cannot be booked.\n\n`SLOT_TIME_REQUIRED` — A time is required for this slot.",
+                        "description": "`BOOKING_DOCUMENTS_REQUIRED` — Required documents were not confirmed.\n\n`BOOKING_FIELDS_INVALID` — The booking form is invalid.\n\n`BOOKING_LEAD_TIME` — The slot starts too soon to be booked.\n\n`BOOKING_LIMIT_REACHED` — You already have the maximum number of active bookings for this service.\n\n`BOOKING_TOO_FAR_AHEAD` — The slot is too far ahead to be booked.\n\n`CLIENT_ACCOUNT_REQUIRED` — This phone number belongs to a staff account. Book on behalf of clients only.\n\n`IDEMPOTENCY_KEY_REUSED` — This Idempotency-Key was already used for a different request.\n\n`OPTION_DISABLED` — This service option is disabled.\n\n`ORGANIZATION_CLOSED` — The organization is temporarily closed.\n\n`PHONE_COUNTRY_NOT_SUPPORTED` — The phone number must belong to the supported country.\n\n`SERVICE_NOT_PUBLISHED` — The service is not published.\n\n`SLOT_EXPIRED` — The slot date has passed.\n\n`SLOT_FULL` — The slot is fully booked.\n\n`SLOT_NOT_BOOKABLE` — This slot type cannot be booked.\n\n`SLOT_TIME_REQUIRED` — A time is required for this slot.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -6378,9 +6379,11 @@
                                                                 "BOOKING_LEAD_TIME",
                                                                 "BOOKING_LIMIT_REACHED",
                                                                 "BOOKING_TOO_FAR_AHEAD",
+                                                                "CLIENT_ACCOUNT_REQUIRED",
                                                                 "IDEMPOTENCY_KEY_REUSED",
                                                                 "OPTION_DISABLED",
                                                                 "ORGANIZATION_CLOSED",
+                                                                "PHONE_COUNTRY_NOT_SUPPORTED",
                                                                 "SERVICE_NOT_PUBLISHED",
                                                                 "SLOT_EXPIRED",
                                                                 "SLOT_FULL",
@@ -19492,6 +19495,474 @@
                 ]
             }
         },
+        "/api/v1/me/bookings.ics": {
+            "get": {
+                "operationId": "BookingsController_feed",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "maxLength": 128,
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "text/calendar": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "`VALIDATION_ERROR` — The request is invalid.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "VALIDATION_ERROR"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "`SESSION_REVOKED` — The session has been revoked.\n\n`TOKEN_EXPIRED` — The token has expired.\n\n`TOKEN_INVALID` — The token is invalid.\n\n`UNAUTHENTICATED` — Authentication is required.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "SESSION_REVOKED",
+                                                                "TOKEN_EXPIRED",
+                                                                "TOKEN_INVALID",
+                                                                "UNAUTHENTICATED"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "`FORBIDDEN` — You are not allowed to perform this action.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "FORBIDDEN"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "`RATE_LIMITED` — Too many requests. Please try again later.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "RATE_LIMITED"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "`INTERNAL_ERROR` — An unexpected error occurred.\n\n`SERIALIZATION_ERROR` — The response could not be serialized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "INTERNAL_ERROR",
+                                                                "SERIALIZATION_ERROR"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "tags": [
+                    "bookings"
+                ]
+            }
+        },
+        "/api/v1/me/calendar-token": {
+            "post": {
+                "operationId": "BookingsController_issueCalendarToken",
+                "parameters": [],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CalendarTokenResponseDto"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "`SESSION_REVOKED` — The session has been revoked.\n\n`TOKEN_EXPIRED` — The token has expired.\n\n`TOKEN_INVALID` — The token is invalid.\n\n`UNAUTHENTICATED` — Authentication is required.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "SESSION_REVOKED",
+                                                                "TOKEN_EXPIRED",
+                                                                "TOKEN_INVALID",
+                                                                "UNAUTHENTICATED"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "`FORBIDDEN` — You are not allowed to perform this action.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "FORBIDDEN"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "`RATE_LIMITED` — Too many requests. Please try again later.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "RATE_LIMITED"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "`INTERNAL_ERROR` — An unexpected error occurred.\n\n`SERIALIZATION_ERROR` — The response could not be serialized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "INTERNAL_ERROR",
+                                                                "SERIALIZATION_ERROR"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "tags": [
+                    "bookings"
+                ]
+            },
+            "delete": {
+                "operationId": "BookingsController_revokeCalendarToken",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "401": {
+                        "description": "`SESSION_REVOKED` — The session has been revoked.\n\n`TOKEN_EXPIRED` — The token has expired.\n\n`TOKEN_INVALID` — The token is invalid.\n\n`UNAUTHENTICATED` — Authentication is required.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "SESSION_REVOKED",
+                                                                "TOKEN_EXPIRED",
+                                                                "TOKEN_INVALID",
+                                                                "UNAUTHENTICATED"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "`FORBIDDEN` — You are not allowed to perform this action.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "FORBIDDEN"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "`RATE_LIMITED` — Too many requests. Please try again later.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "RATE_LIMITED"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "`INTERNAL_ERROR` — An unexpected error occurred.\n\n`SERIALIZATION_ERROR` — The response could not be serialized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "INTERNAL_ERROR",
+                                                                "SERIALIZATION_ERROR"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "tags": [
+                    "bookings"
+                ]
+            }
+        },
         "/api/v1/me/waitlist": {
             "get": {
                 "operationId": "BookingsController_ownWaitlist",
@@ -20252,6 +20723,220 @@
                                                             "enum": [
                                                                 "BOOKING_CANCEL_DEADLINE_PASSED",
                                                                 "BOOKING_NOT_ACTIVE"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "`RATE_LIMITED` — Too many requests. Please try again later.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "RATE_LIMITED"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "`INTERNAL_ERROR` — An unexpected error occurred.\n\n`SERIALIZATION_ERROR` — The response could not be serialized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "INTERNAL_ERROR",
+                                                                "SERIALIZATION_ERROR"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "tags": [
+                    "bookings"
+                ]
+            }
+        },
+        "/api/v1/bookings/{booking_id}/calendar.ics": {
+            "get": {
+                "operationId": "BookingsController_calendarOf",
+                "parameters": [
+                    {
+                        "name": "booking_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "text/calendar": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "`SESSION_REVOKED` — The session has been revoked.\n\n`TOKEN_EXPIRED` — The token has expired.\n\n`TOKEN_INVALID` — The token is invalid.\n\n`UNAUTHENTICATED` — Authentication is required.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "SESSION_REVOKED",
+                                                                "TOKEN_EXPIRED",
+                                                                "TOKEN_INVALID",
+                                                                "UNAUTHENTICATED"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "`FORBIDDEN` — You are not allowed to perform this action.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "FORBIDDEN"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "`BOOKING_NOT_FOUND` — Booking not found.\n\n`NOT_FOUND` — The requested resource was not found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "BOOKING_NOT_FOUND",
+                                                                "NOT_FOUND"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "`BOOKING_NOT_DATED` — The booking has no date, so it cannot be added to a calendar.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "BOOKING_NOT_DATED"
                                                             ]
                                                         }
                                                     }
@@ -21104,6 +21789,674 @@
                 ],
                 "tags": [
                     "bookings"
+                ]
+            }
+        },
+        "/api/v1/me/favorites": {
+            "get": {
+                "operationId": "FavoritesController_list",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "minimum": 1,
+                            "maximum": 9007199254740991,
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "minimum": 1,
+                            "maximum": 9007199254740991,
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "pattern": "^[a-z][a-z0-9_]*$",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "order",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "service",
+                                "organization"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/FavoriteResponseDto"
+                                            }
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "properties": {
+                                                "page": {
+                                                    "type": "integer"
+                                                },
+                                                "limit": {
+                                                    "type": "integer"
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "nullable": false
+                                                },
+                                                "total_pages": {
+                                                    "type": "integer",
+                                                    "nullable": false
+                                                },
+                                                "has_next": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "`VALIDATION_ERROR` — The request is invalid.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "VALIDATION_ERROR"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "`SESSION_REVOKED` — The session has been revoked.\n\n`TOKEN_EXPIRED` — The token has expired.\n\n`TOKEN_INVALID` — The token is invalid.\n\n`UNAUTHENTICATED` — Authentication is required.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "SESSION_REVOKED",
+                                                                "TOKEN_EXPIRED",
+                                                                "TOKEN_INVALID",
+                                                                "UNAUTHENTICATED"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "`FORBIDDEN` — You are not allowed to perform this action.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "FORBIDDEN"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "`RATE_LIMITED` — Too many requests. Please try again later.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "RATE_LIMITED"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "`INTERNAL_ERROR` — An unexpected error occurred.\n\n`SERIALIZATION_ERROR` — The response could not be serialized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "INTERNAL_ERROR",
+                                                                "SERIALIZATION_ERROR"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "tags": [
+                    "favorites"
+                ]
+            }
+        },
+        "/api/v1/me/favorites/{type}/{id}": {
+            "put": {
+                "operationId": "FavoritesController_add",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "service",
+                                "organization"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "pattern": "^[a-f0-9]{24}$",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "401": {
+                        "description": "`SESSION_REVOKED` — The session has been revoked.\n\n`TOKEN_EXPIRED` — The token has expired.\n\n`TOKEN_INVALID` — The token is invalid.\n\n`UNAUTHENTICATED` — Authentication is required.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "SESSION_REVOKED",
+                                                                "TOKEN_EXPIRED",
+                                                                "TOKEN_INVALID",
+                                                                "UNAUTHENTICATED"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "`FORBIDDEN` — You are not allowed to perform this action.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "FORBIDDEN"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "`NOT_FOUND` — The requested resource was not found.\n\n`ORGANIZATION_NOT_FOUND` — Organization not found.\n\n`SERVICE_NOT_FOUND` — Service not found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "NOT_FOUND",
+                                                                "ORGANIZATION_NOT_FOUND",
+                                                                "SERVICE_NOT_FOUND"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "`FAVORITES_LIMIT_REACHED` — You already have the maximum number of favorites.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "FAVORITES_LIMIT_REACHED"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "`RATE_LIMITED` — Too many requests. Please try again later.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "RATE_LIMITED"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "`INTERNAL_ERROR` — An unexpected error occurred.\n\n`SERIALIZATION_ERROR` — The response could not be serialized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "INTERNAL_ERROR",
+                                                                "SERIALIZATION_ERROR"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "tags": [
+                    "favorites"
+                ]
+            },
+            "delete": {
+                "operationId": "FavoritesController_remove",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "service",
+                                "organization"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "pattern": "^[a-f0-9]{24}$",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "401": {
+                        "description": "`SESSION_REVOKED` — The session has been revoked.\n\n`TOKEN_EXPIRED` — The token has expired.\n\n`TOKEN_INVALID` — The token is invalid.\n\n`UNAUTHENTICATED` — Authentication is required.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "SESSION_REVOKED",
+                                                                "TOKEN_EXPIRED",
+                                                                "TOKEN_INVALID",
+                                                                "UNAUTHENTICATED"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "`FORBIDDEN` — You are not allowed to perform this action.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "FORBIDDEN"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "`NOT_FOUND` — The requested resource was not found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "NOT_FOUND"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "`RATE_LIMITED` — Too many requests. Please try again later.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "RATE_LIMITED"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "`INTERNAL_ERROR` — An unexpected error occurred.\n\n`SERIALIZATION_ERROR` — The response could not be serialized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ErrorEnvelope"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "code": {
+                                                            "enum": [
+                                                                "INTERNAL_ERROR",
+                                                                "SERIALIZATION_ERROR"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "tags": [
+                    "favorites"
                 ]
             }
         },
@@ -23141,6 +24494,16 @@
                                 "delivered",
                                 "failed"
                             ]
+                        }
+                    },
+                    {
+                        "name": "request_id",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "minLength": 1,
+                            "maxLength": 64,
+                            "type": "string"
                         }
                     }
                 ],
@@ -27321,6 +28684,24 @@
                             "type": "string",
                             "pattern": "^[a-z][a-z0-9_]{0,39}$"
                         }
+                    },
+                    "on_behalf": {
+                        "type": "object",
+                        "properties": {
+                            "phone": {
+                                "type": "string",
+                                "pattern": "^\\d{8,15}$"
+                            },
+                            "name": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 120
+                            }
+                        },
+                        "required": [
+                            "phone",
+                            "name"
+                        ]
                     }
                 },
                 "required": [
@@ -27372,6 +28753,9 @@
                         "items": {
                             "type": "string"
                         }
+                    },
+                    "user_id": {
+                        "type": "string"
                     },
                     "created_at": {
                         "type": "string",
@@ -32220,6 +33604,13 @@
                         "default": null,
                         "nullable": true
                     },
+                    "created_by": {
+                        "default": null,
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
                     "created_at": {
                         "type": "string",
                         "format": "date-time",
@@ -32247,6 +33638,7 @@
                     "status",
                     "confirmed_at",
                     "finished_at",
+                    "created_by",
                     "created_at"
                 ]
             },
@@ -32315,6 +33707,21 @@
                     "cancellation_rate"
                 ]
             },
+            "CalendarTokenResponseDto": {
+                "type": "object",
+                "properties": {
+                    "token": {
+                        "type": "string"
+                    },
+                    "path": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "token",
+                    "path"
+                ]
+            },
             "SetBookingStatusDto": {
                 "type": "object",
                 "properties": {
@@ -32352,6 +33759,333 @@
                 },
                 "required": [
                     "slot_id"
+                ]
+            },
+            "FavoriteResponseDto": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "service",
+                            "organization"
+                        ]
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "organization_id": {
+                        "type": "string"
+                    },
+                    "available": {
+                        "type": "boolean"
+                    },
+                    "service": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "organization_id": {
+                                "type": "string"
+                            },
+                            "category_id": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            "position": {
+                                "default": 0,
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 9007199254740991
+                            },
+                            "label": {
+                                "type": "string"
+                            },
+                            "slug": {
+                                "type": "string"
+                            },
+                            "enabled": {
+                                "type": "boolean"
+                            },
+                            "status": {
+                                "default": "draft",
+                                "type": "string",
+                                "enum": [
+                                    "draft",
+                                    "published",
+                                    "archived"
+                                ]
+                            },
+                            "published_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$",
+                                "default": null,
+                                "nullable": true
+                            },
+                            "description": {
+                                "type": "string"
+                            },
+                            "tags": {
+                                "default": [],
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "duration_minutes": {
+                                "type": "integer",
+                                "minimum": -9007199254740991,
+                                "maximum": 9007199254740991,
+                                "default": null,
+                                "nullable": true
+                            },
+                            "price": {
+                                "default": null,
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
+                            },
+                            "currency": {
+                                "type": "string"
+                            },
+                            "address": {
+                                "type": "string"
+                            },
+                            "location": {
+                                "type": "object",
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Point"
+                                        ]
+                                    },
+                                    "coordinates": {
+                                        "type": "array",
+                                        "prefixItems": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "number"
+                                            }
+                                        ],
+                                        "items": false,
+                                        "minItems": 2,
+                                        "maxItems": 2
+                                    }
+                                },
+                                "required": [
+                                    "type",
+                                    "coordinates"
+                                ]
+                            },
+                            "value": {
+                                "type": "object",
+                                "properties": {
+                                    "heading_value": {
+                                        "type": "string"
+                                    },
+                                    "image_value": {
+                                        "type": "string"
+                                    },
+                                    "price_value": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "options_count": {
+                                "default": 0,
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 9007199254740991
+                            },
+                            "created_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                            },
+                            "updated_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                            }
+                        },
+                        "required": [
+                            "id",
+                            "organization_id",
+                            "category_id",
+                            "position",
+                            "label",
+                            "enabled",
+                            "status",
+                            "published_at",
+                            "tags",
+                            "duration_minutes",
+                            "price",
+                            "value",
+                            "options_count",
+                            "created_at",
+                            "updated_at"
+                        ],
+                        "nullable": true
+                    },
+                    "organization": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "main_label": {
+                                "type": "string"
+                            },
+                            "category": {
+                                "type": "string"
+                            },
+                            "main_category": {
+                                "type": "string"
+                            },
+                            "main_image": {
+                                "type": "string"
+                            },
+                            "status": {
+                                "default": "active",
+                                "type": "string",
+                                "enum": [
+                                    "active",
+                                    "temporarily_closed"
+                                ]
+                            },
+                            "closed_reason": {
+                                "type": "string"
+                            },
+                            "closed_until": {
+                                "type": "string",
+                                "format": "date-time",
+                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$",
+                                "default": null,
+                                "nullable": true
+                            },
+                            "address": {
+                                "type": "string"
+                            },
+                            "location": {
+                                "type": "object",
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Point"
+                                        ]
+                                    },
+                                    "coordinates": {
+                                        "type": "array",
+                                        "prefixItems": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "number"
+                                            }
+                                        ],
+                                        "items": false,
+                                        "minItems": 2,
+                                        "maxItems": 2
+                                    }
+                                },
+                                "required": [
+                                    "type",
+                                    "coordinates"
+                                ]
+                            },
+                            "working_hours": {
+                                "default": [],
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "day": {
+                                            "type": "string",
+                                            "enum": [
+                                                "sunday",
+                                                "monday",
+                                                "tuesday",
+                                                "wednesday",
+                                                "thursday",
+                                                "friday",
+                                                "saturday"
+                                            ]
+                                        },
+                                        "from": {
+                                            "type": "string"
+                                        },
+                                        "to": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "day",
+                                        "from",
+                                        "to"
+                                    ]
+                                }
+                            },
+                            "holidays": {
+                                "default": [],
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "timezone": {
+                                "default": "UTC",
+                                "type": "string"
+                            },
+                            "distance_m": {
+                                "type": "number"
+                            },
+                            "created_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                            },
+                            "updated_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                            }
+                        },
+                        "required": [
+                            "id",
+                            "main_label",
+                            "main_image",
+                            "status",
+                            "closed_until",
+                            "working_hours",
+                            "holidays",
+                            "timezone",
+                            "created_at",
+                            "updated_at"
+                        ],
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                    }
+                },
+                "required": [
+                    "type",
+                    "id",
+                    "organization_id",
+                    "available",
+                    "created_at"
                 ]
             },
             "SmsResponseDto": {
@@ -32756,6 +34490,20 @@
                             ]
                         }
                     },
+                    "request_id": {
+                        "default": null,
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "trace_id": {
+                        "default": null,
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
                     "created_at": {
                         "type": "string",
                         "format": "date-time",
@@ -32776,6 +34524,8 @@
                     "next_attempt_at",
                     "payload",
                     "deliveries",
+                    "request_id",
+                    "trace_id",
                     "created_at",
                     "updated_at"
                 ]
@@ -32830,6 +34580,7 @@
                                     "PHONE_TAKEN",
                                     "ADMIN_IDENTIFIER_REQUIRED",
                                     "CLIENT_PHONE_REQUIRED",
+                                    "CLIENT_ACCOUNT_REQUIRED",
                                     "ADMIN_PASSWORD_REQUIRED",
                                     "ADMIN_PHONE_REQUIRED",
                                     "LAST_SUPER_ADMIN",
@@ -32878,12 +34629,14 @@
                                     "BOOKING_DOCUMENTS_REQUIRED",
                                     "BOOKING_STATUS_TRANSITION",
                                     "BOOKING_NOT_ACTIVE",
+                                    "BOOKING_NOT_DATED",
                                     "WAITLIST_NOT_FOUND",
                                     "WAITLIST_ALREADY_JOINED",
                                     "SLOT_NOT_FULL",
                                     "NEWS_SLUG_TAKEN",
                                     "WEBHOOK_NOT_FOUND",
                                     "FIELDS_NOT_ALLOWED",
+                                    "FAVORITES_LIMIT_REACHED",
                                     "FILE_REQUIRED",
                                     "FILE_TYPE_NOT_ALLOWED",
                                     "FILE_TOO_LARGE",

@@ -9,6 +9,10 @@ const WRITE_TOOLS = [
     'join_waitlist',
     'leave_waitlist',
     'update_contact_details',
+    'add_favorite',
+    'remove_favorite',
+    'create_calendar_link',
+    'revoke_calendar_link',
 ];
 
 describe('tool surface', () => {

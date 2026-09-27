@@ -14,6 +14,7 @@ export interface ApiRequest {
     auth?: boolean;
     idempotencyKey?: string;
     cache?: boolean;
+    responseType?: 'json' | 'text';
 }
 
 export interface ApiResult<T> {
@@ -125,6 +126,15 @@ export class ApiClient {
             return { ...this.served(revalidating), headers: response.headers } as ApiResult<T>;
         }
 
+        if (request.responseType === 'text' && response.ok)
+            return {
+                data: (await response.text()) as T,
+                meta: undefined,
+                status: response.status,
+                headers: response.headers,
+                replayed: false,
+            };
+
         const body = await this.readBody(response);
 
         if (!response.ok)
@@ -185,13 +195,19 @@ export class ApiClient {
         token: string | null,
         etag?: string,
     ): Promise<Response> {
-        const headers = new Headers({ accept: 'application/json', 'user-agent': USER_AGENT });
+        const headers = new Headers({
+            accept: request.responseType === 'text' ? 'text/*, application/json;q=0.9' : 'application/json',
+            'user-agent': USER_AGENT,
+        });
 
         if (token) headers.set('authorization', `Bearer ${token}`);
 
         if (request.idempotencyKey) headers.set('idempotency-key', request.idempotencyKey);
 
-        if (etag) headers.set('if-none-match', etag);
+        if (etag) {
+            headers.set('if-none-match', etag);
+            headers.set('cache-control', 'max-age=0');
+        }
 
         if (request.body !== undefined) headers.set('content-type', 'application/json');
 

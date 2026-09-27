@@ -83,4 +83,10 @@ live('against a live API', () => {
         expect(mine.isError).toBeFalsy();
         expect(JSON.stringify(mine)).not.toContain('"person"');
     });
+
+    withSession('reads the favorites', async () => {
+        const favorites = await harness.call('list_favorites', {});
+
+        expect(favorites.isError).toBeFalsy();
+    });
 });

@@ -4,6 +4,7 @@ import { type z } from 'zod';
 
 import {
     BOOKING_STATUSES,
+    FAVORITE_TYPES,
     FORM_FIELD_TYPES,
     ORGANIZATION_STATUSES,
     SERVICE_STATUSES,
@@ -12,6 +13,7 @@ import {
     WAITLIST_STATUSES,
     createBookingSchema,
     joinWaitlistSchema,
+    listFavoritesQuerySchema,
     listOwnBookingsQuerySchema,
     otpRequestSchema,
     otpVerifySchema,
@@ -22,9 +24,11 @@ import {
 } from '../../src/api/contracts.js';
 import {
     ORGANIZATION_FIELDS,
+    ORGANIZATION_LABEL_FIELDS,
     SERVICE_BOOKING_FIELDS,
     SERVICE_DETAIL_FIELDS,
     SERVICE_FORM_FIELDS,
+    SERVICE_LABEL_FIELDS,
     SERVICE_LIST_FIELDS,
     SERVICE_POLICY_FIELDS,
 } from '../../src/api/fields.js';
@@ -123,6 +127,8 @@ function errorCodesOf(path: string, method: string): string[] {
     return [...codes];
 }
 
+const STAFF_ONLY_BODY_KEYS: Record<string, string[]> = { CreateBookingDto: ['on_behalf'] };
+
 describe('request bodies', () => {
     const cases: [string, string, string, z.ZodType][] = [
         ['/services/{id}/bookings', 'post', 'CreateBookingDto', createBookingSchema],
@@ -135,9 +141,14 @@ describe('request bodies', () => {
 
     it.each(cases)('%s %s matches %s', (path, method, name, schema) => {
         const documented = bodySchemaOf(path, method);
+        const staffOnly = STAFF_ONLY_BODY_KEYS[name] ?? [];
 
         expect(documented).toBe(schemaOf(name));
-        expect(keysOf(schema)).toEqual(Object.keys(documented.properties ?? {}).sort());
+        expect(keysOf(schema)).toEqual(
+            Object.keys(documented.properties ?? {})
+                .filter((key) => !staffOnly.includes(key))
+                .sort(),
+        );
         expect(requiredKeysOf(schema)).toEqual([...(documented.required ?? [])].sort());
     });
 
@@ -158,6 +169,12 @@ describe('query parameters', () => {
         const documented = queryNamesOf('/me/bookings', 'get');
 
         for (const key of keysOf(listOwnBookingsQuerySchema)) expect(documented).toContain(key);
+    });
+
+    it('listFavoritesQuerySchema only asks for parameters /me/favorites accepts', () => {
+        const documented = queryNamesOf('/me/favorites', 'get');
+
+        for (const key of keysOf(listFavoritesQuerySchema)) expect(documented).toContain(key);
     });
 
     it('the reads this server issues accept the filters it sends', () => {
@@ -194,7 +211,9 @@ describe('sparse field lists', () => {
         ['SERVICE_POLICY_FIELDS', SERVICE_POLICY_FIELDS, 'MaskedServiceResponseDto'],
         ['SERVICE_BOOKING_FIELDS', SERVICE_BOOKING_FIELDS, 'MaskedServiceResponseDto'],
         ['SERVICE_FORM_FIELDS', SERVICE_FORM_FIELDS, 'MaskedServiceResponseDto'],
+        ['SERVICE_LABEL_FIELDS', SERVICE_LABEL_FIELDS, 'MaskedServiceResponseDto'],
         ['ORGANIZATION_FIELDS', ORGANIZATION_FIELDS, 'OrganizationDetailDto'],
+        ['ORGANIZATION_LABEL_FIELDS', ORGANIZATION_LABEL_FIELDS, 'OrganizationDetailDto'],
     ];
 
     it.each(cases)('%s names only top-level keys of %s', (_name, fields, dto) => {
@@ -215,6 +234,7 @@ describe('enumerations', () => {
         expect([...BOOKING_STATUSES].sort()).toEqual(enumOf('BookingResourceDto', 'status'));
         expect([...WAITLIST_STATUSES].sort()).toEqual(enumOf('WaitlistEntryResponseDto', 'status'));
         expect([...ORGANIZATION_STATUSES].sort()).toEqual(enumOf('OrganizationResponseDto', 'status'));
+        expect([...FAVORITE_TYPES].sort()).toEqual(enumOf('FavoriteResponseDto', 'type'));
         expect([...FORM_FIELD_TYPES].sort()).toEqual(
             (
                 schemaOf('MaskedServiceResponseDto').properties?.['form_fields']?.items?.properties?.['type']
@@ -254,6 +274,12 @@ describe('error codes', () => {
         ['/bookings/{booking_id}/confirm', 'post'],
         ['/bookings/{booking_id}/reschedule', 'post'],
         ['/waitlist/{id}', 'delete'],
+        ['/bookings/{booking_id}/calendar.ics', 'get'],
+        ['/me/calendar-token', 'post'],
+        ['/me/calendar-token', 'delete'],
+        ['/me/favorites', 'get'],
+        ['/me/favorites/{type}/{id}', 'put'],
+        ['/me/favorites/{type}/{id}', 'delete'],
         ['/users/{id}', 'patch'],
         ['/health/info', 'get'],
     ];

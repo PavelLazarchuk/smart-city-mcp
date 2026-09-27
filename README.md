@@ -1,8 +1,8 @@
 # smart-city-mcp
 
-An MCP server over the [Smart City API](../smart-city-api), for the **client profile**: search the
-service catalogue, read what a service asks for, sign in by one-time code, and manage your own
-bookings. It speaks HTTP to the API and imports nothing from it except the generated client types.
+An MCP server over the Smart City API, for the **client profile**: search the
+service catalogue, read what a service asks for, sign in by one-time code, manage your own
+bookings, keep favorites and put bookings into a calendar. It speaks HTTP to the API and imports nothing from it except the generated client types.
 
 Transport is **stdio** only. Administrator and operations profiles, remote hosting and OAuth are out
 of scope here.
@@ -61,18 +61,21 @@ startup: an invalid value stops the process with a message on stderr rather than
 `list_info_sections`.
 
 **Personal tools**, listed from the start and refused with `UNAUTHENTICATED` (next step: `auth_start`)
-until a session exists: `whoami`, `logout`, `list_my_bookings`, `get_booking`, `list_my_waitlist`.
+until a session exists: `whoami`, `logout`, `list_my_bookings`, `get_booking`, `list_my_waitlist`,
+`list_favorites`, `get_booking_calendar`.
 They are not hidden and revealed by `notifications/tools/list_changed`, because some clients (Claude
 Desktop) never re-read the tool list, and a tool that appears on sign-in would not reach the model
 until the app restarts.
 
 **Writing tools**, only when `SMART_CITY_MCP_WRITE=true`: `create_booking`, `confirm_booking`,
-`cancel_booking`, `reschedule_booking`, `join_waitlist`, `leave_waitlist`, `update_contact_details`.
+`cancel_booking`, `reschedule_booking`, `join_waitlist`, `leave_waitlist`, `update_contact_details`,
+`add_favorite`, `remove_favorite`, `create_calendar_link`, `revoke_calendar_link`.
 A tool description never names a tool that is not registered, so the read-only surface does not point
 the model at writes it cannot make.
 
 **Resources**: `smartcity://service/{id}`, `smartcity://service/{id}/form`,
-`smartcity://organization/{id}`, `smartcity://me/bookings` (updated after every write of its own).
+`smartcity://organization/{id}`, `smartcity://me/bookings` (updated after every write of its own),
+`smartcity://me/bookings/{id}/calendar.ics`.
 
 **Prompts**: `book_a_service`, `my_bookings`, `required_documents`.
 
@@ -120,6 +123,26 @@ A repeat of the same booking replays the original `201` and is reported as "this
 instead of colliding as a second booking the way a random key would. The idempotency record outlives
 the booking by up to a day, so a replay pointing at a booking the person has since cancelled is
 re-sent with that dead booking's id as salt — a fresh key that is still derived, not random.
+
+**Caching.** Public catalogue reads are kept for 60 seconds and then revalidated with the API's
+`ETag`; an unchanged answer is a `304` without a body, and for an organization the API skips building
+its tree altogether. `fetch` adds `Cache-Control: no-cache` to any request with `If-None-Match` unless
+the request sets its own, and Express never answers `no-cache` with a `304`, so the client sends
+`Cache-Control: max-age=0` alongside the tag. Personal reads are never cached.
+
+**Calendar.** `get_booking_calendar` returns the API's `.ics` twice: as an embedded `text/calendar`
+resource a client can offer as a file, and as `ics` for clients that pass the model text only. A
+booking without a date has no file (`BOOKING_NOT_DATED`). `create_calendar_link` issues the API's
+feed token and builds the link on `SMART_CITY_API_URL` (plus a `webcal://` twin), not on the path the
+API returns, so it stays right behind a proxy that mounts the API elsewhere. Issuing a link revokes
+the previous one, which is why it is a confirmed write like any other. The calendar resource is not gated by the session like
+`smartcity://me/bookings`: the SDK ignores `disable()` on resource templates, so a read without a
+session is refused by the client before any request.
+
+**Favorites.** `list_favorites` keeps a saved service that is unpublished or in the trash, with
+`available: false` and a `note`, because the API brings it back on restore. Staff can book for a
+person at the desk (`on_behalf`); such a booking shows up in `list_my_bookings` with
+`booked_by_staff: true`. `on_behalf` itself is a staff field and is never sent from here.
 
 **Errors.** `src/mapping/errors.ts` maps each API code to this server's own wording plus the next
 step to take. Those next steps are written into the text block, not only into `structuredContent`:
@@ -196,10 +219,10 @@ src/
     generated/       openapi.json and the types from npm run codegen
     contracts.ts     copied request schemas, checked by the contract test
     fields.ts        the sparse fields= lists
-    client.ts        envelope, retries, rate limits, ETag cache, token attachment
+    client.ts        envelope, retries, rate limits, ETag cache, token attachment, text bodies
     errors.ts        the error envelope as a thrown ApiError
   auth/              token store (0600) and the single-flight session
-  tools/             catalogue, account, bookings
+  tools/             catalogue, account, bookings, favorites, calendar
   mapping/           time, slots, form, errors, redact
   resources.ts
   prompts.ts

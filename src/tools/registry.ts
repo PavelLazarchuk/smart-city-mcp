@@ -10,6 +10,7 @@ export const DATA_NOTICE =
 export interface ToolPayload {
     summary: string;
     data: Record<string, unknown>;
+    attachments?: CallToolResult['content'];
 }
 
 export type ToolHandler<A> = (args: A, ctx: ToolContext) => Promise<ToolPayload>;
@@ -52,6 +53,7 @@ function guarded<A>(
                 content: [
                     { type: 'text', text: payload.summary },
                     { type: 'text', text: JSON.stringify(withoutProse(payload.data)) },
+                    ...(payload.attachments ?? []),
                 ],
                 structuredContent: payload.data,
             };

@@ -89,6 +89,7 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                     ? '`booking_id` for get_booking, confirm_booking, reschedule_booking and cancel_booking.'
                     : '`booking_id` for get_booking.',
                 'Form answers may be hidden: `form_field_keys` lists which fields were filled.',
+                '`booked_by_staff: true` means the organization’s staff booked it for the person.',
                 DATA_NOTICE,
             ].join(' '),
             annotations: { readOnlyHint: true, openWorldHint: true },

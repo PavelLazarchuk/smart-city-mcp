@@ -12,6 +12,8 @@ export const SERVICE_STATUSES = ['draft', 'published', 'archived'] as const;
 export const BOOKING_STATUSES = ['pending', 'confirmed', 'completed', 'no_show', 'cancelled'] as const;
 export const WAITLIST_STATUSES = ['waiting', 'notified'] as const;
 export const ORGANIZATION_STATUSES = ['active', 'temporarily_closed'] as const;
+export const FAVORITE_TYPES = ['service', 'organization'] as const;
+export type FavoriteType = (typeof FAVORITE_TYPES)[number];
 export const FORM_FIELD_TYPES = [
     'text',
     'textarea',
@@ -81,6 +83,12 @@ export const listOwnBookingsQuerySchema = z.object({
     date_to: dateOnlySchema.optional(),
 });
 
+export const listFavoritesQuerySchema = z.object({
+    page: z.coerce.number().int().min(1).optional(),
+    limit: z.coerce.number().int().min(1).optional(),
+    type: z.enum(FAVORITE_TYPES).optional(),
+});
+
 export const serviceSlotsQuerySchema = z.object({
     from: dateOnlySchema.optional(),
     to: dateOnlySchema.optional(),
@@ -105,6 +113,8 @@ export type OrganizationDetail = components['schemas']['OrganizationDetailDto'];
 export type NewsResource = components['schemas']['NewsResponseDto'];
 export type InfoSectionResource = components['schemas']['InfoSectionResponseDto'];
 export type CategoryResource = components['schemas']['CategoryResponseDto'];
+export type FavoriteResource = components['schemas']['FavoriteResponseDto'];
+export type CalendarToken = components['schemas']['CalendarTokenResponseDto'];
 
 export type FormField = NonNullable<ServiceResource['form_fields']>[number];
 export type RequiredDocument = NonNullable<ServiceResource['required_documents']>[number];
