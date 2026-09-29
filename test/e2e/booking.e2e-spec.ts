@@ -161,6 +161,63 @@ describe('booking a slot', () => {
         }
     });
 
+    it('books again after two cancellations of the same slot', async () => {
+        const harness = await startHarness({
+            apiUrl: stub.url,
+            write: true,
+            session: {},
+            elicit: acceptEverything,
+        });
+
+        try {
+            const args = {
+                service_id: IDS.service,
+                option_id: IDS.option,
+                slot_id: IDS.slot,
+                time: '10:00',
+            };
+
+            for (let round = 0; round < 2; round += 1) {
+                const booked = structured<{ booking: { booking_id: string } }>(
+                    await harness.call('create_booking', args),
+                );
+                await harness.call('cancel_booking', { booking_id: booked.booking.booking_id });
+            }
+
+            const third = await harness.call('create_booking', args);
+
+            expect(third.isError).toBeFalsy();
+            expect(structured<{ already_existed: boolean }>(third).already_existed).toBe(false);
+            expect(stub.state.bookings.filter((row) => row['status'] === 'confirmed')).toHaveLength(1);
+        } finally {
+            await harness.close();
+        }
+    });
+
+    it('finds the chosen time past the first page of slots', async () => {
+        stub.state.fillerSlots = 250;
+        const harness = await startHarness({
+            apiUrl: stub.url,
+            write: true,
+            session: {},
+            elicit: acceptEverything,
+        });
+
+        try {
+            const created = await harness.call('create_booking', {
+                service_id: IDS.service,
+                option_id: IDS.option,
+                slot_id: IDS.farSlot,
+                time: '11:00',
+            });
+
+            expect(created.isError).toBeFalsy();
+            expect(stub.state.bookings).toHaveLength(1);
+        } finally {
+            await harness.close();
+        }
+    });
+
     it('books a slot beyond the API\u2019s default 30-day window', async () => {
         const harness = await startHarness({
             apiUrl: stub.url,

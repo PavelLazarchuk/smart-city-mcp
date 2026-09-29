@@ -119,6 +119,48 @@ describe('SessionManager', () => {
         await expect(readFile(path, 'utf8')).rejects.toMatchObject({ code: 'ENOENT' });
     });
 
+    it('wipes the store when the refresh token itself has expired', async () => {
+        const store = await seed(Date.now() + 1_000);
+        const { client } = fakeClient(() => {
+            throw new ApiError({ status: 401, code: 'TOKEN_EXPIRED', message: 'expired' });
+        });
+        const session = new SessionManager(client, store, logger);
+
+        expect(await session.accessToken()).toBeNull();
+        expect(session.authenticated).toBe(false);
+    });
+
+    it('takes the pair another process rotated instead of spending the old refresh token', async () => {
+        const store = await seed(Date.now() + 1_000);
+        const { client, calls } = fakeClient(() => tokenPair('fresh'));
+        const session = new SessionManager(client, store, logger);
+        await session.init();
+        await store.write({
+            access_token: 'rotated',
+            refresh_token: 'refresh-rotated',
+            expires_at: Date.now() + 600_000,
+            user: { id: 'user-1', role: 'common-user' },
+        });
+
+        expect(await session.accessToken()).toBe('rotated');
+        expect(calls).toHaveLength(0);
+    });
+
+    it('keeps a new session in memory when the file cannot be written', async () => {
+        const store = new SessionStore(join(directory, 'session.json', 'nested'), logger);
+        const { client } = fakeClient(() => tokenPair('fresh'));
+        const session = new SessionManager(client, store, logger);
+        await (await import('node:fs/promises')).writeFile(path, 'a file, not a folder');
+        const seen: boolean[] = [];
+        session.onChange((authenticated) => seen.push(authenticated));
+
+        await session.adopt(tokenPair('fresh') as never);
+
+        expect(session.authenticated).toBe(true);
+        expect(await session.accessToken()).toBe('fresh');
+        expect(seen).toEqual([true]);
+    });
+
     it('keeps the session when the refresh failed for a reason of its own', async () => {
         const store = await seed(Date.now() + 1_000);
         const { client } = fakeClient(() => {

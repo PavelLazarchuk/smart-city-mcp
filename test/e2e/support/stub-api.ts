@@ -15,6 +15,7 @@ const RANGE_SLOT_ID = '88888888-8888-4888-8888-888888888888';
 const RANGE_SLOT_DAYS = 2;
 const DEFAULT_HORIZON_DAYS = 30;
 const FAR_SLOT_DAYS = 90;
+const FILLER_SLOT_DAYS = 3;
 const USER_ID = '64b7f0c2a1b2c3d4e5f60003';
 
 export const IDS = {
@@ -47,6 +48,7 @@ export interface StubState {
     favorites: { type: string; id: string; available: boolean }[];
     calendarToken: string | null;
     reschedules: Record<string, unknown>[];
+    fillerSlots: number;
 }
 
 export interface Stub {
@@ -169,6 +171,22 @@ function slotCandidates(state: StubState): Record<string, unknown>[] {
             booked_count: 0,
             available: 1,
         },
+        ...Array.from({ length: state.fillerSlots }, (_, index) => {
+            const time = `${String(Math.floor(index / 60)).padStart(2, '0')}:${String(index % 60).padStart(2, '0')}`;
+            const moment = dayAt(time, FILLER_SLOT_DAYS);
+
+            return {
+                ...base,
+                slot_id: `99999999-9999-4999-8999-${String(index).padStart(12, '0')}`,
+                date: moment.date,
+                time,
+                starts_at: moment.startsAt,
+                ends_at: moment.endsAt,
+                limit: 1,
+                booked_count: 0,
+                available: 1,
+            };
+        }),
         ...freeWindows(state).map(([from = '', to = '']) => {
             const window = dayAt(from, RANGE_SLOT_DAYS, to);
 
@@ -282,6 +300,7 @@ export async function startStubApi(): Promise<Stub> {
         favorites: [],
         calendarToken: null,
         reschedules: [],
+        fillerSlots: 0,
     };
 
     const server = createServer((request, response) => {
@@ -375,11 +394,16 @@ async function handle(request: IncomingMessage, response: ServerResponse, state:
     if (path === `/services/${SERVICE_ID}/slots`) {
         const from = url.searchParams.get('from') ?? dateOnlyIn(new Date(), TIME_ZONE);
         const to = url.searchParams.get('to') ?? shiftDateOnly(from, DEFAULT_HORIZON_DAYS);
-        const items = slotCandidates(state)
+        const after = url.searchParams.get('after');
+        const limit = Number(url.searchParams.get('limit') ?? 200);
+        const matching = slotCandidates(state)
             .filter((item) => String(item['date']) >= from && String(item['date']) <= to)
+            .filter((item) => (after ? Date.parse(String(item['starts_at'])) > Date.parse(after) : true))
             .filter((item) =>
                 url.searchParams.get('only_available') === 'true' ? item['available'] !== 0 : true,
-            );
+            )
+            .sort((a, b) => Date.parse(String(a['starts_at'])) - Date.parse(String(b['starts_at'])));
+        const items = matching.slice(0, limit);
 
         return send(
             200,
@@ -389,7 +413,7 @@ async function handle(request: IncomingMessage, response: ServerResponse, state:
                 timezone: TIME_ZONE,
                 from,
                 to,
-                total: items.length,
+                total: matching.length,
                 items,
             }),
         );

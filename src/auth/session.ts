@@ -9,6 +9,7 @@ const REFRESH_SKEW_MS = 30_000;
 const FATAL_REFRESH_CODES = new Set([
     'REFRESH_TOKEN_REUSED',
     'SESSION_REVOKED',
+    'TOKEN_EXPIRED',
     'TOKEN_INVALID',
     'UNAUTHENTICATED',
 ]);
@@ -83,7 +84,15 @@ export class SessionManager implements TokenProvider {
         };
         this.state = session;
         this.loaded = true;
-        await this.store.write(session);
+
+        try {
+            await this.store.write(session);
+        } catch (error) {
+            this.logger.warn('session could not be saved; it lasts until the server stops', {
+                reason: String(error),
+            });
+        }
+
         this.announce(true);
 
         return session;
@@ -97,7 +106,7 @@ export class SessionManager implements TokenProvider {
                 await this.client.request({ method: 'POST', path: '/auth/logout', auth: true });
             } catch (error) {
                 this.logger.warn('logout call failed; dropping the local session anyway', {
-                    code: isApiError(error) ? error.code : 'TRANSPORT',
+                    error_code: isApiError(error) ? error.code : 'TRANSPORT',
                 });
             }
         }
@@ -125,6 +134,10 @@ export class SessionManager implements TokenProvider {
     }
 
     private async performRefresh(): Promise<string | null> {
+        const rotated = await this.rotatedElsewhere();
+
+        if (rotated && rotated.expires_at - Date.now() > REFRESH_SKEW_MS) return rotated.access_token;
+
         const current = this.state;
 
         if (!current) return null;
@@ -140,7 +153,11 @@ export class SessionManager implements TokenProvider {
             return session.access_token;
         } catch (error) {
             if (isApiError(error) && FATAL_REFRESH_CODES.has(error.code)) {
-                this.logger.warn('session ended by the API', { code: error.code });
+                const rotated = await this.rotatedElsewhere();
+
+                if (rotated) return rotated.access_token;
+
+                this.logger.warn('session ended by the API', { error_code: error.code });
                 await this.forget();
 
                 return null;
@@ -154,6 +171,16 @@ export class SessionManager implements TokenProvider {
                       message: 'The session could not be refreshed.',
                   });
         }
+    }
+
+    private async rotatedElsewhere(): Promise<StoredSession | null> {
+        const stored = await this.store.read();
+
+        if (!stored || !this.state || stored.refresh_token === this.state.refresh_token) return null;
+
+        this.state = stored;
+
+        return stored;
     }
 
     private announce(authenticated: boolean): void {

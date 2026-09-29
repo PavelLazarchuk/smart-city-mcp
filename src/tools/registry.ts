@@ -61,7 +61,7 @@ function guarded<A>(
             const failure = toToolError(error);
             ctx.logger.warn('tool failed', {
                 tool: name,
-                code: failure.code,
+                error_code: failure.code,
                 status: isApiError(error) ? error.status : undefined,
             });
 

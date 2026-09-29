@@ -59,10 +59,12 @@ interface BookingTarget {
 interface Span {
     from: string;
     to: string;
+    booking: BookingResource;
 }
 
 const SLOT_LOOKUP_LIMIT = 200;
 const SLOT_LOOKUP_DAYS = 365;
+const SLOT_LOOKUP_PAGES = 10;
 const OWN_BOOKING_LOOKUP_LIMIT = 100;
 
 const bookingView = z.looseObject({
@@ -678,7 +680,7 @@ function spanOf(booking: BookingResource): Span | undefined {
     const from = localOf(booking.time);
     const to = localOf(booking.end_time);
 
-    return booking.child_type === 'time_range' && from && to ? { from, to } : undefined;
+    return booking.child_type === 'time_range' && from && to ? { from, to, booking } : undefined;
 }
 
 function describeSpan(date: string | null, time: string | null, end: string | null): string {
@@ -719,18 +721,36 @@ async function offeredSlots(
     args: BookingTarget,
 ): Promise<SlotCandidate[]> {
     const from = dateOnlyIn(new Date(), timeZoneOf(ctx, service));
-    const { data } = await ctx.client.request<ServiceSlots>({
-        path: `/services/${args.service_id}/slots`,
-        query: {
-            from,
-            to: shiftDateOnly(from, service.booking_policy?.max_advance_days ?? SLOT_LOOKUP_DAYS),
-            option_id: args.option_id,
-            limit: SLOT_LOOKUP_LIMIT,
-        },
-        cache: true,
-    });
+    const to = shiftDateOnly(from, service.booking_policy?.max_advance_days ?? SLOT_LOOKUP_DAYS);
+    const seen = new Set<string>();
+    const offered: SlotCandidate[] = [];
+    let after: string | undefined;
 
-    return data.items.filter((item) => item.slot_id === args.slot_id);
+    for (let page = 0; page < SLOT_LOOKUP_PAGES; page += 1) {
+        const { data } = await ctx.client.request<ServiceSlots>({
+            path: `/services/${args.service_id}/slots`,
+            query: { from, to, after, option_id: args.option_id, limit: SLOT_LOOKUP_LIMIT },
+            cache: true,
+        });
+        const fresh = data.items.filter((item) => {
+            const key = [item.option_id, item.slot_id, item.date, item.time, item.starts_at].join('|');
+
+            if (seen.has(key)) return false;
+
+            seen.add(key);
+
+            return true;
+        });
+        offered.push(...fresh.filter((item) => item.slot_id === args.slot_id));
+
+        const last = data.items.at(-1)?.starts_at;
+
+        if (data.total <= data.items.length || fresh.length === 0 || !last) break;
+
+        after = last;
+    }
+
+    return offered;
 }
 
 function timeZoneOf(ctx: ToolContext, service: ServiceResource): string {
@@ -743,10 +763,10 @@ function pickCandidate(
     timeZone: string,
     own?: Span,
 ): SlotCandidate {
-    if (offered.some((item) => item.child_type === 'time_range'))
+    if (own || offered.some((item) => item.child_type === 'time_range'))
         return pickOpening(offered, args, timeZone, own);
 
-    if (args.end_time !== undefined)
+    if (args.end_time !== undefined && offered.length > 0)
         throw new ApiError({
             status: 400,
             code: 'VALIDATION_ERROR',
@@ -802,7 +822,8 @@ function pickOpening(
             details: [{ path: 'end_time', message: `Must be later than ${args.time}` }],
         });
 
-    const template = offered.find((item) => item.child_type === 'time_range');
+    const template =
+        offered.find((item) => item.child_type === 'time_range') ?? (own ? ownOpening(own) : undefined);
     const opening =
         own && template ? { ...template, time: own.from } : openingFor(offered, args.time, args.end_time);
 
@@ -828,6 +849,26 @@ function pickOpening(
         time: args.time,
         starts_at: isoAtIn(instantOf(opening.date, args.time, timeZone), timeZone),
         ends_at: isoAtIn(instantOf(opening.date, args.end_time, timeZone), timeZone),
+    };
+}
+
+function ownOpening(own: Span): SlotCandidate {
+    const { booking } = own;
+
+    return {
+        option_id: booking.option_id,
+        option_label: '',
+        service_type: localOf(booking.address) ? 'service_visit' : 'service_apply',
+        slot_id: booking.slot_id,
+        slot_label: '',
+        child_type: 'time_range',
+        date: localOf(booking.date),
+        time: own.from,
+        starts_at: booking.starts_at,
+        ends_at: booking.ends_at,
+        limit: null,
+        booked_count: 0,
+        available: null,
     };
 }
 
@@ -1116,13 +1157,19 @@ async function book(
             auth: true,
             idempotencyKey: idempotencyKeyFor(ctx, args, salt),
         });
-    const result = await send('');
+    const salts = new Set<string>();
+    let result = await send('');
 
-    if (!result.replayed) return result;
+    while (result.replayed) {
+        const dead = await deadBookingIdOf(ctx, result.data.booking_id);
 
-    const dead = await deadBookingIdOf(ctx, result.data.booking_id);
+        if (!dead || salts.has(dead)) return result;
 
-    return dead ? await send(dead) : result;
+        salts.add(dead);
+        result = await send(dead);
+    }
+
+    return result;
 }
 
 async function deadBookingIdOf(ctx: ToolContext, bookingId: string): Promise<string | null> {

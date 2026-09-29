@@ -186,6 +186,43 @@ describe('booking a free interval', () => {
         }
     });
 
+    it('recognises a repeat and lets the booking shrink once the whole interval is booked', async () => {
+        const harness = await startHarness({
+            apiUrl: stub.url,
+            write: true,
+            session: {},
+            elicit: answering('Main st. 1'),
+        });
+
+        try {
+            const booking = { ...target, time: '14:00', end_time: '16:00', address: 'Main st. 1' };
+            const first = structured<{ booking: { booking_id: string } }>(
+                await harness.call('create_booking', booking),
+            );
+            const again = await harness.call('create_booking', booking);
+
+            expect(structured<{ already_existed: boolean }>(again)).toMatchObject({
+                already_existed: true,
+                booking: { booking_id: first.booking.booking_id },
+            });
+
+            await harness.call('create_booking', { ...target, time: '09:00', end_time: '12:00' });
+            const shrunk = await harness.call('reschedule_booking', {
+                booking_id: first.booking.booking_id,
+                slot_id: IDS.rangeSlot,
+                time: '14:00',
+                end_time: '15:00',
+            });
+
+            expect(shrunk.isError).toBeFalsy();
+            expect(stub.state.reschedules).toEqual([
+                { slot_id: IDS.rangeSlot, time: '14:00', end_time: '15:00' },
+            ]);
+        } finally {
+            await harness.close();
+        }
+    });
+
     it('lets a booking grow into its own interval and keeps its address', async () => {
         const harness = await startHarness({
             apiUrl: stub.url,

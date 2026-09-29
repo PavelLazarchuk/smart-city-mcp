@@ -1,4 +1,5 @@
 import { chmod, mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
+import { randomUUID } from 'node:crypto';
 import { dirname } from 'node:path';
 import { z } from 'zod';
 
@@ -46,7 +47,7 @@ export class SessionStore {
     async write(session: StoredSession): Promise<void> {
         await mkdir(dirname(this.path), { recursive: true, mode: 0o700 });
 
-        const pending = `${this.path}.${process.pid}.tmp`;
+        const pending = `${this.path}.${process.pid}.${randomUUID()}.tmp`;
         await writeFile(pending, `${JSON.stringify(session)}\n`, { mode: 0o600 });
         await chmod(pending, 0o600);
 
