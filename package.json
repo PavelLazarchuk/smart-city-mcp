@@ -4,6 +4,7 @@
     "description": "MCP server over the Smart City API: the client profile",
     "private": true,
     "license": "UNLICENSED",
+    "author": "Pavel Lazarchuk <pavel.lazarchuk.personal@gmail.com>",
     "type": "module",
     "engines": {
         "node": ">=22.0.0"
