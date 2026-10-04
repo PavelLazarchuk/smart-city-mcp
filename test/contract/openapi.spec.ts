@@ -152,9 +152,16 @@ describe('request bodies', () => {
         expect(requiredKeysOf(schema)).toEqual([...(documented.required ?? [])].sort());
     });
 
-    it('updateSelfSchema stays the subset of the user account this server may write', () => {
+    it('updateSelfSchema stays the subset of PATCH /me this server may write', () => {
+        const documented = bodySchemaOf('/me', 'patch');
+
+        expect(documented).toBe(schemaOf('UpdateProfileDto'));
         expect(keysOf(updateSelfSchema)).toEqual(['email', 'name']);
+        expect(Object.keys(documented.properties ?? {})).toEqual(
+            expect.arrayContaining(keysOf(updateSelfSchema)),
+        );
         expect(requiredKeysOf(updateSelfSchema)).toEqual([]);
+        expect(documented.required ?? []).toEqual([]);
     });
 });
 
@@ -280,7 +287,7 @@ describe('error codes', () => {
         ['/me/favorites', 'get'],
         ['/me/favorites/{type}/{id}', 'put'],
         ['/me/favorites/{type}/{id}', 'delete'],
-        ['/users/{id}', 'patch'],
+        ['/me', 'patch'],
         ['/health/info', 'get'],
     ];
 

@@ -118,7 +118,10 @@ because the person already booked exactly it, the answer is `already_existed: tr
 `SLOT_FULL`. A reschedule inside the booking's own slot leaves the overlap with itself to the API,
 which alone knows the buffer. A visit asks the person for the address the same way as the form, or
 refuses with `BOOKING_ADDRESS_REQUIRED` on a client without elicitation. A reschedule keeps the
-address unless a new one is given. A free interval has no waitlist (`WAITLIST_NOT_SUPPORTED`).
+address unless a new one is given. A free interval has no waitlist (`WAITLIST_NOT_SUPPORTED`). A
+service can suspend booking it after repeated no-shows (`booking_policy.no_show_limit`) or by hand:
+booking and the waitlist then answer `BOOKING_SUSPENDED`, whose `until` detail is read out to the
+person instead of retrying.
 
 The form is validated against the service's own `form_fields` before anything is sent,
 so a wrong answer costs a question and not a booking attempt. Required fields are asked of the

@@ -114,6 +114,9 @@ const service = {
         max_advance_days: null,
         cancel_deadline_minutes: 1440,
         requires_confirmation: false,
+        no_show_limit: null,
+        no_show_window_days: null,
+        no_show_suspension_days: null,
     },
     form_fields: [
         { key: 'insurance_number', label: 'Insurance number', type: 'text', required: true, max_length: 20 },

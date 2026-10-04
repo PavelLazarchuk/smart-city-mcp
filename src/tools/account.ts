@@ -223,15 +223,6 @@ export function registerAccountTools(server: McpServer, ctx: ToolContext): void 
                 'update_contact_details',
                 ctx,
                 async (args: { email?: string | null; name?: string; confirm?: boolean }) => {
-                    const user = ctx.session.user;
-
-                    if (!user)
-                        throw new ApiError({
-                            status: 401,
-                            code: 'UNAUTHENTICATED',
-                            message: 'Nobody is signed in.',
-                        });
-
                     const body: Record<string, string | null> = {};
 
                     if (args.email !== undefined) body['email'] = args.email;
@@ -248,7 +239,7 @@ export function registerAccountTools(server: McpServer, ctx: ToolContext): void 
                     await confirmWrite(ctx, summaryOf(body), args.confirm);
                     const { data } = await ctx.client.request<UserResource>({
                         method: 'PATCH',
-                        path: `/users/${user.id}`,
+                        path: '/me',
                         body,
                         auth: true,
                     });

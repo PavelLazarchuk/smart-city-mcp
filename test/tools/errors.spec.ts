@@ -60,6 +60,21 @@ describe('toToolError', () => {
         expect(failure.retry_after_seconds).toBe(42);
     });
 
+    it('passes the end of a suspension on, so the person hears until when', () => {
+        const failure = toToolError(
+            apiErrorFrom(422, {
+                error: {
+                    code: 'BOOKING_SUSPENDED',
+                    message: 'Booking this service is suspended for your account.',
+                    details: [{ path: 'until', message: '2026-10-15T09:00:00.000Z' }],
+                },
+            }),
+        );
+
+        expect(failure.details).toEqual([{ path: 'until', message: '2026-10-15T09:00:00.000Z' }]);
+        expect(failure.next_steps.join(' ')).toContain('do not retry');
+    });
+
     it('names a transport failure as such', () => {
         expect(toToolError(new TransportError('down')).code).toBe('TRANSPORT_ERROR');
     });

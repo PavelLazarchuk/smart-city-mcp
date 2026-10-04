@@ -81,6 +81,15 @@ export const ERROR_GUIDANCE: Record<string, ErrorGuidance> = {
             'cancel one only if the person asks to, then book again',
         ],
     },
+    BOOKING_SUSPENDED: {
+        message:
+            'This account may not book this service for now, usually after missed bookings; its waitlist places for it are gone too.',
+        next_steps: [
+            'tell the person until when: the `until` detail below is an instant, or "until lifted" when only the organization can lift it',
+            'do not retry and do not offer join_waitlist for this service; other services are not affected',
+            'to have it lifted earlier, the person contacts the organization (get_organization)',
+        ],
+    },
     BOOKING_ADDRESS_REQUIRED: {
         message: 'This service comes to the person, so it needs their address.',
         next_steps: [
@@ -319,6 +328,8 @@ export const UNREACHABLE_CODES: ReadonlySet<string> = new Set([
     'ACCOUNT_HAS_NO_PASSWORD',
     'LOGIN_TAKEN',
     'PHONE_TAKEN',
+    'PHONE_CODE_REQUIRED',
+    'PHONE_CODE_INVALID',
     'ADMIN_IDENTIFIER_REQUIRED',
     'CLIENT_PHONE_REQUIRED',
     'CLIENT_ACCOUNT_REQUIRED',

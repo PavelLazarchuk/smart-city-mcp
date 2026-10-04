@@ -381,7 +381,9 @@ export function registerCatalogueTools(server: McpServer, ctx: ToolContext): voi
             title: 'Get service details',
             description: [
                 'One service in full: price, duration, working hours, organization (address, time zone),',
-                '`booking_policy` (how soon and how far ahead it can be booked, cancellation deadline),',
+                '`booking_policy` (how soon and how far ahead it can be booked, cancellation deadline, and',
+                'with `no_show_limit` set: that many missed bookings within `no_show_window_days` suspend',
+                'booking it for `no_show_suspension_days`),',
                 '`form_fields` the booking asks for and `required_documents` to bring. Use it for "what do',
                 'I need / how much" questions and before booking. It has no times: use find_slots.',
                 DATA_NOTICE,
