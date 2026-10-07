@@ -10,6 +10,8 @@ const SLOT_NOTES: Record<string, string> = {
     callback: 'Call-back: the organization phones the person between `starts_at` and `ends_at`.',
 };
 
+const CHECK_IN_STATUSES: readonly string[] = ['pending', 'confirmed', 'no_show'];
+
 function textOf(value: unknown): string | undefined {
     return typeof value === 'string' ? value : undefined;
 }
@@ -44,8 +46,11 @@ export interface BookingView {
     status: string;
     confirmed_at: string | null;
     created_at: string;
+    checkin_code?: string;
+    arrived_at?: string;
     booked_by_staff?: true;
     note?: string;
+    status_note?: string;
     form_field_keys: string[];
     documents: string[];
     info?: string;
@@ -80,6 +85,15 @@ export function redactBooking(booking: BookingResource, options: RedactOptions):
     if (typeof createdBy === 'string' && createdBy !== booking.user_id) view.booked_by_staff = true;
 
     if (note) view.note = note;
+
+    const code = textOf(booking.checkin_code);
+
+    if (code && CHECK_IN_STATUSES.includes(booking.status)) view.checkin_code = code;
+
+    if (booking.arrived_at) view.arrived_at = booking.arrived_at;
+
+    if (booking.late_cancel)
+        view.status_note = 'Cancelled after the cancellation deadline, so it counts as a missed booking.';
 
     if (booking.info) view.info = booking.info;
 

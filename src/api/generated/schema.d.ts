@@ -127,310 +127,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/services": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["ServicesController_list"];
-        put?: never;
-        post: operations["ServicesController_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/services/nearby": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["ServicesController_nearby"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/services/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["ServicesController_getOne"];
-        put?: never;
-        post?: never;
-        delete: operations["ServicesController_remove"];
-        options?: never;
-        head?: never;
-        patch: operations["ServicesController_update"];
-        trace?: never;
-    };
-    "/api/v1/services/{id}/availability": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["ServicesController_availability"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/services/{id}/slots": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["ServicesController_slotCandidates"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/services/{id}/history": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["ServicesController_history"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/services/{id}/status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put: operations["ServicesController_setStatus"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/services/{id}/restore": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["ServicesController_restore"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/services/{id}/clone": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["ServicesController_clone"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/services/{id}/options": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["ServicesController_addOption"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/services/{id}/options/{option_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete: operations["ServicesController_removeOption"];
-        options?: never;
-        head?: never;
-        patch: operations["ServicesController_updateOption"];
-        trace?: never;
-    };
-    "/api/v1/services/{id}/options/{option_id}/recurrence": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put: operations["ServicesController_setRecurrence"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/services/{id}/options/{option_id}/slots": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["ServicesController_addSlot"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/services/{id}/options/{option_id}/slots/{slot_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete: operations["ServicesController_removeSlot"];
-        options?: never;
-        head?: never;
-        patch: operations["ServicesController_updateSlot"];
-        trace?: never;
-    };
-    "/api/v1/services/{id}/options/{option_id}/slots/{slot_id}/cancel": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["ServicesController_closeSlot"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/services/{id}/options/{option_id}/slots/{slot_id}/move": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["ServicesController_moveSlot"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/services/{id}/bookings": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["BookingsController_forService"];
-        put?: never;
-        post: operations["ServicesController_createBooking"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/services/{id}/bookings/{booking_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete: operations["ServicesController_cancelBooking"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/services/{id}/waitlist": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["ServicesController_waitlistForService"];
-        put?: never;
-        post: operations["ServicesController_joinWaitlist"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/v1/users": {
         parameters: {
             query?: never;
@@ -1167,6 +863,310 @@ export interface paths {
         patch: operations["CategoriesController_reorderServices"];
         trace?: never;
     };
+    "/api/v1/services": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ServicesController_list"];
+        put?: never;
+        post: operations["ServicesController_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/services/nearby": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ServicesController_nearby"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/services/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ServicesController_getOne"];
+        put?: never;
+        post?: never;
+        delete: operations["ServicesController_remove"];
+        options?: never;
+        head?: never;
+        patch: operations["ServicesController_update"];
+        trace?: never;
+    };
+    "/api/v1/services/{id}/availability": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ServicesController_availability"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/services/{id}/slots": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ServicesController_slotCandidates"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/services/{id}/history": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ServicesController_history"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/services/{id}/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["ServicesController_setStatus"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/services/{id}/restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["ServicesController_restore"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/services/{id}/clone": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["ServicesController_clone"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/services/{id}/options": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["ServicesController_addOption"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/services/{id}/options/{option_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["ServicesController_removeOption"];
+        options?: never;
+        head?: never;
+        patch: operations["ServicesController_updateOption"];
+        trace?: never;
+    };
+    "/api/v1/services/{id}/options/{option_id}/recurrence": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["ServicesController_setRecurrence"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/services/{id}/options/{option_id}/slots": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["ServicesController_addSlot"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/services/{id}/options/{option_id}/slots/{slot_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["ServicesController_removeSlot"];
+        options?: never;
+        head?: never;
+        patch: operations["ServicesController_updateSlot"];
+        trace?: never;
+    };
+    "/api/v1/services/{id}/options/{option_id}/slots/{slot_id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["ServicesController_closeSlot"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/services/{id}/options/{option_id}/slots/{slot_id}/move": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["ServicesController_moveSlot"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/services/{id}/bookings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["BookingsController_forService"];
+        put?: never;
+        post: operations["ServicesController_createBooking"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/services/{id}/bookings/{booking_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["ServicesController_cancelBooking"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/services/{id}/waitlist": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ServicesController_waitlistForService"];
+        put?: never;
+        post: operations["ServicesController_joinWaitlist"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/bookings": {
         parameters: {
             query?: never;
@@ -1209,6 +1209,22 @@ export interface paths {
         get: operations["BookingsController_export"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/bookings/check-in": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["BookingsController_checkInByCode"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1353,6 +1369,22 @@ export interface paths {
         get?: never;
         put?: never;
         post: operations["BookingsController_confirm"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/bookings/{booking_id}/check-in": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["BookingsController_checkIn"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1728,6 +1760,1286 @@ export interface components {
             /** Format: date-time */
             updated_at: string;
         };
+        UserResponseDto: {
+            id: string;
+            login?: string;
+            name?: string;
+            phone?: string;
+            email?: string;
+            /** @enum {string} */
+            role: "common-user" | "common-admin" | "super-admin" | "operator";
+            organization_ids: string[];
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string;
+        };
+        CreateUserDto: {
+            login?: string;
+            password?: string;
+            phone?: string;
+            email?: string;
+            name?: string;
+            /** @enum {string} */
+            role: "common-user" | "common-admin" | "super-admin" | "operator";
+            organization_ids?: string[];
+        };
+        SetUserOrganizationsDto: {
+            organization_ids: string[];
+        };
+        UserBookingResponseDto: {
+            id: string;
+            service_id: string;
+            organization_id: string;
+            option_id: string;
+            slot_id: string;
+            child_type: string;
+            /** @default  */
+            service_label: string;
+            date?: string;
+            time?: string;
+            /** @default  */
+            info: string;
+            /** @default confirmed */
+            status: string;
+            /** Format: date-time */
+            created_at: string;
+        };
+        ChannelTemplateResourceDto: {
+            /** @enum {string} */
+            key: "booking_created_mail" | "booking_reminder_mail" | "booking_reminder_sms" | "booking_reminder_viber" | "waitlist_available_mail" | "waitlist_available_sms" | "waitlist_available_viber" | "booking_cancelled_mail" | "booking_cancelled_sms" | "booking_cancelled_viber" | "booking_moved_mail" | "booking_moved_sms" | "booking_moved_viber" | "booking_suspended_mail" | "booking_suspended_sms" | "booking_suspended_viber" | "callback_due_mail";
+            event: string;
+            /** @enum {string} */
+            channel: "mail" | "sms" | "viber";
+            variables: string[];
+            custom: boolean;
+            subject: string[];
+            body: string;
+            default_subject: string[];
+            default_body: string;
+            /** Format: date-time */
+            updated_at: string | null;
+            updated_by: string[];
+        };
+        SaveChannelTemplateDto: {
+            subject?: string | null;
+            body: string;
+        };
+        RenderedTemplateDto: {
+            subject: string[];
+            body: string;
+        };
+        PreviewChannelTemplateDto: {
+            subject?: string | null;
+            body?: string;
+        };
+        NewsResponseDto: {
+            id: string;
+            organization_id: string;
+            position: number;
+            label: string;
+            slug?: string;
+            rubric?: string;
+            enabled: boolean;
+            /** Format: date-time */
+            date: string;
+            /**
+             * Format: date-time
+             * @default null
+             */
+            publish_at: string | null;
+            is_main: boolean;
+            is_offer: boolean;
+            /** Format: date-time */
+            expires_at?: string;
+            value: {
+                heading_label?: string;
+                heading_value?: string;
+                text_label?: string;
+                text_value?: string;
+                image_label?: string;
+                image_value?: string;
+                link_label?: string;
+                link_value?: string;
+            };
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string;
+        };
+        CreateNewsDto: {
+            organization_id: string;
+            label: string;
+            slug?: string;
+            rubric?: string | null;
+            enabled?: boolean;
+            /** Format: date-time */
+            date?: string;
+            /** Format: date-time */
+            publish_at?: string | null;
+            is_main?: boolean;
+            is_offer?: boolean;
+            /** Format: date-time */
+            expires_at?: string | null;
+            value?: {
+                heading_label?: string;
+                heading_value?: string;
+                text_label?: string;
+                text_value?: string;
+                image_label?: string;
+                image_value?: string;
+                link_label?: string;
+                link_value?: string;
+            };
+        };
+        UpdateNewsDto: {
+            label?: string;
+            slug?: string;
+            rubric?: string | null;
+            enabled?: boolean;
+            /** Format: date-time */
+            date?: string;
+            /** Format: date-time */
+            publish_at?: string | null;
+            is_main?: boolean;
+            is_offer?: boolean;
+            /** Format: date-time */
+            expires_at?: string | null;
+            value?: {
+                heading_label?: string;
+                heading_value?: string;
+                text_label?: string;
+                text_value?: string;
+                image_label?: string;
+                image_value?: string;
+                link_label?: string;
+                link_value?: string;
+            };
+        };
+        ImageResponseDto: {
+            id: string;
+            organization_id: string;
+            name: string;
+            src: string;
+            mime_type: string;
+            size: number;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string;
+        };
+        ArchiveResponseDto: {
+            id: string;
+            organization_id: string;
+            service_id?: string;
+            /** @enum {string} */
+            type: "news" | "service";
+            data: {
+                [key: string]: unknown;
+            };
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string;
+        };
+        CreateArchiveDto: {
+            organization_id: string;
+            service_id?: string;
+            /** @enum {string} */
+            type: "news" | "service";
+            data: {
+                [key: string]: unknown;
+            };
+        };
+        TokenPairResponseDto: {
+            access_token: string;
+            refresh_token: string;
+            /** @enum {string} */
+            token_type: "Bearer";
+            expires_in: number;
+            user: {
+                id: string;
+                login?: string;
+                name?: string;
+                phone?: string;
+                email?: string;
+                /** @enum {string} */
+                role: "common-user" | "common-admin" | "super-admin" | "operator";
+                organization_ids: string[];
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                updated_at: string;
+            };
+        };
+        LoginDto: {
+            login?: string;
+            phone?: string;
+            password: string;
+        };
+        RegisterDto: {
+            phone: string;
+            password: string;
+            name: string;
+            email?: string;
+        };
+        OtpRequestResponseDto: {
+            phone: string;
+            expires_in: number;
+        };
+        OtpRequestDto: {
+            phone: string;
+        };
+        OtpVerifyDto: {
+            phone: string;
+            code: string;
+            name?: string;
+            email?: string;
+        };
+        RefreshDto: {
+            refresh_token: string;
+        };
+        SessionResponseDto: {
+            id: string;
+            current: boolean;
+            user_agent?: string;
+            ip?: string;
+            /** Format: date-time */
+            expires_at: string;
+            /** Format: date-time */
+            created_at: string;
+        };
+        ChangePasswordDto: {
+            current_password?: string;
+            new_password: string;
+            new_password_confirmation: string;
+        };
+        UpdateProfileDto: {
+            name?: string;
+            email?: string[];
+            phone?: string;
+            code?: string;
+        };
+        PhoneCodeRequestDto: {
+            phone: string;
+        };
+        MaskedOrganizationListItemDto: {
+            id: string;
+            main_label: string;
+            category?: string;
+            main_category?: string;
+            main_image: string;
+            /**
+             * @default active
+             * @enum {string}
+             */
+            status: "active" | "temporarily_closed";
+            closed_reason?: string;
+            /**
+             * Format: date-time
+             * @default null
+             */
+            closed_until: string | null;
+            address?: string;
+            location?: {
+                /** @enum {string} */
+                type: "Point";
+                coordinates: [
+                    number,
+                    number
+                ];
+            };
+            /** @default [] */
+            working_hours: {
+                /** @enum {string} */
+                day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
+                from: string;
+                to: string;
+            }[];
+            /** @default [] */
+            holidays: string[];
+            /** @default UTC */
+            timezone: string;
+            /**
+             * @default {
+             *       "max_active_per_user": null,
+             *       "min_interval_days": null
+             *     }
+             */
+            booking_policy: {
+                /** @default null */
+                max_active_per_user: number | null;
+                /** @default null */
+                min_interval_days: number | null;
+            };
+            distance_m?: number;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string;
+            counts: {
+                news: number;
+                infosections: number;
+                categories: number;
+                services: number;
+                images: number;
+            };
+            news?: {
+                id: string;
+                organization_id: string;
+                position: number;
+                label: string;
+                slug?: string;
+                rubric?: string;
+                enabled: boolean;
+                /** Format: date-time */
+                date: string;
+                /**
+                 * Format: date-time
+                 * @default null
+                 */
+                publish_at: string | null;
+                is_main: boolean;
+                is_offer: boolean;
+                /** Format: date-time */
+                expires_at?: string;
+                value: {
+                    heading_label?: string;
+                    heading_value?: string;
+                    text_label?: string;
+                    text_value?: string;
+                    image_label?: string;
+                    image_value?: string;
+                    link_label?: string;
+                    link_value?: string;
+                };
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                updated_at: string;
+            }[];
+            infosections?: ({
+                id: string;
+                organization_id: string;
+                position: number;
+                label: string;
+                enabled: boolean;
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                updated_at: string;
+                /** @enum {string} */
+                control: "text";
+                value: {
+                    heading_label?: string;
+                    heading_value?: string;
+                    text_label?: string;
+                    text_value?: string;
+                };
+            } | {
+                id: string;
+                organization_id: string;
+                position: number;
+                label: string;
+                enabled: boolean;
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                updated_at: string;
+                /** @enum {string} */
+                control: "address";
+                value: {
+                    text?: string;
+                    lat?: string;
+                    lng?: string;
+                };
+            } | {
+                id: string;
+                organization_id: string;
+                position: number;
+                label: string;
+                enabled: boolean;
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                updated_at: string;
+                /** @enum {string} */
+                control: "link";
+                value: {
+                    text?: string;
+                    url: string;
+                };
+            } | {
+                id: string;
+                organization_id: string;
+                position: number;
+                label: string;
+                enabled: boolean;
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                updated_at: string;
+                /** @enum {string} */
+                control: "phone";
+                value: {
+                    phone: string;
+                    text?: string;
+                };
+            } | {
+                id: string;
+                organization_id: string;
+                position: number;
+                label: string;
+                enabled: boolean;
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                updated_at: string;
+                /** @enum {string} */
+                control: "email";
+                value: {
+                    /** Format: email */
+                    email: string;
+                    text?: string;
+                };
+            })[];
+            categories?: {
+                id: string;
+                organization_id: string;
+                position: number;
+                label: string;
+                description?: string;
+                enabled: boolean;
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                updated_at: string;
+            }[];
+            services?: {
+                id: string;
+                organization_id: string;
+                category_id: string | null;
+                /** @default 0 */
+                position: number;
+                label: string;
+                slug?: string;
+                enabled: boolean;
+                /**
+                 * @default draft
+                 * @enum {string}
+                 */
+                status: "draft" | "published" | "archived";
+                /**
+                 * Format: date-time
+                 * @default null
+                 */
+                published_at: string | null;
+                description?: string;
+                /** @default [] */
+                tags: string[];
+                /** @default null */
+                duration_minutes: number | null;
+                /** @default null */
+                buffer_minutes: number | null;
+                /** @default null */
+                price: number | null;
+                currency?: string;
+                address?: string;
+                location?: {
+                    /** @enum {string} */
+                    type: "Point";
+                    coordinates: [
+                        number,
+                        number
+                    ];
+                };
+                /** @default [] */
+                working_hours: {
+                    /** @enum {string} */
+                    day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
+                    from: string;
+                    to: string;
+                }[];
+                /** @default [] */
+                holidays: string[];
+                /** @default [] */
+                blackout_dates: string[];
+                /**
+                 * @default {
+                 *       "max_active_per_user": null,
+                 *       "lead_time_minutes": null,
+                 *       "max_advance_days": null,
+                 *       "cancel_deadline_minutes": null,
+                 *       "late_cancel": "forbid",
+                 *       "requires_confirmation": false,
+                 *       "no_show_limit": null,
+                 *       "no_show_window_days": null,
+                 *       "no_show_suspension_days": null,
+                 *       "min_interval_days": null,
+                 *       "no_show_after_minutes": null
+                 *     }
+                 */
+                booking_policy: {
+                    /** @default null */
+                    max_active_per_user: number | null;
+                    /** @default null */
+                    lead_time_minutes: number | null;
+                    /** @default null */
+                    max_advance_days: number | null;
+                    /** @default null */
+                    cancel_deadline_minutes: number | null;
+                    /**
+                     * @default forbid
+                     * @enum {string}
+                     */
+                    late_cancel: "forbid" | "no_show";
+                    /** @default false */
+                    requires_confirmation: boolean;
+                    /** @default null */
+                    no_show_limit: number | null;
+                    /** @default null */
+                    no_show_window_days: number | null;
+                    /** @default null */
+                    no_show_suspension_days: number | null;
+                    /** @default null */
+                    min_interval_days: number | null;
+                    /** @default null */
+                    no_show_after_minutes: number | null;
+                };
+                /** @default [] */
+                form_fields: {
+                    key: string;
+                    label: string;
+                    /** @enum {string} */
+                    type: "text" | "textarea" | "number" | "date" | "boolean" | "select" | "phone" | "email";
+                    /** @default false */
+                    required: boolean;
+                    options?: string[];
+                    placeholder?: string;
+                    /** @default null */
+                    max_length: number | null;
+                }[];
+                /** @default [] */
+                required_documents: {
+                    key: string;
+                    label: string;
+                    /** @default true */
+                    required: boolean;
+                }[];
+                value: {
+                    heading_label?: string;
+                    heading_value?: string;
+                    text_label?: string;
+                    text_value?: string;
+                    image_label?: string;
+                    image_value?: string;
+                    price_label?: string;
+                    price_value?: string;
+                    link_label?: string;
+                    link_value?: string;
+                    subscribe?: string;
+                };
+                options: {
+                    id: string;
+                    label: string;
+                    /** @enum {string} */
+                    service_type: "service_apply" | "service_payment" | "service_delivery" | "service_visit";
+                    enabled: boolean;
+                    recurrent_dates?: {
+                        /** @enum {string} */
+                        day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
+                        time: {
+                            time: string;
+                            /** @default null */
+                            limit: number | null;
+                        }[];
+                        /** @default null */
+                        limit: number | null;
+                    }[];
+                    recurrent_ranges?: {
+                        /** @enum {string} */
+                        day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
+                        from?: string;
+                        to?: string;
+                        resources: string[];
+                        step_minutes?: number;
+                        min_minutes?: number;
+                        /** @default null */
+                        max_minutes: number | null;
+                    }[];
+                    slots: ({
+                        id: string;
+                        label: string;
+                        /** @enum {string} */
+                        child_type: "date_time";
+                        value: {
+                            date: string;
+                            time: {
+                                time: string;
+                                /** @default null */
+                                limit: number | null;
+                                /** @default 0 */
+                                booked_count: number;
+                                /** @default [] */
+                                bookings: {
+                                    /** @enum {string} */
+                                    status: "reserved";
+                                }[];
+                            }[];
+                        };
+                    } | {
+                        id: string;
+                        label: string;
+                        /** @enum {string} */
+                        child_type: "date";
+                        value: {
+                            date: string;
+                            /** @default null */
+                            limit: number | null;
+                            /** @default 0 */
+                            booked_count: number;
+                            /** @default [] */
+                            bookings: {
+                                /** @enum {string} */
+                                status: "reserved";
+                            }[];
+                        };
+                    } | {
+                        id: string;
+                        label: string;
+                        /** @enum {string} */
+                        child_type: "apply";
+                        value: {
+                            /** @default null */
+                            limit: number | null;
+                            /** @default 0 */
+                            booked_count: number;
+                            /** @default [] */
+                            bookings: {
+                                /** @enum {string} */
+                                status: "reserved";
+                            }[];
+                        };
+                    } | {
+                        id: string;
+                        label: string;
+                        /** @enum {string} */
+                        child_type: "time_range";
+                        value: {
+                            date: string;
+                            resource?: string;
+                            from: string;
+                            to: string;
+                            step_minutes: number;
+                            min_minutes: number;
+                            /** @default null */
+                            max_minutes: number | null;
+                            /** @default 0 */
+                            booked_count: number;
+                            /** @default [] */
+                            bookings: {
+                                /** @enum {string} */
+                                status: "reserved";
+                            }[];
+                        };
+                    } | {
+                        id: string;
+                        label: string;
+                        /** @enum {string} */
+                        child_type: "callback";
+                        value: {
+                            date: string;
+                            time: {
+                                time: string;
+                                to: string;
+                                /** @default null */
+                                limit: number | null;
+                                /** @default 0 */
+                                booked_count: number;
+                                /** @default [] */
+                                bookings: {
+                                    /** @enum {string} */
+                                    status: "reserved";
+                                }[];
+                            }[];
+                        };
+                    } | {
+                        id: string;
+                        label: string;
+                        /** @enum {string} */
+                        child_type: "pickup";
+                        value: {
+                            description?: string;
+                            link?: string;
+                            price?: string;
+                        };
+                    } | {
+                        id: string;
+                        label: string;
+                        /** @enum {string} */
+                        child_type: "courier";
+                        value: {
+                            description?: string;
+                            link?: string;
+                            price?: string;
+                        };
+                    } | {
+                        id: string;
+                        label: string;
+                        /** @enum {string} */
+                        child_type: "paycard";
+                        value: {
+                            description?: string;
+                            link?: string;
+                            price?: string;
+                        };
+                    })[];
+                }[];
+                /**
+                 * Format: date-time
+                 * @default null
+                 */
+                deleted_at: string | null;
+                distance_m?: number;
+                organization?: {
+                    id: string;
+                    main_label: string;
+                    main_category?: string;
+                    main_image: string;
+                    /** @default active */
+                    status: string;
+                    address?: string;
+                    /** @default UTC */
+                    timezone: string;
+                };
+                category?: {
+                    id: string;
+                    label: string;
+                    /** @default false */
+                    enabled: boolean;
+                } | null;
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                updated_at: string;
+            }[];
+            images?: {
+                id: string;
+                organization_id: string;
+                name: string;
+                src: string;
+                mime_type: string;
+                size: number;
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                updated_at: string;
+            }[];
+        };
+        OrganizationResponseDto: {
+            id: string;
+            main_label: string;
+            category?: string;
+            main_category?: string;
+            main_image: string;
+            /**
+             * @default active
+             * @enum {string}
+             */
+            status: "active" | "temporarily_closed";
+            closed_reason?: string;
+            /**
+             * Format: date-time
+             * @default null
+             */
+            closed_until: string | null;
+            address?: string;
+            location?: {
+                /** @enum {string} */
+                type: "Point";
+                coordinates: [
+                    number,
+                    number
+                ];
+            };
+            /** @default [] */
+            working_hours: {
+                /** @enum {string} */
+                day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
+                from: string;
+                to: string;
+            }[];
+            /** @default [] */
+            holidays: string[];
+            /** @default UTC */
+            timezone: string;
+            /**
+             * @default {
+             *       "max_active_per_user": null,
+             *       "min_interval_days": null
+             *     }
+             */
+            booking_policy: {
+                /** @default null */
+                max_active_per_user: number | null;
+                /** @default null */
+                min_interval_days: number | null;
+            };
+            distance_m?: number;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string;
+        };
+        CreateOrganizationDto: {
+            main_label: string;
+            category?: string;
+            main_category?: string;
+            /** Format: uri */
+            main_image: string;
+            /** @enum {string} */
+            status?: "active" | "temporarily_closed";
+            closed_reason?: string;
+            /** Format: date-time */
+            closed_until?: string;
+            address?: string;
+            location?: {
+                lng: number;
+                lat: number;
+            };
+            working_hours?: {
+                /** @enum {string} */
+                day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
+                from: string;
+                to: string;
+            }[];
+            holidays?: string[];
+            timezone?: string;
+            booking_policy?: {
+                max_active_per_user?: number | null;
+                min_interval_days?: number | null;
+            };
+        };
+        OrganizationDetailDto: {
+            id: string;
+            main_label: string;
+            category?: string;
+            main_category?: string;
+            main_image: string;
+            /**
+             * @default active
+             * @enum {string}
+             */
+            status: "active" | "temporarily_closed";
+            closed_reason?: string;
+            /**
+             * Format: date-time
+             * @default null
+             */
+            closed_until: string | null;
+            address?: string;
+            location?: {
+                /** @enum {string} */
+                type: "Point";
+                coordinates: [
+                    number,
+                    number
+                ];
+            };
+            /** @default [] */
+            working_hours: {
+                /** @enum {string} */
+                day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
+                from: string;
+                to: string;
+            }[];
+            /** @default [] */
+            holidays: string[];
+            /** @default UTC */
+            timezone: string;
+            /**
+             * @default {
+             *       "max_active_per_user": null,
+             *       "min_interval_days": null
+             *     }
+             */
+            booking_policy: {
+                /** @default null */
+                max_active_per_user: number | null;
+                /** @default null */
+                min_interval_days: number | null;
+            };
+            distance_m?: number;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string;
+            news: {
+                id: string;
+                organization_id: string;
+                position: number;
+                label: string;
+                slug?: string;
+                rubric?: string;
+                enabled: boolean;
+                /** Format: date-time */
+                date: string;
+                /**
+                 * Format: date-time
+                 * @default null
+                 */
+                publish_at: string | null;
+                is_main: boolean;
+                is_offer: boolean;
+                /** Format: date-time */
+                expires_at?: string;
+                value: {
+                    heading_label?: string;
+                    heading_value?: string;
+                    text_label?: string;
+                    text_value?: string;
+                    image_label?: string;
+                    image_value?: string;
+                    link_label?: string;
+                    link_value?: string;
+                };
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                updated_at: string;
+            }[];
+            infosections: ({
+                id: string;
+                organization_id: string;
+                position: number;
+                label: string;
+                enabled: boolean;
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                updated_at: string;
+                /** @enum {string} */
+                control: "text";
+                value: {
+                    heading_label?: string;
+                    heading_value?: string;
+                    text_label?: string;
+                    text_value?: string;
+                };
+            } | {
+                id: string;
+                organization_id: string;
+                position: number;
+                label: string;
+                enabled: boolean;
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                updated_at: string;
+                /** @enum {string} */
+                control: "address";
+                value: {
+                    text?: string;
+                    lat?: string;
+                    lng?: string;
+                };
+            } | {
+                id: string;
+                organization_id: string;
+                position: number;
+                label: string;
+                enabled: boolean;
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                updated_at: string;
+                /** @enum {string} */
+                control: "link";
+                value: {
+                    text?: string;
+                    url: string;
+                };
+            } | {
+                id: string;
+                organization_id: string;
+                position: number;
+                label: string;
+                enabled: boolean;
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                updated_at: string;
+                /** @enum {string} */
+                control: "phone";
+                value: {
+                    phone: string;
+                    text?: string;
+                };
+            } | {
+                id: string;
+                organization_id: string;
+                position: number;
+                label: string;
+                enabled: boolean;
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                updated_at: string;
+                /** @enum {string} */
+                control: "email";
+                value: {
+                    /** Format: email */
+                    email: string;
+                    text?: string;
+                };
+            })[];
+            categories: {
+                id: string;
+                organization_id: string;
+                position: number;
+                label: string;
+                description?: string;
+                enabled: boolean;
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                updated_at: string;
+                services: {
+                    id: string;
+                    organization_id: string;
+                    category_id: string | null;
+                    /** @default 0 */
+                    position: number;
+                    label: string;
+                    slug?: string;
+                    enabled: boolean;
+                    /**
+                     * @default draft
+                     * @enum {string}
+                     */
+                    status: "draft" | "published" | "archived";
+                    /**
+                     * Format: date-time
+                     * @default null
+                     */
+                    published_at: string | null;
+                    description?: string;
+                    /** @default [] */
+                    tags: string[];
+                    /** @default null */
+                    duration_minutes: number | null;
+                    /** @default null */
+                    price: number | null;
+                    currency?: string;
+                    address?: string;
+                    location?: {
+                        /** @enum {string} */
+                        type: "Point";
+                        coordinates: [
+                            number,
+                            number
+                        ];
+                    };
+                    value: {
+                        heading_value?: string;
+                        image_value?: string;
+                        price_value?: string;
+                    };
+                    /** @default 0 */
+                    options_count: number;
+                    /** Format: date-time */
+                    created_at: string;
+                    /** Format: date-time */
+                    updated_at: string;
+                }[];
+            }[];
+            services: {
+                id: string;
+                organization_id: string;
+                category_id: string | null;
+                /** @default 0 */
+                position: number;
+                label: string;
+                slug?: string;
+                enabled: boolean;
+                /**
+                 * @default draft
+                 * @enum {string}
+                 */
+                status: "draft" | "published" | "archived";
+                /**
+                 * Format: date-time
+                 * @default null
+                 */
+                published_at: string | null;
+                description?: string;
+                /** @default [] */
+                tags: string[];
+                /** @default null */
+                duration_minutes: number | null;
+                /** @default null */
+                price: number | null;
+                currency?: string;
+                address?: string;
+                location?: {
+                    /** @enum {string} */
+                    type: "Point";
+                    coordinates: [
+                        number,
+                        number
+                    ];
+                };
+                value: {
+                    heading_value?: string;
+                    image_value?: string;
+                    price_value?: string;
+                };
+                /** @default 0 */
+                options_count: number;
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                updated_at: string;
+            }[];
+            images: {
+                id: string;
+                organization_id: string;
+                name: string;
+                src: string;
+                mime_type: string;
+                size: number;
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                updated_at: string;
+            }[];
+        };
+        UpdateOrganizationDto: {
+            main_label?: string;
+            category?: string | null;
+            main_category?: string | null;
+            /** Format: uri */
+            main_image?: string;
+            /** @enum {string} */
+            status?: "active" | "temporarily_closed";
+            closed_reason?: string | null;
+            /** Format: date-time */
+            closed_until?: string | null;
+            address?: string | null;
+            location?: {
+                lng: number;
+                lat: number;
+            } | null;
+            working_hours?: {
+                /** @enum {string} */
+                day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
+                from: string;
+                to: string;
+            }[];
+            holidays?: string[];
+            timezone?: string;
+            booking_policy?: {
+                max_active_per_user?: number | null;
+                min_interval_days?: number | null;
+            };
+        };
+        InfoSectionResponseDto: {
+            id: string;
+            organization_id: string;
+            position: number;
+            label: string;
+            enabled: boolean;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string;
+            /** @enum {string} */
+            control: "text";
+            value: {
+                heading_label?: string;
+                heading_value?: string;
+                text_label?: string;
+                text_value?: string;
+            };
+        } | {
+            id: string;
+            organization_id: string;
+            position: number;
+            label: string;
+            enabled: boolean;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string;
+            /** @enum {string} */
+            control: "address";
+            value: {
+                text?: string;
+                lat?: string;
+                lng?: string;
+            };
+        } | {
+            id: string;
+            organization_id: string;
+            position: number;
+            label: string;
+            enabled: boolean;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string;
+            /** @enum {string} */
+            control: "link";
+            value: {
+                text?: string;
+                url: string;
+            };
+        } | {
+            id: string;
+            organization_id: string;
+            position: number;
+            label: string;
+            enabled: boolean;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string;
+            /** @enum {string} */
+            control: "phone";
+            value: {
+                phone: string;
+                text?: string;
+            };
+        } | {
+            id: string;
+            organization_id: string;
+            position: number;
+            label: string;
+            enabled: boolean;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string;
+            /** @enum {string} */
+            control: "email";
+            value: {
+                /** Format: email */
+                email: string;
+                text?: string;
+            };
+        };
+        CategoryResponseDto: {
+            id: string;
+            organization_id: string;
+            position: number;
+            label: string;
+            description?: string;
+            enabled: boolean;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string;
+        };
         MaskedServiceResponseDto: {
             id: string;
             organization_id: string;
@@ -1783,10 +3095,13 @@ export interface components {
              *       "lead_time_minutes": null,
              *       "max_advance_days": null,
              *       "cancel_deadline_minutes": null,
+             *       "late_cancel": "forbid",
              *       "requires_confirmation": false,
              *       "no_show_limit": null,
              *       "no_show_window_days": null,
-             *       "no_show_suspension_days": null
+             *       "no_show_suspension_days": null,
+             *       "min_interval_days": null,
+             *       "no_show_after_minutes": null
              *     }
              */
             booking_policy: {
@@ -1798,6 +3113,11 @@ export interface components {
                 max_advance_days: number | null;
                 /** @default null */
                 cancel_deadline_minutes: number | null;
+                /**
+                 * @default forbid
+                 * @enum {string}
+                 */
+                late_cancel: "forbid" | "no_show";
                 /** @default false */
                 requires_confirmation: boolean;
                 /** @default null */
@@ -1806,6 +3126,10 @@ export interface components {
                 no_show_window_days: number | null;
                 /** @default null */
                 no_show_suspension_days: number | null;
+                /** @default null */
+                min_interval_days: number | null;
+                /** @default null */
+                no_show_after_minutes: number | null;
             };
             /** @default [] */
             form_fields: {
@@ -2023,6 +3347,123 @@ export interface components {
             created_at: string;
             /** Format: date-time */
             updated_at: string;
+        };
+        ReorderDto: {
+            ids: string[];
+        };
+        CreateInfoSectionDto: {
+            organization_id: string;
+            label: string;
+            enabled?: boolean;
+            /** @enum {string} */
+            control: "text";
+            value: {
+                heading_label?: string;
+                heading_value?: string;
+                text_label?: string;
+                text_value?: string;
+            };
+        } | {
+            organization_id: string;
+            label: string;
+            enabled?: boolean;
+            /** @enum {string} */
+            control: "address";
+            value: {
+                text?: string;
+                lat?: string;
+                lng?: string;
+            };
+        } | {
+            organization_id: string;
+            label: string;
+            enabled?: boolean;
+            /** @enum {string} */
+            control: "link";
+            value: {
+                text?: string;
+                /** Format: uri */
+                url: string;
+            };
+        } | {
+            organization_id: string;
+            label: string;
+            enabled?: boolean;
+            /** @enum {string} */
+            control: "phone";
+            value: {
+                phone: string;
+                text?: string;
+            };
+        } | {
+            organization_id: string;
+            label: string;
+            enabled?: boolean;
+            /** @enum {string} */
+            control: "email";
+            value: {
+                /** Format: email */
+                email: string;
+                text?: string;
+            };
+        };
+        UpdateInfoSectionDto: {
+            label?: string;
+            enabled?: boolean;
+        } & (({
+            /** @enum {string} */
+            control: "text";
+            value: {
+                heading_label?: string;
+                heading_value?: string;
+                text_label?: string;
+                text_value?: string;
+            };
+        } | {
+            /** @enum {string} */
+            control: "address";
+            value: {
+                text?: string;
+                lat?: string;
+                lng?: string;
+            };
+        } | {
+            /** @enum {string} */
+            control: "link";
+            value: {
+                text?: string;
+                /** Format: uri */
+                url: string;
+            };
+        } | {
+            /** @enum {string} */
+            control: "phone";
+            value: {
+                phone: string;
+                text?: string;
+            };
+        } | {
+            /** @enum {string} */
+            control: "email";
+            value: {
+                /** Format: email */
+                email: string;
+                text?: string;
+            };
+        }) | {
+            control?: unknown;
+            value?: unknown;
+        });
+        CreateCategoryDto: {
+            organization_id: string;
+            label: string;
+            description?: string;
+            enabled?: boolean;
+        };
+        UpdateCategoryDto: {
+            label?: string;
+            description?: string | null;
+            enabled?: boolean;
         };
         AvailabilityResponseDto: {
             service_id: string;
@@ -2291,10 +3732,14 @@ export interface components {
                 lead_time_minutes?: number | null;
                 max_advance_days?: number | null;
                 cancel_deadline_minutes?: number | null;
+                /** @enum {string} */
+                late_cancel?: "forbid" | "no_show";
                 requires_confirmation?: boolean;
                 no_show_limit?: number | null;
                 no_show_window_days?: number | null;
                 no_show_suspension_days?: number | null;
+                min_interval_days?: number | null;
+                no_show_after_minutes?: number | null;
             };
             form_fields?: {
                 key: string;
@@ -2367,10 +3812,13 @@ export interface components {
              *       "lead_time_minutes": null,
              *       "max_advance_days": null,
              *       "cancel_deadline_minutes": null,
+             *       "late_cancel": "forbid",
              *       "requires_confirmation": false,
              *       "no_show_limit": null,
              *       "no_show_window_days": null,
-             *       "no_show_suspension_days": null
+             *       "no_show_suspension_days": null,
+             *       "min_interval_days": null,
+             *       "no_show_after_minutes": null
              *     }
              */
             booking_policy: {
@@ -2382,6 +3830,11 @@ export interface components {
                 max_advance_days: number | null;
                 /** @default null */
                 cancel_deadline_minutes: number | null;
+                /**
+                 * @default forbid
+                 * @enum {string}
+                 */
+                late_cancel: "forbid" | "no_show";
                 /** @default false */
                 requires_confirmation: boolean;
                 /** @default null */
@@ -2390,6 +3843,10 @@ export interface components {
                 no_show_window_days: number | null;
                 /** @default null */
                 no_show_suspension_days: number | null;
+                /** @default null */
+                min_interval_days: number | null;
+                /** @default null */
+                no_show_after_minutes: number | null;
             };
             /** @default [] */
             form_fields: {
@@ -2748,10 +4205,14 @@ export interface components {
                 lead_time_minutes?: number | null;
                 max_advance_days?: number | null;
                 cancel_deadline_minutes?: number | null;
+                /** @enum {string} */
+                late_cancel?: "forbid" | "no_show";
                 requires_confirmation?: boolean;
                 no_show_limit?: number | null;
                 no_show_window_days?: number | null;
                 no_show_suspension_days?: number | null;
+                min_interval_days?: number | null;
+                no_show_after_minutes?: number | null;
             };
             form_fields?: {
                 key: string;
@@ -3056,1347 +4517,6 @@ export interface components {
             /** Format: date-time */
             created_at: string;
         };
-        UserResponseDto: {
-            id: string;
-            login?: string;
-            name?: string;
-            phone?: string;
-            email?: string;
-            /** @enum {string} */
-            role: "common-user" | "common-admin" | "super-admin" | "operator";
-            organization_ids: string[];
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-        };
-        CreateUserDto: {
-            login?: string;
-            password?: string;
-            phone?: string;
-            email?: string;
-            name?: string;
-            /** @enum {string} */
-            role: "common-user" | "common-admin" | "super-admin" | "operator";
-            organization_ids?: string[];
-        };
-        SetUserOrganizationsDto: {
-            organization_ids: string[];
-        };
-        UserBookingResponseDto: {
-            id: string;
-            service_id: string;
-            organization_id: string;
-            option_id: string;
-            slot_id: string;
-            child_type: string;
-            /** @default  */
-            service_label: string;
-            date?: string;
-            time?: string;
-            /** @default  */
-            info: string;
-            /** @default confirmed */
-            status: string;
-            /** Format: date-time */
-            created_at: string;
-        };
-        ChannelTemplateResourceDto: {
-            /** @enum {string} */
-            key: "booking_created_mail" | "booking_reminder_mail" | "booking_reminder_sms" | "waitlist_available_mail" | "waitlist_available_sms" | "booking_cancelled_mail" | "booking_cancelled_sms" | "booking_moved_mail" | "booking_moved_sms" | "booking_suspended_mail" | "booking_suspended_sms" | "callback_due_mail";
-            event: string;
-            /** @enum {string} */
-            channel: "mail" | "sms";
-            variables: string[];
-            custom: boolean;
-            subject: string[];
-            body: string;
-            default_subject: string[];
-            default_body: string;
-            /** Format: date-time */
-            updated_at: string | null;
-            updated_by: string[];
-        };
-        SaveChannelTemplateDto: {
-            subject?: string | null;
-            body: string;
-        };
-        RenderedTemplateDto: {
-            subject: string[];
-            body: string;
-        };
-        PreviewChannelTemplateDto: {
-            subject?: string | null;
-            body?: string;
-        };
-        NewsResponseDto: {
-            id: string;
-            organization_id: string;
-            position: number;
-            label: string;
-            slug?: string;
-            rubric?: string;
-            enabled: boolean;
-            /** Format: date-time */
-            date: string;
-            /**
-             * Format: date-time
-             * @default null
-             */
-            publish_at: string | null;
-            is_main: boolean;
-            is_offer: boolean;
-            /** Format: date-time */
-            expires_at?: string;
-            value: {
-                heading_label?: string;
-                heading_value?: string;
-                text_label?: string;
-                text_value?: string;
-                image_label?: string;
-                image_value?: string;
-                link_label?: string;
-                link_value?: string;
-            };
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-        };
-        CreateNewsDto: {
-            organization_id: string;
-            label: string;
-            slug?: string;
-            rubric?: string | null;
-            enabled?: boolean;
-            /** Format: date-time */
-            date?: string;
-            /** Format: date-time */
-            publish_at?: string | null;
-            is_main?: boolean;
-            is_offer?: boolean;
-            /** Format: date-time */
-            expires_at?: string | null;
-            value?: {
-                heading_label?: string;
-                heading_value?: string;
-                text_label?: string;
-                text_value?: string;
-                image_label?: string;
-                image_value?: string;
-                link_label?: string;
-                link_value?: string;
-            };
-        };
-        UpdateNewsDto: {
-            label?: string;
-            slug?: string;
-            rubric?: string | null;
-            enabled?: boolean;
-            /** Format: date-time */
-            date?: string;
-            /** Format: date-time */
-            publish_at?: string | null;
-            is_main?: boolean;
-            is_offer?: boolean;
-            /** Format: date-time */
-            expires_at?: string | null;
-            value?: {
-                heading_label?: string;
-                heading_value?: string;
-                text_label?: string;
-                text_value?: string;
-                image_label?: string;
-                image_value?: string;
-                link_label?: string;
-                link_value?: string;
-            };
-        };
-        ImageResponseDto: {
-            id: string;
-            organization_id: string;
-            name: string;
-            src: string;
-            mime_type: string;
-            size: number;
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-        };
-        ArchiveResponseDto: {
-            id: string;
-            organization_id: string;
-            service_id?: string;
-            /** @enum {string} */
-            type: "news" | "service";
-            data: {
-                [key: string]: unknown;
-            };
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-        };
-        CreateArchiveDto: {
-            organization_id: string;
-            service_id?: string;
-            /** @enum {string} */
-            type: "news" | "service";
-            data: {
-                [key: string]: unknown;
-            };
-        };
-        TokenPairResponseDto: {
-            access_token: string;
-            refresh_token: string;
-            /** @enum {string} */
-            token_type: "Bearer";
-            expires_in: number;
-            user: {
-                id: string;
-                login?: string;
-                name?: string;
-                phone?: string;
-                email?: string;
-                /** @enum {string} */
-                role: "common-user" | "common-admin" | "super-admin" | "operator";
-                organization_ids: string[];
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                updated_at: string;
-            };
-        };
-        LoginDto: {
-            login?: string;
-            phone?: string;
-            password: string;
-        };
-        RegisterDto: {
-            phone: string;
-            password: string;
-            name: string;
-            email?: string;
-        };
-        OtpRequestResponseDto: {
-            phone: string;
-            expires_in: number;
-        };
-        OtpRequestDto: {
-            phone: string;
-        };
-        OtpVerifyDto: {
-            phone: string;
-            code: string;
-            name?: string;
-            email?: string;
-        };
-        RefreshDto: {
-            refresh_token: string;
-        };
-        SessionResponseDto: {
-            id: string;
-            current: boolean;
-            user_agent?: string;
-            ip?: string;
-            /** Format: date-time */
-            expires_at: string;
-            /** Format: date-time */
-            created_at: string;
-        };
-        ChangePasswordDto: {
-            current_password?: string;
-            new_password: string;
-            new_password_confirmation: string;
-        };
-        UpdateProfileDto: {
-            name?: string;
-            email?: string[];
-            phone?: string;
-            code?: string;
-        };
-        PhoneCodeRequestDto: {
-            phone: string;
-        };
-        MaskedOrganizationListItemDto: {
-            id: string;
-            main_label: string;
-            category?: string;
-            main_category?: string;
-            main_image: string;
-            /**
-             * @default active
-             * @enum {string}
-             */
-            status: "active" | "temporarily_closed";
-            closed_reason?: string;
-            /**
-             * Format: date-time
-             * @default null
-             */
-            closed_until: string | null;
-            address?: string;
-            location?: {
-                /** @enum {string} */
-                type: "Point";
-                coordinates: [
-                    number,
-                    number
-                ];
-            };
-            /** @default [] */
-            working_hours: {
-                /** @enum {string} */
-                day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
-                from: string;
-                to: string;
-            }[];
-            /** @default [] */
-            holidays: string[];
-            /** @default UTC */
-            timezone: string;
-            distance_m?: number;
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-            counts: {
-                news: number;
-                infosections: number;
-                categories: number;
-                services: number;
-                images: number;
-            };
-            news?: {
-                id: string;
-                organization_id: string;
-                position: number;
-                label: string;
-                slug?: string;
-                rubric?: string;
-                enabled: boolean;
-                /** Format: date-time */
-                date: string;
-                /**
-                 * Format: date-time
-                 * @default null
-                 */
-                publish_at: string | null;
-                is_main: boolean;
-                is_offer: boolean;
-                /** Format: date-time */
-                expires_at?: string;
-                value: {
-                    heading_label?: string;
-                    heading_value?: string;
-                    text_label?: string;
-                    text_value?: string;
-                    image_label?: string;
-                    image_value?: string;
-                    link_label?: string;
-                    link_value?: string;
-                };
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                updated_at: string;
-            }[];
-            infosections?: ({
-                id: string;
-                organization_id: string;
-                position: number;
-                label: string;
-                enabled: boolean;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                updated_at: string;
-                /** @enum {string} */
-                control: "text";
-                value: {
-                    heading_label?: string;
-                    heading_value?: string;
-                    text_label?: string;
-                    text_value?: string;
-                };
-            } | {
-                id: string;
-                organization_id: string;
-                position: number;
-                label: string;
-                enabled: boolean;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                updated_at: string;
-                /** @enum {string} */
-                control: "address";
-                value: {
-                    text?: string;
-                    lat?: string;
-                    lng?: string;
-                };
-            } | {
-                id: string;
-                organization_id: string;
-                position: number;
-                label: string;
-                enabled: boolean;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                updated_at: string;
-                /** @enum {string} */
-                control: "link";
-                value: {
-                    text?: string;
-                    url: string;
-                };
-            } | {
-                id: string;
-                organization_id: string;
-                position: number;
-                label: string;
-                enabled: boolean;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                updated_at: string;
-                /** @enum {string} */
-                control: "phone";
-                value: {
-                    phone: string;
-                    text?: string;
-                };
-            } | {
-                id: string;
-                organization_id: string;
-                position: number;
-                label: string;
-                enabled: boolean;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                updated_at: string;
-                /** @enum {string} */
-                control: "email";
-                value: {
-                    /** Format: email */
-                    email: string;
-                    text?: string;
-                };
-            })[];
-            categories?: {
-                id: string;
-                organization_id: string;
-                position: number;
-                label: string;
-                description?: string;
-                enabled: boolean;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                updated_at: string;
-            }[];
-            services?: {
-                id: string;
-                organization_id: string;
-                category_id: string | null;
-                /** @default 0 */
-                position: number;
-                label: string;
-                slug?: string;
-                enabled: boolean;
-                /**
-                 * @default draft
-                 * @enum {string}
-                 */
-                status: "draft" | "published" | "archived";
-                /**
-                 * Format: date-time
-                 * @default null
-                 */
-                published_at: string | null;
-                description?: string;
-                /** @default [] */
-                tags: string[];
-                /** @default null */
-                duration_minutes: number | null;
-                /** @default null */
-                buffer_minutes: number | null;
-                /** @default null */
-                price: number | null;
-                currency?: string;
-                address?: string;
-                location?: {
-                    /** @enum {string} */
-                    type: "Point";
-                    coordinates: [
-                        number,
-                        number
-                    ];
-                };
-                /** @default [] */
-                working_hours: {
-                    /** @enum {string} */
-                    day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
-                    from: string;
-                    to: string;
-                }[];
-                /** @default [] */
-                holidays: string[];
-                /** @default [] */
-                blackout_dates: string[];
-                /**
-                 * @default {
-                 *       "max_active_per_user": null,
-                 *       "lead_time_minutes": null,
-                 *       "max_advance_days": null,
-                 *       "cancel_deadline_minutes": null,
-                 *       "requires_confirmation": false,
-                 *       "no_show_limit": null,
-                 *       "no_show_window_days": null,
-                 *       "no_show_suspension_days": null
-                 *     }
-                 */
-                booking_policy: {
-                    /** @default null */
-                    max_active_per_user: number | null;
-                    /** @default null */
-                    lead_time_minutes: number | null;
-                    /** @default null */
-                    max_advance_days: number | null;
-                    /** @default null */
-                    cancel_deadline_minutes: number | null;
-                    /** @default false */
-                    requires_confirmation: boolean;
-                    /** @default null */
-                    no_show_limit: number | null;
-                    /** @default null */
-                    no_show_window_days: number | null;
-                    /** @default null */
-                    no_show_suspension_days: number | null;
-                };
-                /** @default [] */
-                form_fields: {
-                    key: string;
-                    label: string;
-                    /** @enum {string} */
-                    type: "text" | "textarea" | "number" | "date" | "boolean" | "select" | "phone" | "email";
-                    /** @default false */
-                    required: boolean;
-                    options?: string[];
-                    placeholder?: string;
-                    /** @default null */
-                    max_length: number | null;
-                }[];
-                /** @default [] */
-                required_documents: {
-                    key: string;
-                    label: string;
-                    /** @default true */
-                    required: boolean;
-                }[];
-                value: {
-                    heading_label?: string;
-                    heading_value?: string;
-                    text_label?: string;
-                    text_value?: string;
-                    image_label?: string;
-                    image_value?: string;
-                    price_label?: string;
-                    price_value?: string;
-                    link_label?: string;
-                    link_value?: string;
-                    subscribe?: string;
-                };
-                options: {
-                    id: string;
-                    label: string;
-                    /** @enum {string} */
-                    service_type: "service_apply" | "service_payment" | "service_delivery" | "service_visit";
-                    enabled: boolean;
-                    recurrent_dates?: {
-                        /** @enum {string} */
-                        day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
-                        time: {
-                            time: string;
-                            /** @default null */
-                            limit: number | null;
-                        }[];
-                        /** @default null */
-                        limit: number | null;
-                    }[];
-                    recurrent_ranges?: {
-                        /** @enum {string} */
-                        day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
-                        from?: string;
-                        to?: string;
-                        resources: string[];
-                        step_minutes?: number;
-                        min_minutes?: number;
-                        /** @default null */
-                        max_minutes: number | null;
-                    }[];
-                    slots: ({
-                        id: string;
-                        label: string;
-                        /** @enum {string} */
-                        child_type: "date_time";
-                        value: {
-                            date: string;
-                            time: {
-                                time: string;
-                                /** @default null */
-                                limit: number | null;
-                                /** @default 0 */
-                                booked_count: number;
-                                /** @default [] */
-                                bookings: {
-                                    /** @enum {string} */
-                                    status: "reserved";
-                                }[];
-                            }[];
-                        };
-                    } | {
-                        id: string;
-                        label: string;
-                        /** @enum {string} */
-                        child_type: "date";
-                        value: {
-                            date: string;
-                            /** @default null */
-                            limit: number | null;
-                            /** @default 0 */
-                            booked_count: number;
-                            /** @default [] */
-                            bookings: {
-                                /** @enum {string} */
-                                status: "reserved";
-                            }[];
-                        };
-                    } | {
-                        id: string;
-                        label: string;
-                        /** @enum {string} */
-                        child_type: "apply";
-                        value: {
-                            /** @default null */
-                            limit: number | null;
-                            /** @default 0 */
-                            booked_count: number;
-                            /** @default [] */
-                            bookings: {
-                                /** @enum {string} */
-                                status: "reserved";
-                            }[];
-                        };
-                    } | {
-                        id: string;
-                        label: string;
-                        /** @enum {string} */
-                        child_type: "time_range";
-                        value: {
-                            date: string;
-                            resource?: string;
-                            from: string;
-                            to: string;
-                            step_minutes: number;
-                            min_minutes: number;
-                            /** @default null */
-                            max_minutes: number | null;
-                            /** @default 0 */
-                            booked_count: number;
-                            /** @default [] */
-                            bookings: {
-                                /** @enum {string} */
-                                status: "reserved";
-                            }[];
-                        };
-                    } | {
-                        id: string;
-                        label: string;
-                        /** @enum {string} */
-                        child_type: "callback";
-                        value: {
-                            date: string;
-                            time: {
-                                time: string;
-                                to: string;
-                                /** @default null */
-                                limit: number | null;
-                                /** @default 0 */
-                                booked_count: number;
-                                /** @default [] */
-                                bookings: {
-                                    /** @enum {string} */
-                                    status: "reserved";
-                                }[];
-                            }[];
-                        };
-                    } | {
-                        id: string;
-                        label: string;
-                        /** @enum {string} */
-                        child_type: "pickup";
-                        value: {
-                            description?: string;
-                            link?: string;
-                            price?: string;
-                        };
-                    } | {
-                        id: string;
-                        label: string;
-                        /** @enum {string} */
-                        child_type: "courier";
-                        value: {
-                            description?: string;
-                            link?: string;
-                            price?: string;
-                        };
-                    } | {
-                        id: string;
-                        label: string;
-                        /** @enum {string} */
-                        child_type: "paycard";
-                        value: {
-                            description?: string;
-                            link?: string;
-                            price?: string;
-                        };
-                    })[];
-                }[];
-                /**
-                 * Format: date-time
-                 * @default null
-                 */
-                deleted_at: string | null;
-                distance_m?: number;
-                organization?: {
-                    id: string;
-                    main_label: string;
-                    main_category?: string;
-                    main_image: string;
-                    /** @default active */
-                    status: string;
-                    address?: string;
-                    /** @default UTC */
-                    timezone: string;
-                };
-                category?: {
-                    id: string;
-                    label: string;
-                    /** @default false */
-                    enabled: boolean;
-                } | null;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                updated_at: string;
-            }[];
-            images?: {
-                id: string;
-                organization_id: string;
-                name: string;
-                src: string;
-                mime_type: string;
-                size: number;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                updated_at: string;
-            }[];
-        };
-        OrganizationResponseDto: {
-            id: string;
-            main_label: string;
-            category?: string;
-            main_category?: string;
-            main_image: string;
-            /**
-             * @default active
-             * @enum {string}
-             */
-            status: "active" | "temporarily_closed";
-            closed_reason?: string;
-            /**
-             * Format: date-time
-             * @default null
-             */
-            closed_until: string | null;
-            address?: string;
-            location?: {
-                /** @enum {string} */
-                type: "Point";
-                coordinates: [
-                    number,
-                    number
-                ];
-            };
-            /** @default [] */
-            working_hours: {
-                /** @enum {string} */
-                day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
-                from: string;
-                to: string;
-            }[];
-            /** @default [] */
-            holidays: string[];
-            /** @default UTC */
-            timezone: string;
-            distance_m?: number;
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-        };
-        CreateOrganizationDto: {
-            main_label: string;
-            category?: string;
-            main_category?: string;
-            /** Format: uri */
-            main_image: string;
-            /** @enum {string} */
-            status?: "active" | "temporarily_closed";
-            closed_reason?: string;
-            /** Format: date-time */
-            closed_until?: string;
-            address?: string;
-            location?: {
-                lng: number;
-                lat: number;
-            };
-            working_hours?: {
-                /** @enum {string} */
-                day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
-                from: string;
-                to: string;
-            }[];
-            holidays?: string[];
-            timezone?: string;
-        };
-        OrganizationDetailDto: {
-            id: string;
-            main_label: string;
-            category?: string;
-            main_category?: string;
-            main_image: string;
-            /**
-             * @default active
-             * @enum {string}
-             */
-            status: "active" | "temporarily_closed";
-            closed_reason?: string;
-            /**
-             * Format: date-time
-             * @default null
-             */
-            closed_until: string | null;
-            address?: string;
-            location?: {
-                /** @enum {string} */
-                type: "Point";
-                coordinates: [
-                    number,
-                    number
-                ];
-            };
-            /** @default [] */
-            working_hours: {
-                /** @enum {string} */
-                day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
-                from: string;
-                to: string;
-            }[];
-            /** @default [] */
-            holidays: string[];
-            /** @default UTC */
-            timezone: string;
-            distance_m?: number;
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-            news: {
-                id: string;
-                organization_id: string;
-                position: number;
-                label: string;
-                slug?: string;
-                rubric?: string;
-                enabled: boolean;
-                /** Format: date-time */
-                date: string;
-                /**
-                 * Format: date-time
-                 * @default null
-                 */
-                publish_at: string | null;
-                is_main: boolean;
-                is_offer: boolean;
-                /** Format: date-time */
-                expires_at?: string;
-                value: {
-                    heading_label?: string;
-                    heading_value?: string;
-                    text_label?: string;
-                    text_value?: string;
-                    image_label?: string;
-                    image_value?: string;
-                    link_label?: string;
-                    link_value?: string;
-                };
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                updated_at: string;
-            }[];
-            infosections: ({
-                id: string;
-                organization_id: string;
-                position: number;
-                label: string;
-                enabled: boolean;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                updated_at: string;
-                /** @enum {string} */
-                control: "text";
-                value: {
-                    heading_label?: string;
-                    heading_value?: string;
-                    text_label?: string;
-                    text_value?: string;
-                };
-            } | {
-                id: string;
-                organization_id: string;
-                position: number;
-                label: string;
-                enabled: boolean;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                updated_at: string;
-                /** @enum {string} */
-                control: "address";
-                value: {
-                    text?: string;
-                    lat?: string;
-                    lng?: string;
-                };
-            } | {
-                id: string;
-                organization_id: string;
-                position: number;
-                label: string;
-                enabled: boolean;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                updated_at: string;
-                /** @enum {string} */
-                control: "link";
-                value: {
-                    text?: string;
-                    url: string;
-                };
-            } | {
-                id: string;
-                organization_id: string;
-                position: number;
-                label: string;
-                enabled: boolean;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                updated_at: string;
-                /** @enum {string} */
-                control: "phone";
-                value: {
-                    phone: string;
-                    text?: string;
-                };
-            } | {
-                id: string;
-                organization_id: string;
-                position: number;
-                label: string;
-                enabled: boolean;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                updated_at: string;
-                /** @enum {string} */
-                control: "email";
-                value: {
-                    /** Format: email */
-                    email: string;
-                    text?: string;
-                };
-            })[];
-            categories: {
-                id: string;
-                organization_id: string;
-                position: number;
-                label: string;
-                description?: string;
-                enabled: boolean;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                updated_at: string;
-                services: {
-                    id: string;
-                    organization_id: string;
-                    category_id: string | null;
-                    /** @default 0 */
-                    position: number;
-                    label: string;
-                    slug?: string;
-                    enabled: boolean;
-                    /**
-                     * @default draft
-                     * @enum {string}
-                     */
-                    status: "draft" | "published" | "archived";
-                    /**
-                     * Format: date-time
-                     * @default null
-                     */
-                    published_at: string | null;
-                    description?: string;
-                    /** @default [] */
-                    tags: string[];
-                    /** @default null */
-                    duration_minutes: number | null;
-                    /** @default null */
-                    price: number | null;
-                    currency?: string;
-                    address?: string;
-                    location?: {
-                        /** @enum {string} */
-                        type: "Point";
-                        coordinates: [
-                            number,
-                            number
-                        ];
-                    };
-                    value: {
-                        heading_value?: string;
-                        image_value?: string;
-                        price_value?: string;
-                    };
-                    /** @default 0 */
-                    options_count: number;
-                    /** Format: date-time */
-                    created_at: string;
-                    /** Format: date-time */
-                    updated_at: string;
-                }[];
-            }[];
-            services: {
-                id: string;
-                organization_id: string;
-                category_id: string | null;
-                /** @default 0 */
-                position: number;
-                label: string;
-                slug?: string;
-                enabled: boolean;
-                /**
-                 * @default draft
-                 * @enum {string}
-                 */
-                status: "draft" | "published" | "archived";
-                /**
-                 * Format: date-time
-                 * @default null
-                 */
-                published_at: string | null;
-                description?: string;
-                /** @default [] */
-                tags: string[];
-                /** @default null */
-                duration_minutes: number | null;
-                /** @default null */
-                price: number | null;
-                currency?: string;
-                address?: string;
-                location?: {
-                    /** @enum {string} */
-                    type: "Point";
-                    coordinates: [
-                        number,
-                        number
-                    ];
-                };
-                value: {
-                    heading_value?: string;
-                    image_value?: string;
-                    price_value?: string;
-                };
-                /** @default 0 */
-                options_count: number;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                updated_at: string;
-            }[];
-            images: {
-                id: string;
-                organization_id: string;
-                name: string;
-                src: string;
-                mime_type: string;
-                size: number;
-                /** Format: date-time */
-                created_at: string;
-                /** Format: date-time */
-                updated_at: string;
-            }[];
-        };
-        UpdateOrganizationDto: {
-            main_label?: string;
-            category?: string | null;
-            main_category?: string | null;
-            /** Format: uri */
-            main_image?: string;
-            /** @enum {string} */
-            status?: "active" | "temporarily_closed";
-            closed_reason?: string | null;
-            /** Format: date-time */
-            closed_until?: string | null;
-            address?: string | null;
-            location?: {
-                lng: number;
-                lat: number;
-            } | null;
-            working_hours?: {
-                /** @enum {string} */
-                day: "sunday" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday";
-                from: string;
-                to: string;
-            }[];
-            holidays?: string[];
-            timezone?: string;
-        };
-        InfoSectionResponseDto: {
-            id: string;
-            organization_id: string;
-            position: number;
-            label: string;
-            enabled: boolean;
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-            /** @enum {string} */
-            control: "text";
-            value: {
-                heading_label?: string;
-                heading_value?: string;
-                text_label?: string;
-                text_value?: string;
-            };
-        } | {
-            id: string;
-            organization_id: string;
-            position: number;
-            label: string;
-            enabled: boolean;
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-            /** @enum {string} */
-            control: "address";
-            value: {
-                text?: string;
-                lat?: string;
-                lng?: string;
-            };
-        } | {
-            id: string;
-            organization_id: string;
-            position: number;
-            label: string;
-            enabled: boolean;
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-            /** @enum {string} */
-            control: "link";
-            value: {
-                text?: string;
-                url: string;
-            };
-        } | {
-            id: string;
-            organization_id: string;
-            position: number;
-            label: string;
-            enabled: boolean;
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-            /** @enum {string} */
-            control: "phone";
-            value: {
-                phone: string;
-                text?: string;
-            };
-        } | {
-            id: string;
-            organization_id: string;
-            position: number;
-            label: string;
-            enabled: boolean;
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-            /** @enum {string} */
-            control: "email";
-            value: {
-                /** Format: email */
-                email: string;
-                text?: string;
-            };
-        };
-        CategoryResponseDto: {
-            id: string;
-            organization_id: string;
-            position: number;
-            label: string;
-            description?: string;
-            enabled: boolean;
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-        };
-        ReorderDto: {
-            ids: string[];
-        };
-        CreateInfoSectionDto: {
-            organization_id: string;
-            label: string;
-            enabled?: boolean;
-            /** @enum {string} */
-            control: "text";
-            value: {
-                heading_label?: string;
-                heading_value?: string;
-                text_label?: string;
-                text_value?: string;
-            };
-        } | {
-            organization_id: string;
-            label: string;
-            enabled?: boolean;
-            /** @enum {string} */
-            control: "address";
-            value: {
-                text?: string;
-                lat?: string;
-                lng?: string;
-            };
-        } | {
-            organization_id: string;
-            label: string;
-            enabled?: boolean;
-            /** @enum {string} */
-            control: "link";
-            value: {
-                text?: string;
-                /** Format: uri */
-                url: string;
-            };
-        } | {
-            organization_id: string;
-            label: string;
-            enabled?: boolean;
-            /** @enum {string} */
-            control: "phone";
-            value: {
-                phone: string;
-                text?: string;
-            };
-        } | {
-            organization_id: string;
-            label: string;
-            enabled?: boolean;
-            /** @enum {string} */
-            control: "email";
-            value: {
-                /** Format: email */
-                email: string;
-                text?: string;
-            };
-        };
-        UpdateInfoSectionDto: {
-            label?: string;
-            enabled?: boolean;
-        } & (({
-            /** @enum {string} */
-            control: "text";
-            value: {
-                heading_label?: string;
-                heading_value?: string;
-                text_label?: string;
-                text_value?: string;
-            };
-        } | {
-            /** @enum {string} */
-            control: "address";
-            value: {
-                text?: string;
-                lat?: string;
-                lng?: string;
-            };
-        } | {
-            /** @enum {string} */
-            control: "link";
-            value: {
-                text?: string;
-                /** Format: uri */
-                url: string;
-            };
-        } | {
-            /** @enum {string} */
-            control: "phone";
-            value: {
-                phone: string;
-                text?: string;
-            };
-        } | {
-            /** @enum {string} */
-            control: "email";
-            value: {
-                /** Format: email */
-                email: string;
-                text?: string;
-            };
-        }) | {
-            control?: unknown;
-            value?: unknown;
-        });
-        CreateCategoryDto: {
-            organization_id: string;
-            label: string;
-            description?: string;
-            enabled?: boolean;
-        };
-        UpdateCategoryDto: {
-            label?: string;
-            description?: string | null;
-            enabled?: boolean;
-        };
         BookingResourceDto: {
             id: string;
             service_id: string;
@@ -4446,7 +4566,7 @@ export interface components {
              * @default confirmed
              * @enum {string}
              */
-            status: "pending" | "confirmed" | "completed" | "no_show" | "cancelled";
+            status: "pending" | "confirmed" | "arrived" | "completed" | "no_show" | "cancelled";
             /**
              * Format: date-time
              * @default null
@@ -4456,7 +4576,16 @@ export interface components {
              * Format: date-time
              * @default null
              */
+            arrived_at: string | null;
+            /** @default null */
+            checkin_code: string[];
+            /**
+             * Format: date-time
+             * @default null
+             */
             finished_at: string | null;
+            /** @default false */
+            late_cancel: boolean;
             /** @default null */
             created_by: string[];
             /** Format: date-time */
@@ -4467,12 +4596,16 @@ export interface components {
             by_status: {
                 pending: number;
                 confirmed: number;
+                arrived: number;
                 completed: number;
                 no_show: number;
                 cancelled: number;
             };
             no_show_rate: number | null;
             cancellation_rate: number | null;
+        };
+        CheckInByCodeDto: {
+            code: string;
         };
         CalendarTokenResponseDto: {
             token: string;
@@ -4627,6 +4760,18 @@ export interface components {
                 holidays: string[];
                 /** @default UTC */
                 timezone: string;
+                /**
+                 * @default {
+                 *       "max_active_per_user": null,
+                 *       "min_interval_days": null
+                 *     }
+                 */
+                booking_policy: {
+                    /** @default null */
+                    max_active_per_user: number | null;
+                    /** @default null */
+                    min_interval_days: number | null;
+                };
                 distance_m?: number;
                 /** Format: date-time */
                 created_at: string;
@@ -4644,6 +4789,11 @@ export interface components {
             provider: string;
             /** @enum {string} */
             status: "sent" | "failed" | "blocked";
+            /**
+             * @default sms
+             * @enum {string}
+             */
+            channel: "sms" | "viber" | "viber_sms";
             /** Format: date-time */
             created_at: string;
             /** Format: date-time */
@@ -4656,6 +4806,8 @@ export interface components {
         };
         SendTestSmsDto: {
             phone: string;
+            /** @enum {string} */
+            channel?: "sms" | "viber";
         };
         WebhookResponseDto: {
             id: string;
@@ -4827,7 +4979,7 @@ export interface components {
         ErrorEnvelope: {
             error: {
                 /** @enum {string} */
-                code: "VALIDATION_ERROR" | "UNAUTHENTICATED" | "TOKEN_INVALID" | "TOKEN_EXPIRED" | "SESSION_REVOKED" | "REFRESH_TOKEN_REUSED" | "FORBIDDEN" | "NOT_FOUND" | "CONFLICT" | "RATE_LIMITED" | "INTERNAL_ERROR" | "SERIALIZATION_ERROR" | "PAYLOAD_TOO_LARGE" | "UNSUPPORTED_MEDIA_TYPE" | "PAGE_OUT_OF_RANGE" | "DEPENDENCY_UNAVAILABLE" | "INVALID_CREDENTIALS" | "LOGIN_METHOD_DISABLED" | "LOGIN_IDENTIFIER_REQUIRED" | "OTP_INVALID" | "OTP_EXPIRED" | "OTP_ATTEMPTS_EXCEEDED" | "PHONE_COUNTRY_NOT_SUPPORTED" | "PASSWORD_TOO_SHORT" | "PASSWORD_TOO_LONG" | "PASSWORD_TOO_WEAK" | "PASSWORD_UNCHANGED" | "LOGIN_TOO_SHORT" | "ACCOUNT_HAS_NO_PASSWORD" | "USER_NOT_FOUND" | "LOGIN_TAKEN" | "PHONE_TAKEN" | "ADMIN_IDENTIFIER_REQUIRED" | "CLIENT_PHONE_REQUIRED" | "CLIENT_ACCOUNT_REQUIRED" | "ADMIN_PASSWORD_REQUIRED" | "ADMIN_PHONE_REQUIRED" | "LAST_SUPER_ADMIN" | "SELF_ROLE_CHANGE" | "PHONE_CODE_REQUIRED" | "PHONE_CODE_INVALID" | "ORGANIZATION_NOT_FOUND" | "CATEGORY_NOT_FOUND" | "SERVICE_NOT_FOUND" | "NEWS_NOT_FOUND" | "INFOSECTION_NOT_FOUND" | "IMAGE_NOT_FOUND" | "ARCHIVE_NOT_FOUND" | "CATEGORY_ORGANIZATION_MISMATCH" | "REORDER_MISMATCH" | "INCLUDE_NOT_ALLOWED" | "OPTION_NOT_FOUND" | "OPTION_HAS_BOOKINGS" | "SLOT_NOT_FOUND" | "SLOT_HAS_BOOKINGS" | "SLOT_NOT_DATED" | "SLOT_NOT_LIMITED" | "SLOT_NOT_TIMED" | "SLOT_NOT_BOOKABLE" | "SLOT_TIME_REQUIRED" | "SLOT_FULL" | "SLOT_EXPIRED" | "BOOKING_NOT_FOUND" | "SESSION_NOT_FOUND" | "BOOKING_ALREADY_EXISTS" | "IDEMPOTENCY_IN_PROGRESS" | "IDEMPOTENCY_KEY_REUSED" | "OPTION_DISABLED" | "SERVICE_MODIFIED" | "SLOT_TIME_BOOKED" | "SLOT_DATE_TAKEN" | "SLOT_TIME_OUT_OF_RANGE" | "SLOT_BULK_TOO_LARGE" | "SLOT_TYPE_NOT_ALLOWED" | "SLOT_NOT_RANGED" | "SLOT_RANGE_REQUIRED" | "SLOT_RANGE_INVALID" | "SERVICE_SLUG_TAKEN" | "SERVICE_NOT_DELETED" | "SERVICE_NOT_PUBLISHED" | "ORGANIZATION_CLOSED" | "BOOKING_LIMIT_REACHED" | "BOOKING_LEAD_TIME" | "BOOKING_TOO_FAR_AHEAD" | "BOOKING_CANCEL_DEADLINE_PASSED" | "BOOKING_FIELDS_INVALID" | "BOOKING_DOCUMENTS_REQUIRED" | "BOOKING_STATUS_TRANSITION" | "BOOKING_NOT_ACTIVE" | "BOOKING_NOT_DATED" | "BOOKING_ADDRESS_REQUIRED" | "BOOKING_PHONE_REQUIRED" | "BOOKING_SUSPENDED" | "SUSPENSION_NOT_FOUND" | "WAITLIST_NOT_FOUND" | "WAITLIST_ALREADY_JOINED" | "WAITLIST_NOT_SUPPORTED" | "SLOT_NOT_FULL" | "NEWS_SLUG_TAKEN" | "WEBHOOK_NOT_FOUND" | "CHANNEL_TEMPLATE_NOT_FOUND" | "NOTIFICATION_NOT_FOUND" | "CLIENT_NOT_FOUND" | "FIELDS_NOT_ALLOWED" | "FAVORITES_LIMIT_REACHED" | "FILE_REQUIRED" | "FILE_TYPE_NOT_ALLOWED" | "FILE_TOO_LARGE" | "IMAGE_TOO_LARGE" | "IMAGE_UNREADABLE" | "SMS_DELIVERY_FAILED" | "SMS_BUDGET_EXCEEDED" | "ARCHIVE_SERVICE_MISMATCH" | "SETTING_NOT_FOUND" | "SETTINGS_INVALID" | "SETTING_LOCKOUT_RISK" | "SETTINGS_READ_ONLY" | "SETTINGS_CONFLICT";
+                code: "VALIDATION_ERROR" | "UNAUTHENTICATED" | "TOKEN_INVALID" | "TOKEN_EXPIRED" | "SESSION_REVOKED" | "REFRESH_TOKEN_REUSED" | "FORBIDDEN" | "NOT_FOUND" | "CONFLICT" | "RATE_LIMITED" | "INTERNAL_ERROR" | "SERIALIZATION_ERROR" | "PAYLOAD_TOO_LARGE" | "UNSUPPORTED_MEDIA_TYPE" | "PAGE_OUT_OF_RANGE" | "DEPENDENCY_UNAVAILABLE" | "INVALID_CREDENTIALS" | "LOGIN_METHOD_DISABLED" | "LOGIN_IDENTIFIER_REQUIRED" | "OTP_INVALID" | "OTP_EXPIRED" | "OTP_ATTEMPTS_EXCEEDED" | "PHONE_COUNTRY_NOT_SUPPORTED" | "PASSWORD_TOO_SHORT" | "PASSWORD_TOO_LONG" | "PASSWORD_TOO_WEAK" | "PASSWORD_UNCHANGED" | "LOGIN_TOO_SHORT" | "ACCOUNT_HAS_NO_PASSWORD" | "USER_NOT_FOUND" | "LOGIN_TAKEN" | "PHONE_TAKEN" | "ADMIN_IDENTIFIER_REQUIRED" | "CLIENT_PHONE_REQUIRED" | "CLIENT_ACCOUNT_REQUIRED" | "ADMIN_PASSWORD_REQUIRED" | "ADMIN_PHONE_REQUIRED" | "LAST_SUPER_ADMIN" | "SELF_ROLE_CHANGE" | "PHONE_CODE_REQUIRED" | "PHONE_CODE_INVALID" | "ORGANIZATION_NOT_FOUND" | "CATEGORY_NOT_FOUND" | "SERVICE_NOT_FOUND" | "NEWS_NOT_FOUND" | "INFOSECTION_NOT_FOUND" | "IMAGE_NOT_FOUND" | "ARCHIVE_NOT_FOUND" | "CATEGORY_ORGANIZATION_MISMATCH" | "REORDER_MISMATCH" | "INCLUDE_NOT_ALLOWED" | "OPTION_NOT_FOUND" | "OPTION_HAS_BOOKINGS" | "SLOT_NOT_FOUND" | "SLOT_HAS_BOOKINGS" | "SLOT_NOT_DATED" | "SLOT_NOT_LIMITED" | "SLOT_NOT_TIMED" | "SLOT_NOT_BOOKABLE" | "SLOT_TIME_REQUIRED" | "SLOT_FULL" | "SLOT_EXPIRED" | "BOOKING_NOT_FOUND" | "SESSION_NOT_FOUND" | "BOOKING_ALREADY_EXISTS" | "IDEMPOTENCY_IN_PROGRESS" | "IDEMPOTENCY_KEY_REUSED" | "OPTION_DISABLED" | "SERVICE_MODIFIED" | "SLOT_TIME_BOOKED" | "SLOT_DATE_TAKEN" | "SLOT_TIME_OUT_OF_RANGE" | "SLOT_BULK_TOO_LARGE" | "SLOT_TYPE_NOT_ALLOWED" | "SLOT_NOT_RANGED" | "SLOT_RANGE_REQUIRED" | "SLOT_RANGE_INVALID" | "SERVICE_SLUG_TAKEN" | "SERVICE_NOT_DELETED" | "SERVICE_NOT_PUBLISHED" | "ORGANIZATION_CLOSED" | "BOOKING_LIMIT_REACHED" | "BOOKING_LEAD_TIME" | "BOOKING_TOO_FAR_AHEAD" | "BOOKING_CANCEL_DEADLINE_PASSED" | "BOOKING_FIELDS_INVALID" | "BOOKING_DOCUMENTS_REQUIRED" | "BOOKING_STATUS_TRANSITION" | "BOOKING_NOT_ACTIVE" | "BOOKING_NOT_DATED" | "BOOKING_ADDRESS_REQUIRED" | "BOOKING_PHONE_REQUIRED" | "BOOKING_SUSPENDED" | "BOOKING_ORGANIZATION_LIMIT_REACHED" | "BOOKING_TOO_FREQUENT" | "BOOKING_CHECK_IN_NOT_SUPPORTED" | "BOOKING_CHECK_IN_NOT_TODAY" | "SUSPENSION_NOT_FOUND" | "WAITLIST_NOT_FOUND" | "WAITLIST_ALREADY_JOINED" | "WAITLIST_NOT_SUPPORTED" | "SLOT_NOT_FULL" | "NEWS_SLUG_TAKEN" | "WEBHOOK_NOT_FOUND" | "CHANNEL_TEMPLATE_NOT_FOUND" | "NOTIFICATION_NOT_FOUND" | "CLIENT_NOT_FOUND" | "FIELDS_NOT_ALLOWED" | "FAVORITES_LIMIT_REACHED" | "FILE_REQUIRED" | "FILE_TYPE_NOT_ALLOWED" | "FILE_TOO_LARGE" | "IMAGE_TOO_LARGE" | "IMAGE_UNREADABLE" | "SMS_DELIVERY_FAILED" | "SMS_BUDGET_EXCEEDED" | "VIBER_DELIVERY_FAILED" | "VIBER_NOT_CONFIGURED" | "ARCHIVE_SERVICE_MISMATCH" | "SETTING_NOT_FOUND" | "SETTINGS_INVALID" | "SETTING_LOCKOUT_RISK" | "SETTINGS_READ_ONLY" | "SETTINGS_CONFLICT";
                 message: string;
                 details?: {
                     path?: string;
@@ -6008,3596 +6160,6 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_list: {
-        parameters: {
-            query?: {
-                page?: number;
-                limit?: number;
-                sort?: string;
-                order?: "asc" | "desc";
-                organization_id?: string;
-                category_id?: string;
-                enabled?: string;
-                status?: "draft" | "published" | "archived";
-                tags?: string;
-                q?: string;
-                deleted?: string;
-                include?: string;
-                fields?: string;
-                facets?: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["MaskedServiceResponseDto"][];
-                        meta?: {
-                            page?: number;
-                            limit?: number;
-                            total?: number;
-                            total_pages?: number;
-                            has_next?: boolean;
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `FIELDS_NOT_ALLOWED` — One of the requested fields is not part of this response.
-             *
-             *     `VALIDATION_ERROR` — The request is invalid.
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FIELDS_NOT_ALLOWED" | "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /** @description `PAGE_OUT_OF_RANGE` — The requested page is beyond the supported depth. Narrow the query instead. */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "PAGE_OUT_OF_RANGE";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateServiceDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ServiceResponseDto"];
-                };
-            };
-            /** @description `VALIDATION_ERROR` — The request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `CATEGORY_NOT_FOUND` — Category not found.
-             *
-             *     `ORGANIZATION_NOT_FOUND` — Organization not found.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "CATEGORY_NOT_FOUND" | "ORGANIZATION_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `CONFLICT` — The request conflicts with the current state.
-             *
-             *     `SERVICE_SLUG_TAKEN` — This slug is already used by another service of the organization.
-             */
-            409: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "CONFLICT" | "SERVICE_SLUG_TAKEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `CATEGORY_ORGANIZATION_MISMATCH` — The category belongs to a different organization.
-             *
-             *     `SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.
-             *
-             *     `SLOT_RANGE_REQUIRED` — The interval needs from and to, or working hours for its weekday.
-             *
-             *     `SLOT_TYPE_NOT_ALLOWED` — This slot type is not allowed for the option service type.
-             */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "CATEGORY_ORGANIZATION_MISMATCH" | "SLOT_RANGE_INVALID" | "SLOT_RANGE_REQUIRED" | "SLOT_TYPE_NOT_ALLOWED";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_nearby: {
-        parameters: {
-            query: {
-                lat: number;
-                lng: number;
-                radius_m?: number;
-                limit?: number;
-                tags?: string;
-                include?: string;
-                fields?: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["MaskedServiceResponseDto"];
-                    };
-                };
-            };
-            /**
-             * @description `FIELDS_NOT_ALLOWED` — One of the requested fields is not part of this response.
-             *
-             *     `VALIDATION_ERROR` — The request is invalid.
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FIELDS_NOT_ALLOWED" | "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_getOne: {
-        parameters: {
-            query?: {
-                include?: string;
-                fields?: string;
-            };
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["MaskedServiceResponseDto"];
-                    };
-                };
-            };
-            /**
-             * @description `FIELDS_NOT_ALLOWED` — One of the requested fields is not part of this response.
-             *
-             *     `VALIDATION_ERROR` — The request is invalid.
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FIELDS_NOT_ALLOWED" | "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_remove: {
-        parameters: {
-            query?: {
-                permanent?: string;
-            };
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description `VALIDATION_ERROR` — The request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_update: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateServiceDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["ServiceResponseDto"];
-                    };
-                };
-            };
-            /** @description `VALIDATION_ERROR` — The request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `CATEGORY_NOT_FOUND` — Category not found.
-             *
-             *     `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "CATEGORY_NOT_FOUND" | "NOT_FOUND" | "SERVICE_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /** @description `SERVICE_SLUG_TAKEN` — This slug is already used by another service of the organization. */
-            409: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SERVICE_SLUG_TAKEN";
-                        };
-                    };
-                };
-            };
-            /** @description `CATEGORY_ORGANIZATION_MISMATCH` — The category belongs to a different organization. */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "CATEGORY_ORGANIZATION_MISMATCH";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_availability: {
-        parameters: {
-            query?: {
-                from?: string;
-                to?: string;
-            };
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["AvailabilityResponseDto"];
-                    };
-                };
-            };
-            /** @description `VALIDATION_ERROR` — The request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_slotCandidates: {
-        parameters: {
-            query?: {
-                from?: string;
-                to?: string;
-                after?: string;
-                before?: string;
-                option_id?: string;
-                only_available?: string;
-                limit?: number;
-            };
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["ServiceSlotsResponseDto"];
-                    };
-                };
-            };
-            /** @description `VALIDATION_ERROR` — The request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_history: {
-        parameters: {
-            query?: {
-                page?: number;
-                limit?: number;
-                sort?: string;
-                order?: "asc" | "desc";
-            };
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["ServiceRevisionResponseDto"][];
-                        meta?: {
-                            page?: number;
-                            limit?: number;
-                            total?: number;
-                            total_pages?: number;
-                            has_next?: boolean;
-                        };
-                    };
-                };
-            };
-            /** @description `VALIDATION_ERROR` — The request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_setStatus: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetServiceStatusDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["ServiceResponseDto"];
-                    };
-                };
-            };
-            /** @description `VALIDATION_ERROR` — The request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_restore: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["ServiceResponseDto"];
-                    };
-                };
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /** @description `SERVICE_NOT_DELETED` — The service is not in the trash. */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SERVICE_NOT_DELETED";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_clone: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": components["schemas"]["CloneServiceDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ServiceResponseDto"];
-                };
-            };
-            /** @description `VALIDATION_ERROR` — The request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /** @description `SERVICE_SLUG_TAKEN` — This slug is already used by another service of the organization. */
-            409: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SERVICE_SLUG_TAKEN";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_addOption: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateOptionDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ServiceResponseDto"];
-                };
-            };
-            /** @description `VALIDATION_ERROR` — The request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /** @description `CONFLICT` — The request conflicts with the current state. */
-            409: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "CONFLICT";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.
-             *
-             *     `SLOT_RANGE_REQUIRED` — The interval needs from and to, or working hours for its weekday.
-             *
-             *     `SLOT_TYPE_NOT_ALLOWED` — This slot type is not allowed for the option service type.
-             */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SLOT_RANGE_INVALID" | "SLOT_RANGE_REQUIRED" | "SLOT_TYPE_NOT_ALLOWED";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_removeOption: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-                option_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `OPTION_NOT_FOUND` — The requested service option does not exist.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "OPTION_NOT_FOUND" | "SERVICE_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /** @description `OPTION_HAS_BOOKINGS` — This option still has bookings. Cancel them before removing it. */
-            409: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "OPTION_HAS_BOOKINGS";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_updateOption: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-                option_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateOptionDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["ServiceResponseDto"];
-                    };
-                };
-            };
-            /** @description `VALIDATION_ERROR` — The request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `OPTION_NOT_FOUND` — The requested service option does not exist.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "OPTION_NOT_FOUND" | "SERVICE_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /** @description `SLOT_TYPE_NOT_ALLOWED` — This slot type is not allowed for the option service type. */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SLOT_TYPE_NOT_ALLOWED";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_setRecurrence: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-                option_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["RecurrenceDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["ServiceResponseDto"];
-                    };
-                };
-            };
-            /** @description `VALIDATION_ERROR` — The request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `OPTION_NOT_FOUND` — The requested service option does not exist.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "OPTION_NOT_FOUND" | "SERVICE_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.
-             *
-             *     `SLOT_RANGE_REQUIRED` — The interval needs from and to, or working hours for its weekday.
-             *
-             *     `SLOT_TYPE_NOT_ALLOWED` — This slot type is not allowed for the option service type.
-             */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SLOT_RANGE_INVALID" | "SLOT_RANGE_REQUIRED" | "SLOT_TYPE_NOT_ALLOWED";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_addSlot: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-                option_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": Record<string, never>;
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ServiceResponseDto"];
-                };
-            };
-            /** @description `VALIDATION_ERROR` — The request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `OPTION_NOT_FOUND` — The requested service option does not exist.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "OPTION_NOT_FOUND" | "SERVICE_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /** @description `CONFLICT` — The request conflicts with the current state. */
-            409: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "CONFLICT";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.
-             *
-             *     `SLOT_RANGE_REQUIRED` — The interval needs from and to, or working hours for its weekday.
-             *
-             *     `SLOT_TYPE_NOT_ALLOWED` — This slot type is not allowed for the option service type.
-             */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SLOT_RANGE_INVALID" | "SLOT_RANGE_REQUIRED" | "SLOT_TYPE_NOT_ALLOWED";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_removeSlot: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-                option_id: string;
-                slot_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `OPTION_NOT_FOUND` — The requested service option does not exist.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             *
-             *     `SLOT_NOT_FOUND` — The requested slot does not exist.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "OPTION_NOT_FOUND" | "SERVICE_NOT_FOUND" | "SLOT_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /** @description `SLOT_HAS_BOOKINGS` — This slot still has bookings. Cancel them before removing it. */
-            409: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SLOT_HAS_BOOKINGS";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_updateSlot: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-                option_id: string;
-                slot_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateSlotDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["ServiceResponseDto"];
-                    };
-                };
-            };
-            /** @description `VALIDATION_ERROR` — The request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `OPTION_NOT_FOUND` — The requested service option does not exist.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             *
-             *     `SLOT_NOT_FOUND` — The requested slot does not exist.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "OPTION_NOT_FOUND" | "SERVICE_NOT_FOUND" | "SLOT_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /** @description `SLOT_TIME_BOOKED` — A time that already has bookings cannot be renamed or removed. */
-            409: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SLOT_TIME_BOOKED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SLOT_NOT_DATED` — This slot type has no date.
-             *
-             *     `SLOT_NOT_LIMITED` — This slot type has no capacity limit.
-             *
-             *     `SLOT_NOT_RANGED` — This slot type has no bookable interval.
-             *
-             *     `SLOT_NOT_TIMED` — This slot type has no time entries.
-             *
-             *     `SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.
-             *
-             *     `SLOT_RANGE_REQUIRED` — The interval needs from and to, or working hours for its weekday.
-             */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SLOT_NOT_DATED" | "SLOT_NOT_LIMITED" | "SLOT_NOT_RANGED" | "SLOT_NOT_TIMED" | "SLOT_RANGE_INVALID" | "SLOT_RANGE_REQUIRED";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_closeSlot: {
-        parameters: {
-            query?: never;
-            header: {
-                "idempotency-key": string;
-            };
-            path: {
-                id: string;
-                option_id: string;
-                slot_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CloseSlotDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["CloseSlotResponseDto"];
-                    };
-                };
-            };
-            /** @description `VALIDATION_ERROR` — The request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `OPTION_NOT_FOUND` — The requested service option does not exist.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             *
-             *     `SLOT_NOT_FOUND` — The requested slot does not exist.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "OPTION_NOT_FOUND" | "SERVICE_NOT_FOUND" | "SLOT_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /** @description `IDEMPOTENCY_IN_PROGRESS` — A request with this Idempotency-Key is still being processed. */
-            409: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "IDEMPOTENCY_IN_PROGRESS";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `IDEMPOTENCY_KEY_REUSED` — This Idempotency-Key was already used for a different request.
-             *
-             *     `SLOT_BULK_TOO_LARGE` — The slot holds more bookings than one bulk operation may touch.
-             *
-             *     `SLOT_NOT_BOOKABLE` — This slot type cannot be booked.
-             *
-             *     `SLOT_NOT_TIMED` — This slot type has no time entries.
-             */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "IDEMPOTENCY_KEY_REUSED" | "SLOT_BULK_TOO_LARGE" | "SLOT_NOT_BOOKABLE" | "SLOT_NOT_TIMED";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_moveSlot: {
-        parameters: {
-            query?: never;
-            header: {
-                "idempotency-key": string;
-            };
-            path: {
-                id: string;
-                option_id: string;
-                slot_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["MoveSlotDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["MoveSlotResponseDto"];
-                    };
-                };
-            };
-            /** @description `VALIDATION_ERROR` — The request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `OPTION_NOT_FOUND` — The requested service option does not exist.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             *
-             *     `SLOT_NOT_FOUND` — The requested slot does not exist.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "OPTION_NOT_FOUND" | "SERVICE_NOT_FOUND" | "SLOT_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `IDEMPOTENCY_IN_PROGRESS` — A request with this Idempotency-Key is still being processed.
-             *
-             *     `SLOT_DATE_TAKEN` — Another slot of this option already covers that date.
-             */
-            409: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "IDEMPOTENCY_IN_PROGRESS" | "SLOT_DATE_TAKEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `IDEMPOTENCY_KEY_REUSED` — This Idempotency-Key was already used for a different request.
-             *
-             *     `SLOT_BULK_TOO_LARGE` — The slot holds more bookings than one bulk operation may touch.
-             *
-             *     `SLOT_EXPIRED` — The slot date has passed.
-             *
-             *     `SLOT_NOT_DATED` — This slot type has no date.
-             *
-             *     `SLOT_NOT_TIMED` — This slot type has no time entries.
-             *
-             *     `SLOT_TIME_OUT_OF_RANGE` — The shift moves a time out of the day.
-             */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "IDEMPOTENCY_KEY_REUSED" | "SLOT_BULK_TOO_LARGE" | "SLOT_EXPIRED" | "SLOT_NOT_DATED" | "SLOT_NOT_TIMED" | "SLOT_TIME_OUT_OF_RANGE";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    BookingsController_forService: {
-        parameters: {
-            query?: {
-                page?: number;
-                limit?: number;
-                sort?: string;
-                order?: "asc" | "desc";
-                option_id?: string;
-                slot_id?: string;
-                status?: "pending" | "confirmed" | "completed" | "no_show" | "cancelled" | "active" | "all";
-                date_from?: string;
-                date_to?: string;
-            };
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["BookingResourceDto"][];
-                        meta?: {
-                            page?: number;
-                            limit?: number;
-                            total?: number;
-                            total_pages?: number;
-                            has_next?: boolean;
-                        };
-                    };
-                };
-            };
-            /** @description `VALIDATION_ERROR` — The request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_createBooking: {
-        parameters: {
-            query?: never;
-            header: {
-                "idempotency-key": string;
-            };
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateBookingDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BookingCreatedResponseDto"];
-                };
-            };
-            /** @description `VALIDATION_ERROR` — The request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             *
-             *     `SLOT_NOT_FOUND` — The requested slot does not exist.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND" | "SLOT_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `BOOKING_ALREADY_EXISTS` — You already have a booking for this slot.
-             *
-             *     `CONFLICT` — The request conflicts with the current state.
-             *
-             *     `IDEMPOTENCY_IN_PROGRESS` — A request with this Idempotency-Key is still being processed.
-             */
-            409: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "BOOKING_ALREADY_EXISTS" | "CONFLICT" | "IDEMPOTENCY_IN_PROGRESS";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `BOOKING_ADDRESS_REQUIRED` — An address is required for this booking.
-             *
-             *     `BOOKING_DOCUMENTS_REQUIRED` — Required documents were not confirmed.
-             *
-             *     `BOOKING_FIELDS_INVALID` — The booking form is invalid.
-             *
-             *     `BOOKING_LEAD_TIME` — The slot starts too soon to be booked.
-             *
-             *     `BOOKING_LIMIT_REACHED` — You already have the maximum number of active bookings for this service.
-             *
-             *     `BOOKING_PHONE_REQUIRED` — A phone number is required for a call-back request.
-             *
-             *     `BOOKING_SUSPENDED` — Booking this service is suspended for your account.
-             *
-             *     `BOOKING_TOO_FAR_AHEAD` — The slot is too far ahead to be booked.
-             *
-             *     `CLIENT_ACCOUNT_REQUIRED` — This phone number belongs to a staff account. Book on behalf of clients only.
-             *
-             *     `IDEMPOTENCY_KEY_REUSED` — This Idempotency-Key was already used for a different request.
-             *
-             *     `OPTION_DISABLED` — This service option is disabled.
-             *
-             *     `ORGANIZATION_CLOSED` — The organization is temporarily closed.
-             *
-             *     `PHONE_COUNTRY_NOT_SUPPORTED` — The phone number must belong to the supported country.
-             *
-             *     `SERVICE_NOT_PUBLISHED` — The service is not published.
-             *
-             *     `SLOT_EXPIRED` — The slot date has passed.
-             *
-             *     `SLOT_FULL` — The slot is fully booked.
-             *
-             *     `SLOT_NOT_BOOKABLE` — This slot type cannot be booked.
-             *
-             *     `SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.
-             *
-             *     `SLOT_TIME_REQUIRED` — A time is required for this slot.
-             */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "BOOKING_ADDRESS_REQUIRED" | "BOOKING_DOCUMENTS_REQUIRED" | "BOOKING_FIELDS_INVALID" | "BOOKING_LEAD_TIME" | "BOOKING_LIMIT_REACHED" | "BOOKING_PHONE_REQUIRED" | "BOOKING_SUSPENDED" | "BOOKING_TOO_FAR_AHEAD" | "CLIENT_ACCOUNT_REQUIRED" | "IDEMPOTENCY_KEY_REUSED" | "OPTION_DISABLED" | "ORGANIZATION_CLOSED" | "PHONE_COUNTRY_NOT_SUPPORTED" | "SERVICE_NOT_PUBLISHED" | "SLOT_EXPIRED" | "SLOT_FULL" | "SLOT_NOT_BOOKABLE" | "SLOT_RANGE_INVALID" | "SLOT_TIME_REQUIRED";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_cancelBooking: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-                booking_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `BOOKING_NOT_FOUND` — Booking not found.
-             *
-             *     `NOT_FOUND` — The requested resource was not found.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "BOOKING_NOT_FOUND" | "NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `BOOKING_CANCEL_DEADLINE_PASSED` — The cancellation deadline for this booking has passed.
-             *
-             *     `BOOKING_NOT_ACTIVE` — The booking is no longer active.
-             */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "BOOKING_CANCEL_DEADLINE_PASSED" | "BOOKING_NOT_ACTIVE";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_waitlistForService: {
-        parameters: {
-            query?: {
-                page?: number;
-                limit?: number;
-                sort?: string;
-                order?: "asc" | "desc";
-                option_id?: string;
-                slot_id?: string;
-            };
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["WaitlistEntryResponseDto"][];
-                        meta?: {
-                            page?: number;
-                            limit?: number;
-                            total?: number;
-                            total_pages?: number;
-                            has_next?: boolean;
-                        };
-                    };
-                };
-            };
-            /** @description `VALIDATION_ERROR` — The request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "RATE_LIMITED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `INTERNAL_ERROR` — An unexpected error occurred.
-             *
-             *     `SERIALIZATION_ERROR` — The response could not be serialized.
-             */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
-                        };
-                    };
-                };
-            };
-        };
-    };
-    ServicesController_joinWaitlist: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["JoinWaitlistDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["WaitlistEntryResponseDto"];
-                };
-            };
-            /** @description `VALIDATION_ERROR` — The request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "VALIDATION_ERROR";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `SESSION_REVOKED` — The session has been revoked.
-             *
-             *     `TOKEN_EXPIRED` — The token has expired.
-             *
-             *     `TOKEN_INVALID` — The token is invalid.
-             *
-             *     `UNAUTHENTICATED` — Authentication is required.
-             */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
-                        };
-                    };
-                };
-            };
-            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "FORBIDDEN";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `NOT_FOUND` — The requested resource was not found.
-             *
-             *     `SERVICE_NOT_FOUND` — Service not found.
-             *
-             *     `SLOT_NOT_FOUND` — The requested slot does not exist.
-             */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND" | "SLOT_NOT_FOUND";
-                        };
-                    };
-                };
-            };
-            /** @description `WAITLIST_ALREADY_JOINED` — You are already on the waitlist for this slot. */
-            409: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "WAITLIST_ALREADY_JOINED";
-                        };
-                    };
-                };
-            };
-            /**
-             * @description `BOOKING_SUSPENDED` — Booking this service is suspended for your account.
-             *
-             *     `OPTION_DISABLED` — This service option is disabled.
-             *
-             *     `ORGANIZATION_CLOSED` — The organization is temporarily closed.
-             *
-             *     `SERVICE_NOT_PUBLISHED` — The service is not published.
-             *
-             *     `SLOT_EXPIRED` — The slot date has passed.
-             *
-             *     `SLOT_NOT_BOOKABLE` — This slot type cannot be booked.
-             *
-             *     `SLOT_NOT_FULL` — The slot still has free capacity. Book it instead of joining the waitlist.
-             *
-             *     `SLOT_TIME_REQUIRED` — A time is required for this slot.
-             *
-             *     `WAITLIST_NOT_SUPPORTED` — This slot type has no waitlist.
-             */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"] & {
-                        error?: {
-                            /** @enum {unknown} */
-                            code?: "BOOKING_SUSPENDED" | "OPTION_DISABLED" | "ORGANIZATION_CLOSED" | "SERVICE_NOT_PUBLISHED" | "SLOT_EXPIRED" | "SLOT_NOT_BOOKABLE" | "SLOT_NOT_FULL" | "SLOT_TIME_REQUIRED" | "WAITLIST_NOT_SUPPORTED";
-                        };
-                    };
-                };
             };
             /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
             429: {
@@ -16301,6 +12863,3600 @@ export interface operations {
             };
         };
     };
+    ServicesController_list: {
+        parameters: {
+            query?: {
+                page?: number;
+                limit?: number;
+                sort?: string;
+                order?: "asc" | "desc";
+                organization_id?: string;
+                category_id?: string;
+                enabled?: string;
+                status?: "draft" | "published" | "archived";
+                tags?: string;
+                q?: string;
+                deleted?: string;
+                include?: string;
+                fields?: string;
+                facets?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["MaskedServiceResponseDto"][];
+                        meta?: {
+                            page?: number;
+                            limit?: number;
+                            total?: number;
+                            total_pages?: number;
+                            has_next?: boolean;
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `FIELDS_NOT_ALLOWED` — One of the requested fields is not part of this response.
+             *
+             *     `VALIDATION_ERROR` — The request is invalid.
+             */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FIELDS_NOT_ALLOWED" | "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /** @description `PAGE_OUT_OF_RANGE` — The requested page is beyond the supported depth. Narrow the query instead. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "PAGE_OUT_OF_RANGE";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateServiceDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ServiceResponseDto"];
+                };
+            };
+            /** @description `VALIDATION_ERROR` — The request is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `CATEGORY_NOT_FOUND` — Category not found.
+             *
+             *     `ORGANIZATION_NOT_FOUND` — Organization not found.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "CATEGORY_NOT_FOUND" | "ORGANIZATION_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `CONFLICT` — The request conflicts with the current state.
+             *
+             *     `SERVICE_SLUG_TAKEN` — This slug is already used by another service of the organization.
+             */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "CONFLICT" | "SERVICE_SLUG_TAKEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `CATEGORY_ORGANIZATION_MISMATCH` — The category belongs to a different organization.
+             *
+             *     `SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.
+             *
+             *     `SLOT_RANGE_REQUIRED` — The interval needs from and to, or working hours for its weekday.
+             *
+             *     `SLOT_TYPE_NOT_ALLOWED` — This slot type is not allowed for the option service type.
+             */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "CATEGORY_ORGANIZATION_MISMATCH" | "SLOT_RANGE_INVALID" | "SLOT_RANGE_REQUIRED" | "SLOT_TYPE_NOT_ALLOWED";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_nearby: {
+        parameters: {
+            query: {
+                lat: number;
+                lng: number;
+                radius_m?: number;
+                limit?: number;
+                tags?: string;
+                include?: string;
+                fields?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["MaskedServiceResponseDto"];
+                    };
+                };
+            };
+            /**
+             * @description `FIELDS_NOT_ALLOWED` — One of the requested fields is not part of this response.
+             *
+             *     `VALIDATION_ERROR` — The request is invalid.
+             */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FIELDS_NOT_ALLOWED" | "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_getOne: {
+        parameters: {
+            query?: {
+                include?: string;
+                fields?: string;
+            };
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["MaskedServiceResponseDto"];
+                    };
+                };
+            };
+            /**
+             * @description `FIELDS_NOT_ALLOWED` — One of the requested fields is not part of this response.
+             *
+             *     `VALIDATION_ERROR` — The request is invalid.
+             */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FIELDS_NOT_ALLOWED" | "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_remove: {
+        parameters: {
+            query?: {
+                permanent?: string;
+            };
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description `VALIDATION_ERROR` — The request is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateServiceDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["ServiceResponseDto"];
+                    };
+                };
+            };
+            /** @description `VALIDATION_ERROR` — The request is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `CATEGORY_NOT_FOUND` — Category not found.
+             *
+             *     `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "CATEGORY_NOT_FOUND" | "NOT_FOUND" | "SERVICE_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /** @description `SERVICE_SLUG_TAKEN` — This slug is already used by another service of the organization. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SERVICE_SLUG_TAKEN";
+                        };
+                    };
+                };
+            };
+            /** @description `CATEGORY_ORGANIZATION_MISMATCH` — The category belongs to a different organization. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "CATEGORY_ORGANIZATION_MISMATCH";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_availability: {
+        parameters: {
+            query?: {
+                from?: string;
+                to?: string;
+            };
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["AvailabilityResponseDto"];
+                    };
+                };
+            };
+            /** @description `VALIDATION_ERROR` — The request is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_slotCandidates: {
+        parameters: {
+            query?: {
+                from?: string;
+                to?: string;
+                after?: string;
+                before?: string;
+                option_id?: string;
+                only_available?: string;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["ServiceSlotsResponseDto"];
+                    };
+                };
+            };
+            /** @description `VALIDATION_ERROR` — The request is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_history: {
+        parameters: {
+            query?: {
+                page?: number;
+                limit?: number;
+                sort?: string;
+                order?: "asc" | "desc";
+            };
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["ServiceRevisionResponseDto"][];
+                        meta?: {
+                            page?: number;
+                            limit?: number;
+                            total?: number;
+                            total_pages?: number;
+                            has_next?: boolean;
+                        };
+                    };
+                };
+            };
+            /** @description `VALIDATION_ERROR` — The request is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_setStatus: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SetServiceStatusDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["ServiceResponseDto"];
+                    };
+                };
+            };
+            /** @description `VALIDATION_ERROR` — The request is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_restore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["ServiceResponseDto"];
+                    };
+                };
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /** @description `SERVICE_NOT_DELETED` — The service is not in the trash. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SERVICE_NOT_DELETED";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_clone: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["CloneServiceDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ServiceResponseDto"];
+                };
+            };
+            /** @description `VALIDATION_ERROR` — The request is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /** @description `SERVICE_SLUG_TAKEN` — This slug is already used by another service of the organization. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SERVICE_SLUG_TAKEN";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_addOption: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateOptionDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ServiceResponseDto"];
+                };
+            };
+            /** @description `VALIDATION_ERROR` — The request is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /** @description `CONFLICT` — The request conflicts with the current state. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "CONFLICT";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.
+             *
+             *     `SLOT_RANGE_REQUIRED` — The interval needs from and to, or working hours for its weekday.
+             *
+             *     `SLOT_TYPE_NOT_ALLOWED` — This slot type is not allowed for the option service type.
+             */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SLOT_RANGE_INVALID" | "SLOT_RANGE_REQUIRED" | "SLOT_TYPE_NOT_ALLOWED";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_removeOption: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                option_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `OPTION_NOT_FOUND` — The requested service option does not exist.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "OPTION_NOT_FOUND" | "SERVICE_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /** @description `OPTION_HAS_BOOKINGS` — This option still has bookings. Cancel them before removing it. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "OPTION_HAS_BOOKINGS";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_updateOption: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                option_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateOptionDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["ServiceResponseDto"];
+                    };
+                };
+            };
+            /** @description `VALIDATION_ERROR` — The request is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `OPTION_NOT_FOUND` — The requested service option does not exist.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "OPTION_NOT_FOUND" | "SERVICE_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /** @description `SLOT_TYPE_NOT_ALLOWED` — This slot type is not allowed for the option service type. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SLOT_TYPE_NOT_ALLOWED";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_setRecurrence: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                option_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RecurrenceDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["ServiceResponseDto"];
+                    };
+                };
+            };
+            /** @description `VALIDATION_ERROR` — The request is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `OPTION_NOT_FOUND` — The requested service option does not exist.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "OPTION_NOT_FOUND" | "SERVICE_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.
+             *
+             *     `SLOT_RANGE_REQUIRED` — The interval needs from and to, or working hours for its weekday.
+             *
+             *     `SLOT_TYPE_NOT_ALLOWED` — This slot type is not allowed for the option service type.
+             */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SLOT_RANGE_INVALID" | "SLOT_RANGE_REQUIRED" | "SLOT_TYPE_NOT_ALLOWED";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_addSlot: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                option_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": Record<string, never>;
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ServiceResponseDto"];
+                };
+            };
+            /** @description `VALIDATION_ERROR` — The request is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `OPTION_NOT_FOUND` — The requested service option does not exist.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "OPTION_NOT_FOUND" | "SERVICE_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /** @description `CONFLICT` — The request conflicts with the current state. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "CONFLICT";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.
+             *
+             *     `SLOT_RANGE_REQUIRED` — The interval needs from and to, or working hours for its weekday.
+             *
+             *     `SLOT_TYPE_NOT_ALLOWED` — This slot type is not allowed for the option service type.
+             */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SLOT_RANGE_INVALID" | "SLOT_RANGE_REQUIRED" | "SLOT_TYPE_NOT_ALLOWED";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_removeSlot: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                option_id: string;
+                slot_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `OPTION_NOT_FOUND` — The requested service option does not exist.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             *
+             *     `SLOT_NOT_FOUND` — The requested slot does not exist.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "OPTION_NOT_FOUND" | "SERVICE_NOT_FOUND" | "SLOT_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /** @description `SLOT_HAS_BOOKINGS` — This slot still has bookings. Cancel them before removing it. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SLOT_HAS_BOOKINGS";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_updateSlot: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                option_id: string;
+                slot_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateSlotDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["ServiceResponseDto"];
+                    };
+                };
+            };
+            /** @description `VALIDATION_ERROR` — The request is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `OPTION_NOT_FOUND` — The requested service option does not exist.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             *
+             *     `SLOT_NOT_FOUND` — The requested slot does not exist.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "OPTION_NOT_FOUND" | "SERVICE_NOT_FOUND" | "SLOT_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /** @description `SLOT_TIME_BOOKED` — A time that already has bookings cannot be renamed or removed. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SLOT_TIME_BOOKED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SLOT_NOT_DATED` — This slot type has no date.
+             *
+             *     `SLOT_NOT_LIMITED` — This slot type has no capacity limit.
+             *
+             *     `SLOT_NOT_RANGED` — This slot type has no bookable interval.
+             *
+             *     `SLOT_NOT_TIMED` — This slot type has no time entries.
+             *
+             *     `SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.
+             *
+             *     `SLOT_RANGE_REQUIRED` — The interval needs from and to, or working hours for its weekday.
+             */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SLOT_NOT_DATED" | "SLOT_NOT_LIMITED" | "SLOT_NOT_RANGED" | "SLOT_NOT_TIMED" | "SLOT_RANGE_INVALID" | "SLOT_RANGE_REQUIRED";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_closeSlot: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+            };
+            path: {
+                id: string;
+                option_id: string;
+                slot_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CloseSlotDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["CloseSlotResponseDto"];
+                    };
+                };
+            };
+            /** @description `VALIDATION_ERROR` — The request is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `OPTION_NOT_FOUND` — The requested service option does not exist.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             *
+             *     `SLOT_NOT_FOUND` — The requested slot does not exist.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "OPTION_NOT_FOUND" | "SERVICE_NOT_FOUND" | "SLOT_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /** @description `IDEMPOTENCY_IN_PROGRESS` — A request with this Idempotency-Key is still being processed. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "IDEMPOTENCY_IN_PROGRESS";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `IDEMPOTENCY_KEY_REUSED` — This Idempotency-Key was already used for a different request.
+             *
+             *     `SLOT_BULK_TOO_LARGE` — The slot holds more bookings than one bulk operation may touch.
+             *
+             *     `SLOT_NOT_BOOKABLE` — This slot type cannot be booked.
+             *
+             *     `SLOT_NOT_TIMED` — This slot type has no time entries.
+             */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "IDEMPOTENCY_KEY_REUSED" | "SLOT_BULK_TOO_LARGE" | "SLOT_NOT_BOOKABLE" | "SLOT_NOT_TIMED";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_moveSlot: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+            };
+            path: {
+                id: string;
+                option_id: string;
+                slot_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MoveSlotDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["MoveSlotResponseDto"];
+                    };
+                };
+            };
+            /** @description `VALIDATION_ERROR` — The request is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `OPTION_NOT_FOUND` — The requested service option does not exist.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             *
+             *     `SLOT_NOT_FOUND` — The requested slot does not exist.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "OPTION_NOT_FOUND" | "SERVICE_NOT_FOUND" | "SLOT_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `IDEMPOTENCY_IN_PROGRESS` — A request with this Idempotency-Key is still being processed.
+             *
+             *     `SLOT_DATE_TAKEN` — Another slot of this option already covers that date.
+             */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "IDEMPOTENCY_IN_PROGRESS" | "SLOT_DATE_TAKEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `IDEMPOTENCY_KEY_REUSED` — This Idempotency-Key was already used for a different request.
+             *
+             *     `SLOT_BULK_TOO_LARGE` — The slot holds more bookings than one bulk operation may touch.
+             *
+             *     `SLOT_EXPIRED` — The slot date has passed.
+             *
+             *     `SLOT_NOT_DATED` — This slot type has no date.
+             *
+             *     `SLOT_NOT_TIMED` — This slot type has no time entries.
+             *
+             *     `SLOT_TIME_OUT_OF_RANGE` — The shift moves a time out of the day.
+             */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "IDEMPOTENCY_KEY_REUSED" | "SLOT_BULK_TOO_LARGE" | "SLOT_EXPIRED" | "SLOT_NOT_DATED" | "SLOT_NOT_TIMED" | "SLOT_TIME_OUT_OF_RANGE";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    BookingsController_forService: {
+        parameters: {
+            query?: {
+                page?: number;
+                limit?: number;
+                sort?: string;
+                order?: "asc" | "desc";
+                option_id?: string;
+                slot_id?: string;
+                status?: "pending" | "confirmed" | "arrived" | "completed" | "no_show" | "cancelled" | "active" | "all";
+                date_from?: string;
+                date_to?: string;
+            };
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["BookingResourceDto"][];
+                        meta?: {
+                            page?: number;
+                            limit?: number;
+                            total?: number;
+                            total_pages?: number;
+                            has_next?: boolean;
+                        };
+                    };
+                };
+            };
+            /** @description `VALIDATION_ERROR` — The request is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_createBooking: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateBookingDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BookingCreatedResponseDto"];
+                };
+            };
+            /** @description `VALIDATION_ERROR` — The request is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             *
+             *     `SLOT_NOT_FOUND` — The requested slot does not exist.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND" | "SLOT_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `BOOKING_ALREADY_EXISTS` — You already have a booking for this slot.
+             *
+             *     `CONFLICT` — The request conflicts with the current state.
+             *
+             *     `IDEMPOTENCY_IN_PROGRESS` — A request with this Idempotency-Key is still being processed.
+             */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "BOOKING_ALREADY_EXISTS" | "CONFLICT" | "IDEMPOTENCY_IN_PROGRESS";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `BOOKING_ADDRESS_REQUIRED` — An address is required for this booking.
+             *
+             *     `BOOKING_DOCUMENTS_REQUIRED` — Required documents were not confirmed.
+             *
+             *     `BOOKING_FIELDS_INVALID` — The booking form is invalid.
+             *
+             *     `BOOKING_LEAD_TIME` — The slot starts too soon to be booked.
+             *
+             *     `BOOKING_LIMIT_REACHED` — You already have the maximum number of active bookings for this service.
+             *
+             *     `BOOKING_ORGANIZATION_LIMIT_REACHED` — You already have the maximum number of active bookings with this organization.
+             *
+             *     `BOOKING_PHONE_REQUIRED` — A phone number is required for a call-back request.
+             *
+             *     `BOOKING_SUSPENDED` — Booking this service is suspended for your account.
+             *
+             *     `BOOKING_TOO_FAR_AHEAD` — The slot is too far ahead to be booked.
+             *
+             *     `BOOKING_TOO_FREQUENT` — You booked too recently. Bookings must be further apart.
+             *
+             *     `CLIENT_ACCOUNT_REQUIRED` — This phone number belongs to a staff account. Book on behalf of clients only.
+             *
+             *     `IDEMPOTENCY_KEY_REUSED` — This Idempotency-Key was already used for a different request.
+             *
+             *     `OPTION_DISABLED` — This service option is disabled.
+             *
+             *     `ORGANIZATION_CLOSED` — The organization is temporarily closed.
+             *
+             *     `PHONE_COUNTRY_NOT_SUPPORTED` — The phone number must belong to the supported country.
+             *
+             *     `SERVICE_NOT_PUBLISHED` — The service is not published.
+             *
+             *     `SLOT_EXPIRED` — The slot date has passed.
+             *
+             *     `SLOT_FULL` — The slot is fully booked.
+             *
+             *     `SLOT_NOT_BOOKABLE` — This slot type cannot be booked.
+             *
+             *     `SLOT_RANGE_INVALID` — The requested interval does not fit the slot range, step or duration limits.
+             *
+             *     `SLOT_TIME_REQUIRED` — A time is required for this slot.
+             */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "BOOKING_ADDRESS_REQUIRED" | "BOOKING_DOCUMENTS_REQUIRED" | "BOOKING_FIELDS_INVALID" | "BOOKING_LEAD_TIME" | "BOOKING_LIMIT_REACHED" | "BOOKING_ORGANIZATION_LIMIT_REACHED" | "BOOKING_PHONE_REQUIRED" | "BOOKING_SUSPENDED" | "BOOKING_TOO_FAR_AHEAD" | "BOOKING_TOO_FREQUENT" | "CLIENT_ACCOUNT_REQUIRED" | "IDEMPOTENCY_KEY_REUSED" | "OPTION_DISABLED" | "ORGANIZATION_CLOSED" | "PHONE_COUNTRY_NOT_SUPPORTED" | "SERVICE_NOT_PUBLISHED" | "SLOT_EXPIRED" | "SLOT_FULL" | "SLOT_NOT_BOOKABLE" | "SLOT_RANGE_INVALID" | "SLOT_TIME_REQUIRED";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_cancelBooking: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                booking_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `BOOKING_NOT_FOUND` — Booking not found.
+             *
+             *     `NOT_FOUND` — The requested resource was not found.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "BOOKING_NOT_FOUND" | "NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `BOOKING_CANCEL_DEADLINE_PASSED` — The cancellation deadline for this booking has passed.
+             *
+             *     `BOOKING_NOT_ACTIVE` — The booking is no longer active.
+             */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "BOOKING_CANCEL_DEADLINE_PASSED" | "BOOKING_NOT_ACTIVE";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_waitlistForService: {
+        parameters: {
+            query?: {
+                page?: number;
+                limit?: number;
+                sort?: string;
+                order?: "asc" | "desc";
+                option_id?: string;
+                slot_id?: string;
+            };
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["WaitlistEntryResponseDto"][];
+                        meta?: {
+                            page?: number;
+                            limit?: number;
+                            total?: number;
+                            total_pages?: number;
+                            has_next?: boolean;
+                        };
+                    };
+                };
+            };
+            /** @description `VALIDATION_ERROR` — The request is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
+    ServicesController_joinWaitlist: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["JoinWaitlistDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WaitlistEntryResponseDto"];
+                };
+            };
+            /** @description `VALIDATION_ERROR` — The request is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `NOT_FOUND` — The requested resource was not found.
+             *
+             *     `SERVICE_NOT_FOUND` — Service not found.
+             *
+             *     `SLOT_NOT_FOUND` — The requested slot does not exist.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "NOT_FOUND" | "SERVICE_NOT_FOUND" | "SLOT_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /** @description `WAITLIST_ALREADY_JOINED` — You are already on the waitlist for this slot. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "WAITLIST_ALREADY_JOINED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `BOOKING_SUSPENDED` — Booking this service is suspended for your account.
+             *
+             *     `OPTION_DISABLED` — This service option is disabled.
+             *
+             *     `ORGANIZATION_CLOSED` — The organization is temporarily closed.
+             *
+             *     `SERVICE_NOT_PUBLISHED` — The service is not published.
+             *
+             *     `SLOT_EXPIRED` — The slot date has passed.
+             *
+             *     `SLOT_NOT_BOOKABLE` — This slot type cannot be booked.
+             *
+             *     `SLOT_NOT_FULL` — The slot still has free capacity. Book it instead of joining the waitlist.
+             *
+             *     `SLOT_TIME_REQUIRED` — A time is required for this slot.
+             *
+             *     `WAITLIST_NOT_SUPPORTED` — This slot type has no waitlist.
+             */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "BOOKING_SUSPENDED" | "OPTION_DISABLED" | "ORGANIZATION_CLOSED" | "SERVICE_NOT_PUBLISHED" | "SLOT_EXPIRED" | "SLOT_NOT_BOOKABLE" | "SLOT_NOT_FULL" | "SLOT_TIME_REQUIRED" | "WAITLIST_NOT_SUPPORTED";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
     BookingsController_list: {
         parameters: {
             query?: {
@@ -16314,7 +16470,7 @@ export interface operations {
                 option_id?: string;
                 slot_id?: string;
                 child_type?: "date_time" | "date" | "apply" | "time_range" | "callback" | "pickup" | "courier" | "paycard";
-                status?: "pending" | "confirmed" | "completed" | "no_show" | "cancelled" | "active" | "all";
+                status?: "pending" | "confirmed" | "arrived" | "completed" | "no_show" | "cancelled" | "active" | "all";
                 date_from?: string;
                 date_to?: string;
             };
@@ -16542,7 +16698,7 @@ export interface operations {
                 option_id?: string;
                 slot_id?: string;
                 child_type?: "date_time" | "date" | "apply" | "time_range" | "callback" | "pickup" | "courier" | "paycard";
-                status?: "pending" | "confirmed" | "completed" | "no_show" | "cancelled" | "active" | "all";
+                status?: "pending" | "confirmed" | "arrived" | "completed" | "no_show" | "cancelled" | "active" | "all";
                 date_from?: string;
                 date_to?: string;
             };
@@ -16644,6 +16800,147 @@ export interface operations {
             };
         };
     };
+    BookingsController_checkInByCode: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CheckInByCodeDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["BookingResourceDto"];
+                    };
+                };
+            };
+            /** @description `VALIDATION_ERROR` — The request is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "VALIDATION_ERROR";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /** @description `BOOKING_NOT_FOUND` — Booking not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "BOOKING_NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `BOOKING_CHECK_IN_NOT_SUPPORTED` — This booking has no visit to check in to.
+             *
+             *     `BOOKING_CHECK_IN_NOT_TODAY` — Check-in is open on the day of the booking only.
+             *
+             *     `BOOKING_STATUS_TRANSITION` — The booking cannot move to this status from its current one.
+             */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "BOOKING_CHECK_IN_NOT_SUPPORTED" | "BOOKING_CHECK_IN_NOT_TODAY" | "BOOKING_STATUS_TRANSITION";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
     BookingsController_own: {
         parameters: {
             query?: {
@@ -16651,7 +16948,7 @@ export interface operations {
                 limit?: number;
                 sort?: string;
                 order?: "asc" | "desc";
-                status?: "pending" | "confirmed" | "completed" | "no_show" | "cancelled" | "active" | "all";
+                status?: "pending" | "confirmed" | "arrived" | "completed" | "no_show" | "cancelled" | "active" | "all";
                 date_from?: string;
                 date_to?: string;
             };
@@ -17880,6 +18177,135 @@ export interface operations {
             };
         };
     };
+    BookingsController_checkIn: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                booking_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["BookingResourceDto"];
+                    };
+                };
+            };
+            /**
+             * @description `SESSION_REVOKED` — The session has been revoked.
+             *
+             *     `TOKEN_EXPIRED` — The token has expired.
+             *
+             *     `TOKEN_INVALID` — The token is invalid.
+             *
+             *     `UNAUTHENTICATED` — Authentication is required.
+             */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "SESSION_REVOKED" | "TOKEN_EXPIRED" | "TOKEN_INVALID" | "UNAUTHENTICATED";
+                        };
+                    };
+                };
+            };
+            /** @description `FORBIDDEN` — You are not allowed to perform this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "FORBIDDEN";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `BOOKING_NOT_FOUND` — Booking not found.
+             *
+             *     `NOT_FOUND` — The requested resource was not found.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "BOOKING_NOT_FOUND" | "NOT_FOUND";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `BOOKING_CHECK_IN_NOT_SUPPORTED` — This booking has no visit to check in to.
+             *
+             *     `BOOKING_CHECK_IN_NOT_TODAY` — Check-in is open on the day of the booking only.
+             *
+             *     `BOOKING_STATUS_TRANSITION` — The booking cannot move to this status from its current one.
+             */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "BOOKING_CHECK_IN_NOT_SUPPORTED" | "BOOKING_CHECK_IN_NOT_TODAY" | "BOOKING_STATUS_TRANSITION";
+                        };
+                    };
+                };
+            };
+            /** @description `RATE_LIMITED` — Too many requests. Please try again later. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "RATE_LIMITED";
+                        };
+                    };
+                };
+            };
+            /**
+             * @description `INTERNAL_ERROR` — An unexpected error occurred.
+             *
+             *     `SERIALIZATION_ERROR` — The response could not be serialized.
+             */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"] & {
+                        error?: {
+                            /** @enum {unknown} */
+                            code?: "INTERNAL_ERROR" | "SERIALIZATION_ERROR";
+                        };
+                    };
+                };
+            };
+        };
+    };
     BookingsController_reschedule: {
         parameters: {
             query?: never;
@@ -18000,6 +18426,8 @@ export interface operations {
              *
              *     `BOOKING_TOO_FAR_AHEAD` — The slot is too far ahead to be booked.
              *
+             *     `BOOKING_TOO_FREQUENT` — You booked too recently. Bookings must be further apart.
+             *
              *     `OPTION_DISABLED` — This service option is disabled.
              *
              *     `SLOT_EXPIRED` — The slot date has passed.
@@ -18020,7 +18448,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorEnvelope"] & {
                         error?: {
                             /** @enum {unknown} */
-                            code?: "BOOKING_ADDRESS_REQUIRED" | "BOOKING_CANCEL_DEADLINE_PASSED" | "BOOKING_LEAD_TIME" | "BOOKING_NOT_ACTIVE" | "BOOKING_TOO_FAR_AHEAD" | "OPTION_DISABLED" | "SLOT_EXPIRED" | "SLOT_FULL" | "SLOT_NOT_BOOKABLE" | "SLOT_RANGE_INVALID" | "SLOT_TIME_REQUIRED";
+                            code?: "BOOKING_ADDRESS_REQUIRED" | "BOOKING_CANCEL_DEADLINE_PASSED" | "BOOKING_LEAD_TIME" | "BOOKING_NOT_ACTIVE" | "BOOKING_TOO_FAR_AHEAD" | "BOOKING_TOO_FREQUENT" | "OPTION_DISABLED" | "SLOT_EXPIRED" | "SLOT_FULL" | "SLOT_NOT_BOOKABLE" | "SLOT_RANGE_INVALID" | "SLOT_TIME_REQUIRED";
                         };
                     };
                 };
@@ -18883,6 +19311,7 @@ export interface operations {
                 to?: string;
                 period?: "this_month" | "last_month";
                 phone?: string;
+                channel?: "sms" | "viber" | "viber_sms";
             };
             header?: never;
             path?: never;

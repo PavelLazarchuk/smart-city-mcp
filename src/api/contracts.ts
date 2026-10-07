@@ -31,7 +31,14 @@ export const SERVICE_TYPES = [
 ] as const;
 export const ADDRESS_SERVICE_TYPES: readonly string[] = ['service_visit'];
 export const SERVICE_STATUSES = ['draft', 'published', 'archived'] as const;
-export const BOOKING_STATUSES = ['pending', 'confirmed', 'completed', 'no_show', 'cancelled'] as const;
+export const BOOKING_STATUSES = [
+    'pending',
+    'confirmed',
+    'arrived',
+    'completed',
+    'no_show',
+    'cancelled',
+] as const;
 export const WAITLIST_STATUSES = ['waiting', 'notified'] as const;
 export const ORGANIZATION_STATUSES = ['active', 'temporarily_closed'] as const;
 export const FAVORITE_TYPES = ['service', 'organization'] as const;

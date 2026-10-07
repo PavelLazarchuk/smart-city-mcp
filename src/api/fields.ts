@@ -59,6 +59,7 @@ export const ORGANIZATION_FIELDS = [
     'status',
     'closed_reason',
     'closed_until',
+    'booking_policy',
 ] as const;
 
 export function fieldsParam(fields: readonly string[]): string {

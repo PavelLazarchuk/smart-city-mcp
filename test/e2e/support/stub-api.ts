@@ -49,6 +49,7 @@ export interface StubState {
     calendarToken: string | null;
     reschedules: Record<string, unknown>[];
     fillerSlots: number;
+    lateCancel: 'forbid' | 'no_show';
 }
 
 export interface Stub {
@@ -92,6 +93,7 @@ const organization = {
     working_hours: [],
     holidays: [],
     closed_until: null,
+    booking_policy: { max_active_per_user: null, min_interval_days: null },
     created_at: '2026-01-01T00:00:00Z',
     updated_at: '2026-01-01T00:00:00Z',
 };
@@ -113,10 +115,13 @@ const service = {
         lead_time_minutes: 60,
         max_advance_days: null,
         cancel_deadline_minutes: 1440,
+        late_cancel: 'forbid',
         requires_confirmation: false,
         no_show_limit: null,
         no_show_window_days: null,
         no_show_suspension_days: null,
+        min_interval_days: null,
+        no_show_after_minutes: null,
     },
     form_fields: [
         { key: 'insurance_number', label: 'Insurance number', type: 'text', required: true, max_length: 20 },
@@ -304,6 +309,7 @@ export async function startStubApi(): Promise<Stub> {
         calendarToken: null,
         reschedules: [],
         fillerSlots: 0,
+        lateCancel: 'forbid',
     };
 
     const server = createServer((request, response) => {
@@ -422,7 +428,14 @@ async function handle(request: IncomingMessage, response: ServerResponse, state:
         );
     }
 
-    if (path === `/services/${SERVICE_ID}`) return send(200, envelope(service));
+    if (path === `/services/${SERVICE_ID}`)
+        return send(
+            200,
+            envelope({
+                ...service,
+                booking_policy: { ...service.booking_policy, late_cancel: state.lateCancel },
+            }),
+        );
 
     if (path === `/organizations/${ORGANIZATION_ID}`) return send(200, envelope(organization));
 
@@ -526,7 +539,10 @@ async function handle(request: IncomingMessage, response: ServerResponse, state:
             documents: body['documents'] ?? [],
             status: 'confirmed',
             confirmed_at: null,
+            arrived_at: null,
+            checkin_code: slot['child_type'] === 'callback' ? null : 'K7M4PX',
             finished_at: null,
+            late_cancel: false,
             created_at: created['created_at'],
         });
         const payload = envelope(created);
@@ -660,6 +676,14 @@ async function handle(request: IncomingMessage, response: ServerResponse, state:
         if (!booking) return send(404, fail('BOOKING_NOT_FOUND'));
 
         if (method === 'DELETE') {
+            const deadline = booking['cancel_deadline_at'];
+            const late = typeof deadline === 'string' && Date.parse(deadline) <= Date.now();
+            const upcoming = Date.parse(String(booking['starts_at'])) > Date.now();
+
+            if (late && (state.lateCancel !== 'no_show' || !upcoming))
+                return send(422, fail('BOOKING_CANCEL_DEADLINE_PASSED'));
+
+            booking['late_cancel'] = late;
             booking['status'] = 'cancelled';
             state.slotTaken = false;
             response.writeHead(204);

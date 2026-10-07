@@ -121,7 +121,24 @@ refuses with `BOOKING_ADDRESS_REQUIRED` on a client without elicitation. A resch
 address unless a new one is given. A free interval has no waitlist (`WAITLIST_NOT_SUPPORTED`). A
 service can suspend booking it after repeated no-shows (`booking_policy.no_show_limit`) or by hand:
 booking and the waitlist then answer `BOOKING_SUSPENDED`, whose `until` detail is read out to the
-person instead of retrying.
+person instead of retrying. An organization can cap active bookings across all its services
+(`BOOKING_ORGANIZATION_LIMIT_REACHED`), and a service or an organization can keep two bookings
+`min_interval_days` apart (`BOOKING_TOO_FREQUENT`, whose detail names the other booking's date and
+which of the two rules it broke).
+
+**Cancelling late.** After `cancel_deadline_at` a cancel is refused, unless the service sets
+`booking_policy.late_cancel: no_show`: then it goes through and counts as a missed booking. The
+cancel is a `204` without a body, so `cancel_booking` works this out from the booking and the
+service's policy beforehand, says so in the confirmation (with the suspension it can lead to), and
+answers `counts_as_no_show`. Such a booking later shows a `status_note`.
+
+**Check-in.** Every booking except a call-back carries a `checkin_code` the person shows at the front
+desk; `get_booking` and `list_my_bookings` return it while it can still be used — also on a booking
+already marked a no-show, which the person can still check in to on the day — even with personal
+data masked, since it is what the person needs at the desk. Staff check the person in, and
+the booking becomes `arrived`. Where a service sets `booking_policy.no_show_after_minutes`, a booking
+not checked in that long after its start turns into a no-show on its own, and the booking summary
+says so before the person approves.
 
 The form is validated against the service's own `form_fields` before anything is sent,
 so a wrong answer costs a question and not a booking attempt. Required fields are asked of the

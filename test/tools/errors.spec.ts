@@ -75,6 +75,30 @@ describe('toToolError', () => {
         expect(failure.next_steps.join(' ')).toContain('do not retry');
     });
 
+    it('passes on the date of the booking that is too close, and which rule it broke', () => {
+        const detail = {
+            path: 'organization.booking_policy.min_interval_days',
+            message: 'Another booking on 2026-10-12 is less than 14 day(s) away',
+        };
+        const failure = toToolError(
+            apiErrorFrom(422, {
+                error: { code: 'BOOKING_TOO_FREQUENT', message: 'x', details: [detail] },
+            }),
+        );
+
+        expect(failure.details).toEqual([detail]);
+        expect(failure.next_steps.join(' ')).toContain('get_organization');
+    });
+
+    it('points an organization-wide limit at the organization, not the service', () => {
+        const failure = toToolError(
+            apiErrorFrom(422, { error: { code: 'BOOKING_ORGANIZATION_LIMIT_REACHED', message: 'x' } }),
+        );
+
+        expect(failure.message).toMatch(/organization/);
+        expect(failure.next_steps.join(' ')).toContain('list_my_bookings');
+    });
+
     it('names a transport failure as such', () => {
         expect(toToolError(new TransportError('down')).code).toBe('TRANSPORT_ERROR');
     });

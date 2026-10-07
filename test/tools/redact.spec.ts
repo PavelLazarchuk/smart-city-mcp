@@ -71,6 +71,37 @@ describe('redactBooking', () => {
 
         expect(view.note).toMatch(/Application/);
     });
+
+    it('keeps the check-in code of a booking still ahead, even with personal data masked', () => {
+        const coded = { ...booking, checkin_code: 'K7M4PX' } as unknown as BookingResource;
+
+        expect(redactBooking(coded, { pii: false }).checkin_code).toBe('K7M4PX');
+        expect(redactBooking({ ...coded, status: 'no_show' }, { pii: false }).checkin_code).toBe('K7M4PX');
+        expect(redactBooking({ ...coded, status: 'cancelled' }, { pii: false }).checkin_code).toBeUndefined();
+    });
+
+    it('says when the person checked in', () => {
+        const arrived = {
+            ...booking,
+            status: 'arrived',
+            arrived_at: '2026-10-01T11:55:00Z',
+            checkin_code: 'K7M4PX',
+        } as unknown as BookingResource;
+        const view = redactBooking(arrived, { pii: false });
+
+        expect(view.arrived_at).toBe('2026-10-01T11:55:00Z');
+        expect(view.checkin_code).toBeUndefined();
+    });
+
+    it('explains a late cancel that counts as a missed booking', () => {
+        const view = redactBooking(
+            { ...booking, status: 'cancelled', late_cancel: true } as unknown as BookingResource,
+            { pii: false },
+        );
+
+        expect(view.status_note).toMatch(/missed booking/);
+        expect(redactBooking(booking, { pii: false }).status_note).toBeUndefined();
+    });
 });
 
 describe('masking', () => {

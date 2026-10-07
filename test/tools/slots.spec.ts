@@ -74,10 +74,13 @@ describe('flattenSlots', () => {
                 max_active_per_user: null,
                 max_advance_days: null,
                 cancel_deadline_minutes: null,
+                late_cancel: 'forbid',
                 requires_confirmation: false,
                 no_show_limit: null,
                 no_show_window_days: null,
                 no_show_suspension_days: null,
+                min_interval_days: null,
+                no_show_after_minutes: null,
             },
         });
 
@@ -129,10 +132,13 @@ describe('flattenSlots', () => {
                 max_active_per_user: null,
                 max_advance_days: null,
                 cancel_deadline_minutes: null,
+                late_cancel: 'forbid',
                 requires_confirmation: false,
                 no_show_limit: null,
                 no_show_window_days: null,
                 no_show_suspension_days: null,
+                min_interval_days: null,
+                no_show_after_minutes: null,
             },
         });
 
@@ -256,10 +262,13 @@ describe('flattenSlots', () => {
                     max_active_per_user: null,
                     max_advance_days: null,
                     cancel_deadline_minutes: null,
+                    late_cancel: 'forbid',
                     requires_confirmation: false,
                     no_show_limit: null,
                     no_show_window_days: null,
                     no_show_suspension_days: null,
+                    min_interval_days: null,
+                    no_show_after_minutes: null,
                 },
             });
 
@@ -280,10 +289,13 @@ describe('flattenSlots', () => {
                     max_active_per_user: null,
                     max_advance_days: null,
                     cancel_deadline_minutes: null,
+                    late_cancel: 'forbid',
                     requires_confirmation: false,
                     no_show_limit: null,
                     no_show_window_days: null,
                     no_show_suspension_days: null,
+                    min_interval_days: null,
+                    no_show_after_minutes: null,
                 },
             });
 

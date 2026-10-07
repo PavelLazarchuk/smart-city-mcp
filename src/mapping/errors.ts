@@ -81,6 +81,23 @@ export const ERROR_GUIDANCE: Record<string, ErrorGuidance> = {
             'cancel one only if the person asks to, then book again',
         ],
     },
+    BOOKING_ORGANIZATION_LIMIT_REACHED: {
+        message:
+            'The person already has the most active bookings this organization allows, across all its services.',
+        next_steps: [
+            'tell the person the limit is `booking_policy.max_active_per_user` of get_organization',
+            'show them list_my_bookings; cancel one only if the person asks to, then book again',
+        ],
+    },
+    BOOKING_TOO_FREQUENT: {
+        message: 'The person has another booking too close to this date.',
+        next_steps: [
+            'read the detail below to the person: it names the date of the other booking and how many days apart they must be',
+            'a `path` starting with `organization.` is the rule of the whole organization (get_organization), otherwise of this service (get_service)',
+            'the other booking may be a past visit too: list_my_bookings with `status: all` shows it',
+            'find_slots for a date far enough from it; if the other booking is still ahead, the person may prefer to reschedule_booking it',
+        ],
+    },
     BOOKING_SUSPENDED: {
         message:
             'This account may not book this service for now, usually after missed bookings; its waitlist places for it are gone too.',

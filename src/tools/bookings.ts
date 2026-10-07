@@ -4,6 +4,7 @@ import { z } from 'zod';
 
 import {
     type BookingCreated,
+    type BookingPolicy,
     type BookingResource,
     type FormField,
     type ServiceResource,
@@ -121,6 +122,7 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                     ? '`booking_id` for get_booking, confirm_booking, reschedule_booking and cancel_booking.'
                     : '`booking_id` for get_booking.',
                 'Form answers may be hidden: `form_field_keys` lists which fields were filled.',
+                '`checkin_code` is what the person shows at the front desk on the day.',
                 '`booked_by_staff: true` means the organization’s staff booked it for the person.',
                 DATA_NOTICE,
             ].join(' '),
@@ -165,8 +167,10 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
         {
             title: 'Get one booking',
             description: [
-                'One of the person’s bookings with its current `status` (pending, confirmed, completed,',
-                'no_show, cancelled), start and cancellation deadline.',
+                'One of the person’s bookings with its current `status` (pending, confirmed, arrived,',
+                'completed, no_show, cancelled), start and cancellation deadline. `arrived` means the person',
+                'checked in at the front desk. `checkin_code` is the code to show there on the day; a',
+                'call-back has none. `status_note` explains a cancellation that counts as a missed booking.',
                 DATA_NOTICE,
             ].join(' '),
             annotations: { readOnlyHint: true, openWorldHint: true },
@@ -240,7 +244,8 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                 'person said. Anything missing is asked of the person, or comes back as',
                 'BOOKING_FIELDS_INVALID / BOOKING_DOCUMENTS_REQUIRED for you to ask them. The person',
                 'approves a summary before anything is sent. Repeating the same booking is safe: it returns',
-                '`already_existed: true` and creates no duplicate.',
+                '`already_existed: true` and creates no duplicate. The check-in code for the front desk comes',
+                'with get_booking.',
             ].join(' '),
             annotations: { idempotentHint: true, openWorldHint: true },
             inputSchema: {
@@ -333,6 +338,7 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                 const documents = await collectDocuments(ctx, service, args.documents ?? []);
                 const timeZone = timeZoneOf(ctx, service);
                 const deadline = cancelDeadlineOf(candidate, service, timeZone);
+                const lateCancel = service.booking_policy?.late_cancel === 'no_show';
 
                 await confirmWrite(
                     ctx,
@@ -362,7 +368,9 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
                               ? 'Booked as `pending`: this service asks for each booking to be confirmed. Tell the person; they can confirm it now or later with confirm_booking, or the organization may confirm it.'
                               : 'Booked.',
                         deadline !== null && isPast(deadline)
-                            ? 'It cannot be cancelled: the cancellation deadline has already passed.'
+                            ? lateCancel
+                                ? 'The cancellation deadline has already passed: cancelling it now counts as a missed booking.'
+                                : 'It cannot be cancelled: the cancellation deadline has already passed.'
                             : '',
                     ]
                         .filter(Boolean)
@@ -425,18 +433,26 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
             description: [
                 'Cancels one of the person’s bookings; the place goes to someone else and this cannot be',
                 'undone. After `cancel_deadline_at` the cancel is refused and the person has to contact the',
-                'organization. To change the time, use reschedule_booking instead — cancelling first may',
-                'lose the place.',
+                'organization, unless the service takes late cancellations as missed bookings',
+                '(`booking_policy.late_cancel: no_show`): then it goes through but counts as a no-show, and',
+                'the person is told so before approving. To change the time, use reschedule_booking instead',
+                '— cancelling first may lose the place.',
             ].join(' '),
             annotations: { destructiveHint: true, openWorldHint: true },
             inputSchema: { booking_id: bookingIdArg, confirm: confirmArg },
-            outputSchema: { cancelled: z.boolean(), booking_id: z.string() },
+            outputSchema: { cancelled: z.boolean(), booking_id: z.string(), counts_as_no_show: z.boolean() },
         },
         runPersonalTool('cancel_booking', ctx, async (args: { booking_id: string; confirm?: boolean }) => {
             const booking = await loadBooking(ctx, args.booking_id);
+            const late = await lateCancelPolicy(ctx, booking);
             await confirmWrite(
                 ctx,
-                `Cancel "${booking.service_label}"${bookingDay(booking)}? The place goes to someone else.`,
+                [
+                    `Cancel "${booking.service_label}"${bookingDay(booking)}? The place goes to someone else.`,
+                    late,
+                ]
+                    .filter((line): line is string => line !== null)
+                    .join('\n'),
                 args.confirm,
             );
             await ctx.client.request({
@@ -447,8 +463,10 @@ export function registerBookingTools(server: McpServer, ctx: ToolContext): void 
             await touchBookings(ctx);
 
             return {
-                summary: `"${booking.service_label}" is cancelled.`,
-                data: { cancelled: true, booking_id: args.booking_id },
+                summary: late
+                    ? `"${booking.service_label}" is cancelled. It counts as a missed booking.`
+                    : `"${booking.service_label}" is cancelled.`,
+                data: { cancelled: true, booking_id: args.booking_id, counts_as_no_show: late !== null },
             };
         }),
     );
@@ -662,6 +680,27 @@ async function loadBooking(ctx: ToolContext, bookingId: string): Promise<Booking
     });
 
     return data;
+}
+
+async function lateCancelPolicy(ctx: ToolContext, booking: BookingResource): Promise<string | null> {
+    if (!booking.cancel_deadline_at || !isPast(booking.cancel_deadline_at)) return null;
+
+    if (!booking.starts_at || isPast(booking.starts_at)) return null;
+
+    const policy = (await loadBookingService(ctx, booking.service_id)).booking_policy;
+
+    if (policy?.late_cancel !== 'no_show') return null;
+
+    const within =
+        policy.no_show_window_days !== null
+            ? ` within ${plural(policy.no_show_window_days, 'day', 'days')}`
+            : '';
+    const sanction =
+        policy.no_show_limit !== null && policy.no_show_suspension_days !== null
+            ? ` ${plural(policy.no_show_limit, 'missed booking', 'missed bookings')}${within} suspend booking this service for ${plural(policy.no_show_suspension_days, 'day', 'days')}.`
+            : '';
+
+    return `The cancellation deadline has passed: this cancel counts as a missed booking (no-show).${sanction}`;
 }
 
 function localOf(value: unknown): string | null {
@@ -1100,6 +1139,8 @@ function bookingSummary(
     timeZone: string,
 ): string {
     const organization = service.organization;
+    const policy = service.booking_policy;
+    const lateCancel = policy?.late_cancel === 'no_show';
     const labelOf = (items: { key: string; label: string }[], key: string): string =>
         items.find((item) => item.key === key)?.label ?? key;
     const lines = [
@@ -1115,8 +1156,13 @@ function bookingSummary(
         deadline === null
             ? 'Cancellation deadline: none'
             : isPast(deadline)
-              ? 'Cannot be cancelled once booked: the cancellation deadline has passed'
-              : `Can be cancelled until: ${humanInstant(deadline, timeZone)}`,
+              ? lateCancel
+                  ? 'The cancellation deadline has passed: a cancel counts as a missed booking'
+                  : 'Cannot be cancelled once booked: the cancellation deadline has passed'
+              : lateCancel
+                ? `Can be cancelled until: ${humanInstant(deadline, timeZone)}; a later cancel counts as a missed booking`
+                : `Can be cancelled until: ${humanInstant(deadline, timeZone)}`,
+        checkInLine(policy, candidate),
         Object.keys(fields).length > 0
             ? `Form answers sent: ${Object.keys(fields)
                   .map((key) => labelOf(service.form_fields ?? [], key))
@@ -1128,6 +1174,22 @@ function bookingSummary(
     ].filter((line): line is string => line !== null);
 
     return `Book this?\n${lines.join('\n')}`;
+}
+
+function checkInLine(policy: BookingPolicy | undefined, candidate: SlotCandidate): string | null {
+    const minutes = policy?.no_show_after_minutes;
+
+    if (
+        minutes === null ||
+        minutes === undefined ||
+        candidate.child_type === 'callback' ||
+        !candidate.starts_at
+    )
+        return null;
+
+    return candidate.time
+        ? `Check in at the front desk: ${plural(minutes, 'minute', 'minutes')} after the start without a check-in, it counts as a missed booking`
+        : 'Check in at the front desk on the day, or it counts as a missed booking';
 }
 
 function idempotencyKeyFor(ctx: ToolContext, args: BookingTarget, salt: string): string {

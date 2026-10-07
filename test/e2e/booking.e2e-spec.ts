@@ -496,4 +496,96 @@ describe('booking a slot', () => {
             await harness.close();
         }
     });
+
+    describe('after the cancellation deadline', () => {
+        async function bookPastDeadline(harness: Awaited<ReturnType<typeof startHarness>>): Promise<string> {
+            const created = await harness.call('create_booking', {
+                service_id: IDS.service,
+                option_id: IDS.option,
+                slot_id: IDS.slot,
+                time: '10:00',
+                fields: { insurance_number: 'A1234567' },
+                documents: ['passport'],
+                confirm: true,
+            });
+            const bookingId = structured<{ booking: { booking_id: string } }>(created).booking.booking_id;
+            const row = stub.state.bookings.find((booking) => booking['id'] === bookingId)!;
+            row['starts_at'] = new Date(Date.now() + 3_600_000).toISOString();
+            row['cancel_deadline_at'] = new Date(Date.now() - 3_600_000).toISOString();
+
+            return bookingId;
+        }
+
+        it('warns that a late cancel counts as a missed booking, then lets it through', async () => {
+            stub.state.lateCancel = 'no_show';
+            const harness = await startHarness({ apiUrl: stub.url, write: true, session: {} });
+
+            try {
+                const bookingId = await bookPastDeadline(harness);
+
+                const asked = await harness.call('cancel_booking', { booking_id: bookingId });
+
+                expect(errorOf(asked).code).toBe('CONFIRMATION_REQUIRED');
+                expect(textOf(asked)).toContain('counts as a missed booking');
+
+                const cancelled = await harness.call('cancel_booking', {
+                    booking_id: bookingId,
+                    confirm: true,
+                });
+
+                expect(cancelled.isError).toBeFalsy();
+                expect(structured<{ counts_as_no_show: boolean }>(cancelled).counts_as_no_show).toBe(true);
+                expect(textOf(cancelled)).toContain('counts as a missed booking');
+                expect(stub.state.bookings[0]?.['late_cancel']).toBe(true);
+            } finally {
+                await harness.close();
+            }
+        });
+
+        it('says nothing about a missed booking where the service refuses late cancels', async () => {
+            const harness = await startHarness({ apiUrl: stub.url, write: true, session: {} });
+
+            try {
+                const bookingId = await bookPastDeadline(harness);
+
+                const asked = await harness.call('cancel_booking', { booking_id: bookingId });
+
+                expect(textOf(asked)).not.toContain('missed booking');
+
+                const refused = await harness.call('cancel_booking', {
+                    booking_id: bookingId,
+                    confirm: true,
+                });
+
+                expect(errorOf(refused).code).toBe('BOOKING_CANCEL_DEADLINE_PASSED');
+            } finally {
+                await harness.close();
+            }
+        });
+    });
+
+    it('shows the check-in code of a fresh booking', async () => {
+        const harness = await startHarness({ apiUrl: stub.url, write: true, session: {} });
+
+        try {
+            const created = await harness.call('create_booking', {
+                service_id: IDS.service,
+                option_id: IDS.option,
+                slot_id: IDS.slot,
+                time: '10:00',
+                fields: { insurance_number: 'A1234567' },
+                documents: ['passport'],
+                confirm: true,
+            });
+            const bookingId = structured<{ booking: { booking_id: string } }>(created).booking.booking_id;
+
+            const booking = structured<{ booking: { checkin_code?: string } }>(
+                await harness.call('get_booking', { booking_id: bookingId }),
+            );
+
+            expect(booking.booking.checkin_code).toBe('K7M4PX');
+        } finally {
+            await harness.close();
+        }
+    });
 });
